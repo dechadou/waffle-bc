@@ -1,6 +1,6 @@
 ![Waffle](documentation/logo.jpg)
 
-`Waffle` (Web Assistant for Frontend Libraries and Endpoints)is a Vue Cli SPA that comes packaged with a variety of tools for creating an Ecommmerce Store that connects with the MATE API in a matter of minutes.
+`Waffle` (Web Assistant for Frontend Libraries and Endpoints) is a Vue Cli SPA that comes packaged with a variety of tools for creating an Ecommmerce Store that connects with the MATE API in a matter of minutes.
 
 ## Dependencies
 * [vuex](https://github.com/vuejs/vuex)
