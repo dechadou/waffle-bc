@@ -1,10 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
 import Vue from 'vue';
+import getStore from './store';
+import { EnvCheck } from './utils';
+import { getVariable, VariableNames } from './config';
 import App from './App.vue';
 import router from './router';
-import store from './store';
 import './registerServiceWorker';
 
-Vue.config.productionTip = false;
+console.log(`Waffle Release v${getVariable(VariableNames.WaffleVersion)}`);
+EnvCheck();
+const store = getStore();
 
 new Vue({
   router,

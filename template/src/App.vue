@@ -1,20 +1,48 @@
+<style src='./assets/styles/bootstrap-grid.min.css'></style>
+<style src='./assets/styles/animate.min.css'></style>
+
 <template>
-  <router-view/>
+  <router-view v-if="isLoaded"/>
 </template>
 
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import { StoreDataActionTypes, StoreDataGetterTypes } from './store/module/StoreData';
+import { getVariable, VariableNames } from './config';
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapGetters({
+      isLoaded: StoreDataGetterTypes.IS_LOADED,
+    }),
+  },
+  created() {
+    this.fetchStoreData(this.$route.params.slug || getVariable(VariableNames.DefaultSlug));
+  },
+  methods: {
+    ...mapActions({
+      fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA,
+    }),
+  },
+};
+</script>
+
 <style lang="scss">
+@import "assets/styles/_variables.scss";
+
 @font-face {
   font-family: "Founders_Grotesk_Regular";
-  src: url("~/assets/fonts/Founders_Grotesk_Regular/Founders_Grotesk_Regular.woff")
+  src: url("./assets/fonts/Founders_Grotesk_Regular/Founders_Grotesk_Regular.woff")
       format("woff"),
-    url("~/assets/fonts/Founders_Grotesk_Regular/Founders_Grotesk_Regular.woff2")
+    url("./assets/fonts/Founders_Grotesk_Regular/Founders_Grotesk_Regular.woff2")
       format("woff2");
 }
 @font-face {
   font-family: "Founders_Grotesk_Light";
-  src: url("~/assets/fonts/Founders_Grotesk_Light/Founders_Grotesk_Light.woff")
+  src: url("./assets/fonts/Founders_Grotesk_Light/Founders_Grotesk_Light.woff")
       format("woff"),
-    url("~/assets/fonts/Founders_Grotesk_Light/Founders_Grotesk_Light.woff2")
+    url("./assets/fonts/Founders_Grotesk_Light/Founders_Grotesk_Light.woff2")
       format("woff2");
 }
 
@@ -25,7 +53,7 @@ html {
 
 body {
   font-family: "Founders_Grotesk_Regular", sans-serif !important;
-  overflow-x: hidden;
+  margin: 0;
 }
 
 p {
@@ -61,15 +89,10 @@ img {
   display: block;
 }
 
-.container.extra-padding {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
 button {
   width: 100%;
-  background: #000;
-  border: 1px solid #000;
+  background: $abre-black;
+  border: 1px solid $abre-black;
   color: #fff;
   padding: 12px 0;
   font-size: 21px;
@@ -81,7 +104,7 @@ button {
   &:hover,
   &.disabled {
     background: #fff;
-    color: #000;
+    color: $abre-black;
     text-decoration: none;
   }
 }
@@ -99,7 +122,7 @@ input[type="text"] {
   font-size: 30px;
   color: #1d1d1b;
   border: none;
-  border-bottom: 1px solid #c1c1c1;
+  border-bottom: 1px solid $abre-light-grey;
 
   &:focus {
     box-shadow: none;
@@ -107,7 +130,7 @@ input[type="text"] {
 }
 
 .input-group {
-  border-bottom: 1px solid #c1c1c1;
+  border-bottom: 1px solid $abre-light-grey;
 
   input[type="text"] {
     border: none;
