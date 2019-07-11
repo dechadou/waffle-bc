@@ -2,10 +2,11 @@
   <transition name="slide-fade">
     <div>
       <GlobalWarning/>
-      <Hero 
-        :desktopImage="template.desktop_image" 
-        :mobileImage="template.mobile_image" 
-        :introCopy="template.intro_copy" 
+      <img src="@/assets/images/example.png" />
+      <Hero
+        :desktopImage="template.desktop_image"
+        :mobileImage="template.mobile_image"
+        :introCopy="template.intro_copy"
       />
       <div class="container">
         <section id="shop">
@@ -39,16 +40,18 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { StoreDataActionTypes, StoreDataGetterTypes } from '../store/module/StoreData';
-import Hero from '@/components/Hero.vue'
-import GlobalWarning from '@/components/GlobalWarning.vue'
+import { mapGetters } from 'vuex';
+import { StoreDataGetterTypes } from '../store/module/StoreData';
+import Hero from '@/components/Hero.vue';
+import GlobalWarning from '@/components/GlobalWarning.vue';
+import Icon from '@/components/Icon.vue';
 
 export default {
   name: 'HomePage',
   components: {
     Hero,
     GlobalWarning,
+    Icon,
   },
   computed: {
     ...mapGetters({
@@ -59,14 +62,14 @@ export default {
       template: StoreDataGetterTypes.GET_TEMPLATE_DATA,
     }),
   },
-  created(){
+  created() {
     console.log(this.template);
-  }
+  },
 };
 </script>
 
 <style scoped lang="scss">
 #shop{
-	margin-top: 10px;
+  margin-top: 10px;
 }
 </style>

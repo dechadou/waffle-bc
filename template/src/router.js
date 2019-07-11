@@ -21,12 +21,12 @@ export default new Router({
     {
       path: '/producto/:id',
       name: 'DefaultProductPage',
-      component: () => import(/* webpackChunkName: "about" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
     },
     {
       path: '/:slug/producto/:id',
       name: 'StoreProductPage',
-      component: () => import(/* webpackChunkName: "about" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
     },
   ],
 });

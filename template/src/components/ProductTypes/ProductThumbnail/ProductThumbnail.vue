@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-12 p-0 d-block d-md-none">
 				<div class="image-wrap">
-					<i class="fas fa-circle-notch fa-spin fa-3x"></i>	
+					<i class="fas fa-circle-notch fa-spin fa-3x"></i>
 					<img :src="image" class="img-fluid mx-auto d-block">
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 			</div>
 			<div class="col-12 col-md-8 d-none d-md-block">
 				<div class="image-wrap">
-					<i class="fas fa-circle-notch fa-spin fa-3x"></i>	
+					<i class="fas fa-circle-notch fa-spin fa-3x"></i>
 					<img :src="image" class="img-fluid mx-auto d-block">
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 		<div class="row">
 			<div class="col-12" v-bind:class="{ 'imagen-expandida-izquierda': type == 2 || type == 5, 'imagen-expandida-derecha': type == 3 || type == 6}">
 				<div class="image-wrap">
-					<i class="fas fa-circle-notch fa-spin fa-3x"></i>	
+					<i class="fas fa-circle-notch fa-spin fa-3x"></i>
 					<img :src="image" class="img-fluid mx-auto d-block">
 				</div>
 			<div class="row desc">

@@ -8,6 +8,7 @@
 * [register-service-worker](https://github.com/yyx990803/register-service-worker)
 * [webpack](https://github.com/webpack/webpack)
 * [sass-loader](https://github.com/webpack-contrib/sass-loader)
+* [svgo-loader](https://github.com/rpominov/svgo-loader)
 
 ## Linting
 * [eslint](https://eslint.vuejs.org/)
@@ -16,4 +17,6 @@
 * [lint-staged](https://github.com/okonet/lint-staged)
 
 ## Documentation
-* [Waffle Documentation](https://github.com/hjeti/vue-skeleton/wiki/Documentation)
+* [Waffle Starting Guide](documentation/Starting.md)
+* [Waffle Libraries Documentation](documentation/Libraries.md)
+* [Waffle Components Documentation](documentation/Components.md)

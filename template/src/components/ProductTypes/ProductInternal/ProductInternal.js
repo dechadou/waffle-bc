@@ -60,7 +60,7 @@ export default {
 
       let filteredArticles = this.articleList;
 
-      this.attributeList.forEach(attribute => {
+      this.attributeList.forEach((attribute) => {
         filteredArticles = filteredArticles.find(
           el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
         );
@@ -70,7 +70,7 @@ export default {
     },
     getOptions(attribute) {
       const options = [];
-      this.articleList.forEach(article => {
+      this.articleList.forEach((article) => {
         if (article.atributtes[attribute]) options.push(article.atributtes[attribute]);
       });
       return options;
@@ -78,7 +78,7 @@ export default {
     getCarouselImages() {
       const med = Object.values(this.media);
 
-      med.forEach(media => {
+      med.forEach((media) => {
         if (media.primary_media) this.carouselImages.unshift(media.url);
         else this.carouselImages.push(media.url);
       });
@@ -86,7 +86,7 @@ export default {
     getImage() {
       const med = Object.values(this.media);
       // Si hay imagen marcada como primary media
-      med.forEach(media => {
+      med.forEach((media) => {
         if (media.primary_media) {
           this.image = media.url;
         }
@@ -95,7 +95,7 @@ export default {
       if (this.image) return;
 
       // Si no hay imagenes marcada como primary media
-      med.forEach(media => {
+      med.forEach((media) => {
         this.image = media.url;
       });
 
@@ -110,7 +110,7 @@ export default {
       let finalString = '';
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach(author => {
+      authors.forEach((author) => {
         if (finalString.search(author.name) === -1) {
           if (finalString !== '') finalString += ' + ';
           finalString += author.name;

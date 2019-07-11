@@ -37,7 +37,7 @@ export default {
     isLoaded(value) {
       if (value) this.getProduct();
     },
-    '$route.params.slug'(to, from) {
+    '$route.params.slug': function (to, from) {
       this.getProduct();
     },
   },

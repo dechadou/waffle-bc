@@ -14,4 +14,4 @@ const subscribe = (event, callback) => EventManager.$on(event, params => callbac
 export default {
   trigger,
   subscribe,
-}
+};

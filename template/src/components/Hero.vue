@@ -23,12 +23,12 @@ export default {
     mobileImage: String,
     introCopy: String,
   },
-  data(){
+  data() {
     return {
-      bg: null
-    }
+      bg: null,
+    };
   },
-  created(){
+  created() {
     if (this.desktopImage && this.mobileImage) {
       this.assignBgImage();
       window.addEventListener('resize', this.assignBgImage, true);
@@ -36,7 +36,7 @@ export default {
     else this.bg = this.mobileImage;
   },
   methods: {
-    assignBgImage(){
+    assignBgImage() {
       if (window.innerWidth >= 768) this.bg = this.desktopImage;
       else this.bg = this.mobileImage;
     },

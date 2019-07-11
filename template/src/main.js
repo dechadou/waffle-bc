@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-var */
+import './utils/publicpath';
 import Vue from 'vue';
 import getStore from './store';
 import { EnvCheck } from './utils';

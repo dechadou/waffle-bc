@@ -19,7 +19,7 @@
             </swiper>
             <img v-else class="d-block w-100" :src="image">
           </div>
-          
+
           <div class="col-md-6" :class="$style.descriptionBox">
             <div :class="$style.containerXs">
             <div class="row">
@@ -102,4 +102,3 @@
   padding: 0 !important;
 }
 </style>
-
