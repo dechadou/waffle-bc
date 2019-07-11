@@ -17,10 +17,6 @@
 * [lint-staged](https://github.com/okonet/lint-staged)
 
 ## Documentation
-<<<<<<< HEAD
 * [Waffle Starting Guide](documentation/Starting.md)
 * [Waffle Libraries Documentation](documentation/Libraries.md)
 * [Waffle Components Documentation](documentation/Components.md)
-=======
-* [Waffle Documentation](documentation/Documentation.md)
->>>>>>> 461ab8a2f5b2fe5822aca91dcff31f0813e28657
