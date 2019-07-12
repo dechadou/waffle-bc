@@ -7,7 +7,6 @@ export const getImage = (media) => {
 export const getAttributeList = (articleList) => {
   if (!articleList) throw new Error('[Waffle Error]: getAttributeList() expects a valid parameter');
   const attributeList = [];
-  console.log(articleList);
   if (articleList[0].atributtes.length > 0) {
     let ind = 0;
     Object.keys(articleList[0].atributtes).forEach((attribute) => {
@@ -18,3 +17,6 @@ export const getAttributeList = (articleList) => {
 
   return attributeList;
 };
+
+export const isOutOfStock = (articleList, productClass) => (productClass === 'producto' ? articleList[0].stock < 1 : articleList.some(x => x.stock < 1));
+export const getPrice = data => Math.floor(data.class === 'producto' ? data.articles[0].price : data.price);

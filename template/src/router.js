@@ -19,13 +19,23 @@ export default new Router({
       component: HomePage,
     },
     {
-      path: '/producto/:id',
+      path: '/producto/:productid',
       name: 'DefaultProductPage',
       component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
     },
     {
-      path: '/:slug/producto/:id',
+      path: '/combo/:productid',
+      name: 'DefaultBundlePage',
+      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
+    },
+    {
+      path: '/:slug/producto/:productid',
       name: 'StoreProductPage',
+      component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
+    },
+    {
+      path: '/:slug/combo/:productid',
+      name: 'StoreBundlePage',
       component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
     },
   ],

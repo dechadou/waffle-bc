@@ -19,12 +19,13 @@ html {
 }
 
 body {
-  font-family: "Founders_Grotesk_Regular", sans-serif !important;
+  font-family: "Founders_Grotesk_Light", sans-serif;
   margin: 0;
 }
 
-p {
-  font-family: "Founders_Grotesk_Light", sans-serif;
+h1, h2, h3, h4, h5, h6, p {
+  font-weight: normal;
+  margin: 0;
 }
 
 img {
@@ -32,6 +33,7 @@ img {
 }
 
 button {
+  font-family: "Founders_Grotesk_Light", sans-serif;
   background-color: $abre-black;
   color: #fff;
   width: 100%;
@@ -65,15 +67,6 @@ button {
   }
   &:focus {
     box-shadow: none;
-  }
-}
-
-.price {
-  font-size: 14px;
-  margin-bottom: 5px;
-  span {
-    font-size: 11px;
-    margin-right: 5px;
   }
 }
 

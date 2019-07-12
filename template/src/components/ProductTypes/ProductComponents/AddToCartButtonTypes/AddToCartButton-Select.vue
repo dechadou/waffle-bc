@@ -6,14 +6,13 @@
 </template>
 
 <script>
+
 export default {
-    name: 'AddToCartButton-Select',
-    props: {
-        callback: {
-            type: Function
-        },
-    }
-}
+  name: 'AddToCartButton-Select',
+  props: {
+    callback: {
+      type: Function,
+    },
+  },
+};
 </script>
-
-

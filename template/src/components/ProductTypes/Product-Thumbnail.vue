@@ -1,87 +1,66 @@
 <template>
-  <article
-    :class="[
-      'product',
-      extraClass,
-      {
-        'slider_product': slider,
-      },
-    ]"
-  >
-    <div class="row new_row">
-      <div class="new_col_12 col-12 p0">
-        <div class="image_wrap">
-          <i class="fas fa-circle-notch fa-spin fa-3x fa_icon"></i>
-          <router-link :to="`/producto/${data.slug}`">
-            <img :src="image" class="img-fluid mx-auto d-block">
+  <article class="product">
+    <div class="col-12">
+      <div class="row">
+
+        <!-- IMAGE -->
+        <div class="col-12 p-0">
+          <router-link :to="`/producto/${data.slug}`" class="image_wrap">
+            <i class="fas fa-circle-notch fa-spin fa-3x fa_icon"></i>
+              <img :src="image" class="img-fluid mx-auto d-block">
           </router-link>
         </div>
-      </div>
-      <div class="col-12 description">
-        <router-link :to="`/producto/${data.slug}`" class="title_price_block">
 
-          <div v-if="slider" class="row new_row">
-            <h3 class="title slider_title">
-              {{ data.name }}&nbsp;&nbsp;·&nbsp;&nbsp;
-              <span class="price">
-                <span>$</span>
-                {{ data.price }}
-              </span>
-            </h3>
-          </div>
-          <div v-else lass="row new_row">
+        <!-- DESCRIPTION -->
+        <div class="col-12 description">
+
+          <!-- TITLE AND PRICE -->
+          <div class="title_price_block row">
             <div class="col-8">
               <h3 class="title">{{ data.name }}</h3>
             </div>
             <div class="col-4 pl-0">
               <span class="price">
                 <span>$</span>
-                {{ data.price }}
+                {{ getPrice() }}
               </span>
             </div>
           </div>
-          <div class="row new_row">
+          <!-- /TITLE AND PRICE -->
+
+          <!-- AUTHORS -->
+          <div class="row">
             <div class="col-12">
-              <div v-if="attributeList.length > 0">
-                <div v-for="attribute in attributeList" :key="attribute[1]">
-                  <select v-model="selected[attribute[1]]" class="form-control">
-                    <option disabled value selected>{{ attribute[0] }}</option>
-                    <option
-                      v-for="option in getOptions(attribute[0])"
-                      :value="option"
-                      :key="option"
-                    >{{ option }}</option>
-                  </select>
-                </div>
-              </div>
               <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
             </div>
           </div>
+          <!-- /AUTHORS -->
 
-        </router-link>
+          <div class="button_container">
+            <AddToCartButton
+              class="addToCartButton"
+              :slug="data.slug"
+              :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
+              :productType="data.class"
+              :buttonType="getButtonType()"
+              :image="image"
+            />
+          </div>
 
-        <div class="button_container">
-          <AddToCartButton
-            :slug="data.slug"
-            :id="this.selectedArticle ? this.selectedArticle.id : 0"
-            :productType="this.data.productos ? 'combo' : 'producto'"
-            :buttonType="this.selectedArticle "
-            :image="image"
-            :slider="slider"
-          />
         </div>
+        <!-- /DESCRIPTION -->
+
       </div>
     </div>
   </article>
 </template>
 
 <script>
-// TODO: ProductThumbnail no deberia tener los productos de slider, estos deberian ser un componente aparte.
-import { getImage, getAttributeList } from './productTypesHelperFunctions';
-import AddToCartButton from '@/components/ProductTypes/ProductComponents/AddToCartButton.vue';
+import { getImage, isOutOfStock, getPrice } from './productTypesHelperFunctions';
+import AddToCartButton from './ProductComponents/AddToCartButton.vue';
 
 export default {
-  name: 'ProductThumbnail',
+  name: 'Product-Thumbnail',
   components: {
     AddToCartButton,
   },
@@ -92,66 +71,37 @@ export default {
     },
     articleList: {
       type: Array,
-      default: [],
     },
-    extraClass: {
-      type: String,
-      default: '',
-    },
-    slider: {
-      type: Boolean,
-      default: false,
-    }
   },
   data() {
-    return { 
-      image: null, 
-      selectedArticle: null, 
-      attributeList: null,
-      selected: [''], 
+    return {
+      image: null,
     };
   },
   created() {
-    this.selectedArticle = this.selectedArt;
-    this.attributeList = getAttributeList(this.articleList);
-    this.attributeList.forEach(x => this.selected.push(''));
     this.image = getImage(this.data.media);
   },
-  watch: {
-    selected() {
-      this.selectedArticle = this.getArticleBySelectedOptions();
-    },
-  },
   methods: {
-    getArticleBySelectedOptions() {
-      if (this.selected.find(el => el === '') === '' || this.selected.length === 0) return null;
-
-      let filteredArticles = this.articleList;
-
-      this.attributeList.forEach(attribute => {
-        filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
-        );
-      });
-
-      return filteredArticles;
+    getPrice() {
+      return getPrice(this.data);
     },
-    getOptions: attribute => this.articleList.filter(x => article.atributtes[attribute]),
-    getPrice: () => Math.floor(this.selectedArticle ? this.selectedArticle.price : this.data.price),
+    getButtonType() {
+      if (this.data.class === 'product' && this.articleList.length > 1) return 'Select';
+      if (isOutOfStock(this.articleList, this.data.class)) return 'OutOfStock';
+      return 'Normal';
+    },
   },
   filters: {
-    displayAuthors: (authors) =>
-    !authors ?
-    '' :
-    authors.filter((v,i) => authors.indexOf(v) === i)
-           .reduce((acc, current) => acc === '' ? '' : ` + ${current.name}`),
+    displayAuthors: authors => (!authors
+      ? ''
+      : authors.filter((v, i) => authors.indexOf(v) === i)
+        .reduce((acc, current) => (acc === '' ? '' : ` + ${current.name}`))),
   },
 };
 </script>
 
 
 <style lang="scss" scoped>
-$abre-grey: #c1c1c1;
 .slide-fade-enter-active {
   transition: all 0.2s ease;
 }
@@ -182,36 +132,10 @@ $abre-grey: #c1c1c1;
       transition: background-color 0.25s ease-out;
     }
 
-    &.slider_product {
-      .description {
-        margin-top: -8%;
-      }
-      p.authors {
-        height: 22px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
     .title {
       @media (min-width: 768px) {
         height: 62px;
         font-size: 32px;
-      }
-      &.slider_title {
-        font-size: 20px !important;
-        width: 100%;
-        text-align: center;
-        height: 40px;
-        line-height: 0.8;
-        z-index: 21;
-        span.price {
-          float: none;
-          color: $abre-grey;
-          span {
-            color: $abre-grey;
-          }
-        }
       }
     }
     p {
@@ -227,7 +151,7 @@ $abre-grey: #c1c1c1;
     span {
       margin: 0;
       display: inline-block;
-      color: $abre-grey;
+      color: $abre-black;
       font-size: 19px;
       @media (min-width: 768px) {
         font-size: 18px;
@@ -287,41 +211,6 @@ $abre-grey: #c1c1c1;
       margin-bottom: 10px;
     }
 
-    button {
-      &.btn {
-        &.btn_primary {
-          background-color: #000;
-          color: #fff;
-          width: 100%;
-          margin: 0;
-          padding: 12px 0;
-          border-radius: 0;
-          font-size: 21px;
-          font-weight: 300;
-          transition: 0.3s ease all;
-          border: 1px solid transparent;
-          &.out_of_stock {
-            transition: 0.3s ease all;
-            background: #fff;
-            color: #000;
-            border: 1px solid #000;
-          }
-          &.green {
-            background-color: #237116;
-            border: none;
-          }
-          &:hover {
-            transition: 0.3s ease all;
-            background: #fff;
-            color: #000;
-            border: 1px solid #000;
-          }
-          &:focus {
-            box-shadow: none;
-          }
-        }
-      }
-    }
     .button_container {
       float: left;
       width: 100%;
@@ -367,7 +256,7 @@ $abre-grey: #c1c1c1;
       font-size: 4.533333333vw;
       @media (min-width: 1024px) {
         margin: 0 !important;
-        color: $abre-grey !important;
+        color: $abre-black !important;
         font-size: 1.02489019vw !important;
       }
     }
@@ -376,14 +265,14 @@ $abre-grey: #c1c1c1;
       @media (min-width: 1024px) {
         line-height: 1.75;
         margin: 0 !important;
-        color: $abre-grey !important;
+        color: $abre-black !important;
         font-size: 1.02489019vw !important;
       }
 
       span {
         @media (min-width: 1024px) {
           margin: 0 0.3vw 0 0 !important;
-          color: $abre-grey !important;
+          color: $abre-black !important;
           font-size: 0.7320644217vw !important;
         }
       }
@@ -401,7 +290,7 @@ $abre-grey: #c1c1c1;
       }
     }
 
-    .btn_primary {
+    .addToCartButton {
       @media (min-width: 1024px) {
         position: absolute;
         left: 0;
@@ -466,7 +355,7 @@ $abre-grey: #c1c1c1;
         background: $abre-light-grey;
       }
 
-      .btn_primary {
+      .addToCartButton {
         @media (min-width: 1024px) {
           opacity: 1;
           visibility: visible;

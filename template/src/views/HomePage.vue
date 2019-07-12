@@ -9,8 +9,8 @@
       />
       <div class="container">
         <section id="shop">
-          <div class="col-12" v-for="bundle in bundles_id" :key="bundle.id">
-            <Bundle type="thumbnail" :id="bundle.id"/>
+          <div class="col-12 col-md-4" v-for="bundle in data.bundles.filter(x => bundles_id.find(y => x.id === y.id))" :key="bundle.id">
+            <Bundle type="thumbnail" :data="bundle"/>
           </div>
         </section>
       </div>
@@ -39,11 +39,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { StoreDataGetterTypes } from '../store/module/StoreData';
+import { mapState } from 'vuex';
+import { StoreDataNamespace } from '../store/module/StoreData';
 import Hero from '@/components/Hero.vue';
 import GlobalWarning from '@/components/GlobalWarning.vue';
-import Icon from '@/components/Icon.vue';
 import Bundle from '@/components/Bundle.vue';
 
 export default {
@@ -51,15 +50,16 @@ export default {
   components: {
     Hero,
     GlobalWarning,
-    Icon,
     Bundle,
   },
+  data() {
+    return {
+      bundles: null,
+      products: null,
+    };
+  },
   computed: {
-    ...mapGetters({
-      products_id: StoreDataGetterTypes.GET_PRODUCTS_ID,
-      bundles_id: StoreDataGetterTypes.GET_BUNDLES_ID,
-      template: StoreDataGetterTypes.GET_TEMPLATE_DATA,
-    }),
+    ...mapState(StoreDataNamespace, ['data', 'template', 'bundles_id']),
   },
   created() {
     console.log(this.template);

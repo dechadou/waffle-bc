@@ -29,9 +29,7 @@ export default {
     },
     carouselImages: {
       type: Array,
-      default: [],
     },
   },
-}
+};
 </script>
-

@@ -16,44 +16,47 @@ export default {
   namespaced: true,
   state: {
     data: null,
-    products: null,
-    bundles: null,
     products_id: null,
     bundles_id: null,
     template: null,
-    tickets: null,
+    totalSold: null,
   },
   getters: {
     [IS_LOADED]: state => state.data !== null,
-    [GET_PRODUCTS_ID]: state => state.products_id,
-    [GET_BUNDLES_ID]: state => state.bundles_id,
-    [GET_PRODUCT]: state => (id) => {
-      const product = state.products.find(prod => prod.id === id);
-      if (product) return product;
-      throw new Error(`[Waffle Error]: El producto con ID: ${id} no existe`);
-    },
-    [GET_BUNDLE]: state => (id) => {
-      const bundle = state.bundles.find(bund => bund.id === id);
-      if (bundle) return bundle;
-      throw new Error(`[Waffle Error]: El combo con ID: ${id} no existe`);
-    },
-    [GET_ARTICLE_TOTAL_SOLD]: state => (id) => {
-      const totalSold = state.data.totalSold.find(article => article.id_articulo === id);
-      if (totalSold) return totalSold;
-      throw new Error(`[Waffle Error]: El articulo con ID: ${id} no existe`);
-    },
-    [GET_TEMPLATE_DATA]: state => state.template,
-    [GET_PRODUCT_LIST_BY_BUNDLE_ID]: state => id => Object.values(Object.values(state.data.combos).find(x => x.id === id).productos),
-    [GET_ARTICLE_LIST_BY_PRODUCT_ID]: state => id => Object.values(Object.values(state.data.productos).find(x => x.id === id).articulos)[0],
   },
   mutations: {
     [ADD_DATA]: (state, data) => {
-      state.data = data;
-      state.products = Object.values(data.productos);
-      state.bundles = Object.values(data.combos);
-      // state.products_id = Object.values(data.template.productos); TODO: cambiar por el nuevo sistema
+      const products = Object.values(data.productos);
+      products.forEach((x) => {
+        x.class = 'product';
+        x.articles = Object.values(x.articulos);
+        delete x.articulos;
+        x.articles.forEach((y) => {
+          y.class = 'article';
+        });
+      });
+
+      const bundles = Object.values(data.combos);
+      bundles.forEach((x) => {
+        x.class = 'bundle';
+        x.products = Object.values(x.productos);
+        delete x.productos;
+        x.products.forEach((y) => {
+          y.class = 'product';
+          y.articles = Object.values(y.articulos);
+          delete y.articulos;
+          y.articles.forEach((z) => {
+            z.class = 'article';
+          });
+        });
+      });
+
+      state.data = { products, bundles };
+
+      // state.products_id = Object.values(data.template.productos); TODO: descomentar cuando funcione el API
       state.bundles_id = Object.values(data.template.combos);
       state.template = data.template;
+      state.totalSold = data.totalSold;
     },
   },
   actions: {

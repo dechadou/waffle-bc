@@ -1,44 +1,22 @@
 <template>
   <div class="button_container">
-    <AddToCartButton-Select :callback="openLink" v-if="buttonType === 'Select'"/>
-    <AddToCartButton-Out-Of-Stock v-if="buttonType === 'Out of stock'"/>
-    <transition name="slide-fade" mode="out-in" v-else>
-        <button 
-          key="added"
-          v-if="isAdding"
-          class="green"
-          type="button" 
-        >
-          Agregado ✓
-        </button>
-        <button 
-          key="add"
-          v-else
-          :class="[{ animated: (!slider) }]"
-          type="button" 
-          @click="addToCart($event)"
-        >
-          Agregar al Carrito
-        </button>
-    </transition>
+    <component :is="buttonType" :callback="callback" />
   </div>
 </template>
 
 <script>
 import { EventManager } from '@/utils';
 import { getEnum, EnumNames } from '@/config';
-import AddToCartButtonSelect from '@/components/ProductTypes/ProductComponents/AddToCartButtonTypes/AddToCartButton-Select.vue';
-import AddToCartButtonOutOfStock from '@/components/ProductTypes/ProductComponents/AddToCartButtonTypes/AddToCartButton-Out-Of-Stock.vue';
+import * as buttons from './AddToCartButtonTypes';
 
 export default {
   name: 'AddToCartButton',
   components: {
-    AddToCartButtonSelect,
-    AddToCartButtonOutOfStock,
+    ...buttons,
   },
   props: {
     slug: {
-      type: String
+      type: String,
     },
     id: {
       type: Number,
@@ -48,30 +26,17 @@ export default {
     },
     buttonType: {
       type: String,
+      required: true,
     },
-    slider: {
-      type: Boolean,
-    }
-  },
-  data() {
-    return {
-      isAdding: false,
-    };
-  },
-  mounted() {
   },
   methods: {
-    addToCart(event) {
-      EventManager.trigger(EventType.addToCart, this.id, this.type); // TODO: que el carrito pueda conseguir la imagen en base al tipo de producto
-
-      if (!this.slider) EventManager.trigger(EventType.onRelatedProductsToggle, this.data);
-      else this.isAdding = true;
-
-      event.target.classList.add('pulse');
-      setTimeout(() => {
-        this.isAdding = false;
-        event.target.classList.remove('pulse');
-      }, 1000);
+    callback() {
+      if (this.buttonType === 'Select') this.openLink();
+      else this.addToCart();
+    },
+    addToCart() {
+      EventManager.trigger(getEnum(EnumNames.EventNames).ADD_TO_CART, this.id, this.type); // TODO: que el carrito pueda conseguir la imagen en base al tipo de producto
+      if (!this.slider) EventManager.trigger(getEnum(EnumNames.EventNames).ON_RELATED_PRODUCTS_TOGGLE, this.data);
     },
     openLink() {
       this.$router.push(`/producto/${this.slug}`);

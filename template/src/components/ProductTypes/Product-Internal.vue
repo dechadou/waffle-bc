@@ -1,6 +1,3 @@
-<style src="./ProductInternal.scss" module lang="scss"></style>
-<script src="./ProductInternal.js"></script>
-
 <template>
   <div>
     <article :id="$style.producto" class="product">
@@ -19,7 +16,7 @@
             </swiper>
             <img v-else class="d-block w-100" :src="image">
           </div>
-          
+
           <div class="col-md-6" :class="$style.descriptionBox">
             <div :class="$style.containerXs">
             <div class="row">
@@ -82,7 +79,7 @@
 
 <script>
 export default {
-  name: 'ProductInternal',
+  name: 'Product-Internal',
   props: [
     'type',
     'name',
@@ -143,7 +140,7 @@ export default {
 
       let filteredArticles = this.articleList;
 
-      this.attributeList.forEach(attribute => {
+      this.attributeList.forEach((attribute) => {
         filteredArticles = filteredArticles.find(
           el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
         );
@@ -153,7 +150,7 @@ export default {
     },
     getOptions(attribute) {
       const options = [];
-      this.articleList.forEach(article => {
+      this.articleList.forEach((article) => {
         if (article.atributtes[attribute]) options.push(article.atributtes[attribute]);
       });
       return options;
@@ -161,7 +158,7 @@ export default {
     getCarouselImages() {
       const med = Object.values(this.media);
 
-      med.forEach(media => {
+      med.forEach((media) => {
         if (media.primary_media) this.carouselImages.unshift(media.url);
         else this.carouselImages.push(media.url);
       });
@@ -169,7 +166,7 @@ export default {
     getImage() {
       const med = Object.values(this.media);
       // Si hay imagen marcada como primary media
-      med.forEach(media => {
+      med.forEach((media) => {
         if (media.primary_media) {
           this.image = media.url;
         }
@@ -178,7 +175,7 @@ export default {
       if (this.image) return;
 
       // Si no hay imagenes marcada como primary media
-      med.forEach(media => {
+      med.forEach((media) => {
         this.image = media.url;
       });
 
@@ -193,7 +190,7 @@ export default {
       let finalString = '';
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach(author => {
+      authors.forEach((author) => {
         if (finalString.search(author.name) === -1) {
           if (finalString !== '') finalString += ' + ';
           finalString += author.name;
@@ -278,13 +275,13 @@ export default {
       color: #14273c;
       content: '\003e';
     }
-    
+
     p {
       margin-top: 20px;
       font-size: 18px;
       color: #14273c;
     }
-    
+
     .price {
       font-size: 20px;
       float: left;
@@ -293,7 +290,7 @@ export default {
         font-size: 16px;
       }
     }
-    
+
     .description-box {
       margin: 20px 0;
 
@@ -304,7 +301,7 @@ export default {
         margin-top: 10vw;
       }
     }
-    
+
     .container-xs {
       width: 100%;
       padding-right: 15px;
@@ -316,7 +313,7 @@ export default {
         padding: 0;
       }
     }
-    
+
     .additionalInfo {
       margin-bottom: 50px;
 

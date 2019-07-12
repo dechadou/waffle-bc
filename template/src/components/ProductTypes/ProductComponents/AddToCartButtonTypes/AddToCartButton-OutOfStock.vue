@@ -7,8 +7,6 @@
 
 <script>
 export default {
-    name: 'AddToCartButton-Out-Of-Stock',
-}
+  name: 'AddToCartButton-Out-Of-Stock',
+};
 </script>
-
-
