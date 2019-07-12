@@ -4,18 +4,19 @@
 3. [Component Structure](#component-structure)
 4. [Vuex store modules](#vuex-store-modules)
 5. [Http Requests](#http-requests)
-6. [Using SVGs](#using-svgs)
-7. [Autoprefixer](#autoprefixer)
-8. [Asset management](#asset-management)
+6. [Event Manager](#event-manager)
+7. [Using SVGs](#using-svgs)
+8. [Autoprefixer](#autoprefixer)
+9. [Asset management](#asset-management)
     1. [Types of assets](#types-of-assets)
     2. [Referencing assets processed by webpack](#referencing-assets-processed-by-webpack)
     3. [Referencing static assets](#referencing-static-assets)
-9. [Previewing a build](#previewing-a-build)
-10. [Localization support](#localization-support)
-11. [Application startup](#application-startup)
-12. [Lint staged](#lint-staged)
-13. [Code splitting](#code-splitting)
-14. [Runtime public path](#runtime-public-path)
+10. [Previewing a build](#previewing-a-build)
+11. [Localization support](#localization-support)
+12. [Application startup](#application-startup)
+13. [Lint staged](#lint-staged)
+14. [Code splitting](#code-splitting)
+15. [Runtime public path](#runtime-public-path)
 
 ## Environment Variables
 
@@ -195,6 +196,9 @@ Request.s3(`${slug}.json`)
   .catch(error => console.error(error));
 ```
 
+## Event Manager
+TODO: Write Event Manager Documentation
+
 ## Using SVGs
 
 Webpack automatically parses and optimizes SVGs using [SVGo](https://github.com/rpominov/svgo-loader).
@@ -227,11 +231,11 @@ Examples of those assets are fonts, images, SVGs and SCSS files. Referencing the
 
 #### Referencing assets processed by webpack
 
-**.vue template example*
+**.vue template example**
 A image is located in ```src/assets/images/example.png``` to reference this image so it can be picked up by webpack use the following syntax
 ```<img src="@/assets/images/example.png" />```
 
-**.scss example*
+**.scss example**
 A image is located in ```src/asset/image/example.png``` to reference this image so it can be picked up by webpack use the following syntax
 ```background-image: url(assets/images/example.png);```
 

@@ -43,6 +43,7 @@ export default {
       articleList: [],
       attributeList: [],
       selected: [],
+      isBundle: this.data.arti
     };
   },
   created() {
@@ -58,12 +59,8 @@ export default {
     },
     getArticles() {
       if (this.isBundle) {
-        Object.values(this.data.productos).forEach((product) => {
-          Object.values(product.articulos).forEach((article) => {
-            this.articleList.push(article);
-            this.selectedArticle = this.data;
-          });
-        });
+        this.articleList = getArticlesFromBundle();
+        this.selectedArticle = this.data;
         return;
       }
 
@@ -80,13 +77,20 @@ export default {
         ind += 1;
       });
     },
-    getPrice() {
-      let price;
-      if (this.selectedArticle) ({ price } = this.selectedArticle);
-      else ({ price } = this.data);
-
-      return Math.floor(price);
+    getArticlesFromBundle(){
+      return selectMany(Object.values(this.data.productos), x => Object.values(x.articulos));
+      /*
+      const articleList = [];
+      Object.values(this.data.productos).forEach((product) => {
+          Object.values(product.articulos).forEach((article) => {
+            articleList.push(article);
+          });
+        });
+        return;
+        */
     },
+    selectMany: (array, keyGetter) => array.map(x=>keyGetter(x)).reduce((a, b) => a.concat(b)),
+    getPrice: () => Math.floor(this.selectedArticle ? this.selectedArticle.price : this.data.price),
   },
 };
 </script>

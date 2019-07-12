@@ -2,7 +2,6 @@
   <transition name="slide-fade">
     <div>
       <GlobalWarning/>
-      <img src="@/assets/images/example.png" />
       <Hero
         :desktopImage="template.desktop_image"
         :mobileImage="template.mobile_image"
@@ -10,8 +9,8 @@
       />
       <div class="container">
         <section id="shop">
-          <div class="col-12" v-for="bundle in bundles" :key="bundle.id">
-            <product :id="bundle.id"/>
+          <div class="col-12" v-for="bundle in bundles_id" :key="bundle.id">
+            <Bundle type="thumbnail" :id="bundle.id"/>
           </div>
         </section>
       </div>
@@ -45,6 +44,7 @@ import { StoreDataGetterTypes } from '../store/module/StoreData';
 import Hero from '@/components/Hero.vue';
 import GlobalWarning from '@/components/GlobalWarning.vue';
 import Icon from '@/components/Icon.vue';
+import Bundle from '@/components/Bundle.vue';
 
 export default {
   name: 'HomePage',
@@ -52,13 +52,12 @@ export default {
     Hero,
     GlobalWarning,
     Icon,
+    Bundle,
   },
   computed: {
     ...mapGetters({
-      products: StoreDataGetterTypes.GET_PRODUCTS,
-      bundles: StoreDataGetterTypes.GET_BUNDLES,
-      product: StoreDataGetterTypes.GET_PRODUCT,
-      bundle: StoreDataGetterTypes.GET_BUNDLE,
+      products_id: StoreDataGetterTypes.GET_PRODUCTS_ID,
+      bundles_id: StoreDataGetterTypes.GET_BUNDLES_ID,
       template: StoreDataGetterTypes.GET_TEMPLATE_DATA,
     }),
   },

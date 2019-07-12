@@ -17,6 +17,16 @@ module.exports = {
     },
   },
 
+  css: {
+    loaderOptions: {
+      sass: {
+        data: `
+          @import "@/assets/styles/_variables.scss";
+        `,
+      },
+    },
+  },
+
   chainWebpack: (config) => {
     config.module
       .rule('svg-sprite')
