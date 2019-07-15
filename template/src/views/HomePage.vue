@@ -9,8 +9,14 @@
       />
       <div class="container">
         <section id="shop">
-          <div class="col-12 col-md-4" v-for="bundle in data.bundles.filter(x => bundles_id.find(y => x.id === y.id))" :key="bundle.id">
-            <Bundle type="thumbnail" :data="bundle"/>
+          <div class="row">
+            <div
+              class="col-12 col-md-4"
+              v-for="bundle in data.bundles.filter(x => bundles_id.find(y => x.id === y.id))"
+              :key="bundle.id"
+            >
+              <Bundle type="thumbnail" :data="bundle"/>
+            </div>
           </div>
         </section>
       </div>
@@ -39,36 +45,36 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '../store/module/StoreData';
-import Hero from '@/components/Hero.vue';
-import GlobalWarning from '@/components/GlobalWarning.vue';
-import Bundle from '@/components/Bundle.vue';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import Hero from "@/internal/Hero.vue";
+import GlobalWarning from "@/internal/GlobalWarning.vue";
+import Bundle from "@/internal/ProductClasses/Bundle.vue";
 
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   components: {
     Hero,
     GlobalWarning,
-    Bundle,
+    Bundle
   },
   data() {
     return {
       bundles: null,
-      products: null,
+      products: null
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data', 'template', 'bundles_id']),
+    ...mapState(StoreDataNamespace, ["data", "template", "bundles_id"])
   },
   created() {
     console.log(this.template);
-  },
+  }
 };
 </script>
 
 <style scoped lang="scss">
-#shop{
+#shop {
   margin-top: 10px;
 }
 </style>

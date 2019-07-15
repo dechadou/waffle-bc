@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import * as productTypes from './ProductTypes';
+import * as productTypes from '@/extendables/ProductTypes';
 
 export default {
   name: 'Bundle',

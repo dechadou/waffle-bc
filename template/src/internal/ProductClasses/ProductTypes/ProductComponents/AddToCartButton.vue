@@ -7,7 +7,7 @@
 <script>
 import { EventManager } from '@/utils';
 import { getEnum, EnumNames } from '@/config';
-import * as buttons from './AddToCartButtonTypes';
+import * as buttons from '@/extendables/AddToCartButtonTypes';
 
 export default {
   name: 'AddToCartButton',

@@ -1356,6 +1356,10 @@ babel-extract-comments@^1.0.0:
   dependencies:
     babylon "^6.18.0"
 
+babel-helper-vue-jsx-merge-props@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-2.0.3.tgz#22aebd3b33902328e513293a8e4992b384f9f1b6"
+
 babel-loader@^8.0.5:
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.6.tgz#e33bdb6f362b03f4bb141a0c21ab87c501b70dfb"
@@ -7572,6 +7576,12 @@ vue-cli-plugin-svg-sprite@^1.0.0:
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-svg-sprite/-/vue-cli-plugin-svg-sprite-1.0.0.tgz#d9b1e6a3eadc2105976a5882d4c5ee5ad385511b"
   dependencies:
     svg-sprite-loader "^4.0.0"
+
+vue-content-loader@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/vue-content-loader/-/vue-content-loader-0.2.2.tgz#c093b656edac3f2a2e3215eaa198ba1852ad6b7b"
+  dependencies:
+    babel-helper-vue-jsx-merge-props "^2.0.3"
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
