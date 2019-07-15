@@ -16,10 +16,10 @@
 
           <!-- TITLE AND PRICE -->
           <div class="title_price_block row">
-            <div class="col-8">
+            <div class="col-9">
               <h3 class="title">{{ data.name }}</h3>
             </div>
-            <div class="col-4 pl-0">
+            <div class="col-3 pl-0 price-container">
               <span class="price">
                 <span>$</span>
                 {{ getPrice() }}
@@ -147,6 +147,9 @@ export default {
         color: #b0b0b0;
         font-size: 22px;
       }
+    }
+    .price-container{
+      background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 22%, rgba(255,255,255,1) 100%);
     }
     span {
       margin: 0;
@@ -285,6 +288,7 @@ export default {
     }
 
     .description {
+      overflow: hidden;
       @media (min-width: 1024px) {
         padding: 0 !important;
       }

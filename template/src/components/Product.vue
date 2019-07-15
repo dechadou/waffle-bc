@@ -43,7 +43,7 @@ export default {
       articleList: [],
       attributeList: [],
       selected: [],
-      isBundle: this.data.arti
+      isBundle: this.data.arti,
     };
   },
   created() {
@@ -77,7 +77,7 @@ export default {
         ind += 1;
       });
     },
-    getArticlesFromBundle(){
+    getArticlesFromBundle() {
       return selectMany(Object.values(this.data.productos), x => Object.values(x.articulos));
       /*
       const articleList = [];
@@ -89,7 +89,7 @@ export default {
         return;
         */
     },
-    selectMany: (array, keyGetter) => array.map(x=>keyGetter(x)).reduce((a, b) => a.concat(b)),
+    selectMany: (array, keyGetter) => array.map(x => keyGetter(x)).reduce((a, b) => a.concat(b)),
     getPrice: () => Math.floor(this.selectedArticle ? this.selectedArticle.price : this.data.price),
   },
 };
