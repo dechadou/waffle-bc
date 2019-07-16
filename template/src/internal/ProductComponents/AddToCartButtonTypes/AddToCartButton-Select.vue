@@ -1,18 +1,15 @@
 <template>
     <button
         type="button"
-        @click="callback()"
+        @click="openLink()"
     >Elegir</button>
 </template>
 
 <script>
+import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
 
 export default {
   name: 'AddToCartButton-Select',
-  props: {
-    callback: {
-      type: Function,
-    },
-  },
+  extends: AddToCartButtonType,
 };
 </script>

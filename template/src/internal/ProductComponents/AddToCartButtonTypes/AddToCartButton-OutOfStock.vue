@@ -6,7 +6,10 @@
 </template>
 
 <script>
+import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
+
 export default {
-  name: 'AddToCartButton-Out-Of-Stock',
+  name: 'AddToCartButtonOutOfStock',
+  extends: AddToCartButtonType,
 };
 </script>

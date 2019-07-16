@@ -15,10 +15,18 @@
               v-for="bundle in data.bundles.filter(x => bundles_id.find(y => x.id === y.id))"
               :key="bundle.id"
             >
-              <Bundle type="thumbnail" :data="bundle"/>
+              <Thumbnail :data="bundle"/>
             </div>
           </div>
         </section>
+        <Profile
+          :text="template.creador_bio"
+          :image="template.creador_image"
+          :facebook="template.creador_social_fb"
+          :twitter="template.creador_social_tw"
+          :instagram="template.creador_social_ig"
+          :website="template.creador_social_web"
+        />
       </div>
     </div>
     <!--<div v-if="isLoaded">
@@ -45,31 +53,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import Hero from "@/internal/Hero.vue";
-import GlobalWarning from "@/internal/GlobalWarning.vue";
-import Bundle from "@/internal/ProductClasses/Bundle.vue";
+import { mapState } from 'vuex';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { Hero, GlobalWarning, Profile } from '@/extendables/BaseComponents';
+import { Thumbnail } from '@/extendables/ProductTypes';
 
 export default {
-  name: "HomePage",
+  name: 'HomePage',
   components: {
     Hero,
     GlobalWarning,
-    Bundle
+    Profile,
+    Thumbnail,
   },
   data() {
     return {
       bundles: null,
-      products: null
+      products: null,
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "template", "bundles_id"])
+    ...mapState(StoreDataNamespace, ['data', 'template', 'bundles_id']),
   },
   created() {
     console.log(this.template);
-  }
+  },
 };
 </script>
 

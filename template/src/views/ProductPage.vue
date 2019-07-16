@@ -37,13 +37,14 @@ export default {
     isLoaded(value) {
       if (value) this.getProduct();
     },
-    '$route.params.slug': function (to, from) {
+    // eslint-disable-next-line func-names
+    '$route.params.slug': function () {
       this.getProduct();
     },
   },
   methods: {
     ...mapActions({
-      fetchProducts: ProductsActionTypes.FETCH_PRODUCTS,
+      fetchProducts: StoreDataActionTypes.FETCH_PRODUCTS,
     }),
     getProduct() {
       [this.prod] = this.product.filter(product => product.slug === this.$route.params.slug);

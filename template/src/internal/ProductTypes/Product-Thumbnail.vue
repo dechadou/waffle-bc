@@ -1,150 +1,82 @@
 <template>
-  <article class="product slider_product">
-    <div class="row new_row">
-      <div class="new_col_12 col-12 p0">
-        <div class="image_wrap">
-          <i class="fas fa-circle-notch fa-spin fa-3x fa_icon"></i>
+  <article class="product">
+    <div class="col-12">
+      <div class="row">
+        <!-- IMAGE -->
+        <div class="col-12 p-0">
           <router-link :to="`/producto/${data.slug}`">
-            <img :src="image" class="img-fluid mx-auto d-block">
+            <LazyImage
+              :source="singleImage"
+              cssClasses="img-fluid mx-auto d-block"
+              :description="`${data.title} image`"
+            />
           </router-link>
         </div>
-      </div>
-      <div class="col-12 description">
-        <router-link :to="`/producto/${data.slug}`" class="title_price_block">
-          <div class="row new_row">
-            <h3 class="title slider_title">
-              {{ data.name }}&nbsp;&nbsp;·&nbsp;&nbsp;
+
+        <!-- DESCRIPTION -->
+        <div class="col-12 description">
+          <!-- TITLE AND PRICE -->
+          <div class="title_price_block row">
+            <div class="col-9">
+              <h3 class="title">{{ data.name }}</h3>
+            </div>
+            <div class="col-3 pl-0 price-container">
               <span class="price">
                 <span>$</span>
-                {{ data.price }}
+                {{ price }}
               </span>
-            </h3>
+            </div>
           </div>
-          <div class="row new_row">
+          <!-- /TITLE AND PRICE -->
+
+          <!-- AUTHORS -->
+          <div class="row">
             <div class="col-12">
-              <div v-if="attributeList.length > 0">
-                <div v-for="attribute in attributeList" :key="attribute[1]">
-                  <select v-model="selected[attribute[1]]" class="form-control">
-                    <option disabled value selected>{{ attribute[0] }}</option>
-                    <option
-                      v-for="option in getOptions(attribute[0])"
-                      :value="option"
-                      :key="option"
-                    >{{ option }}</option>
-                  </select>
-                </div>
-              </div>
               <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
             </div>
           </div>
-        </router-link>
+          <!-- /AUTHORS -->
 
-        <div class="button_container">
-          <AddToCartButton
-            :slug="data.slug"
-            :id="selectedArticle ? selectedArticle.id : 0"
-            :productType="data.productos ? 'combo' : 'producto'"
-            :buttonType="getButtonType()"
-          />
+          <div class="button_container">
+            <component
+              class="addToCartButton"
+              :is="getButtonType()"
+              :slug="data.slug"
+              :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
+              :productType="data.class"
+              :image="singleImage"
+            />
+          </div>
         </div>
+        <!-- /DESCRIPTION -->
       </div>
     </div>
   </article>
 </template>
 
 <script>
-import {
-  getImage,
-  getAttributeList,
-  isArticleOutOfStock,
-  isBundleOutOfStock
-} from "@/utils/productTypesHelper";
-import AddToCartButton from "@/internal/ProductTypes/ProductComponents/AddToCartButton.vue";
+import { LazyImage } from '@/extendables/BaseComponents';
+import { ProductType } from '@/extendables/ProductTypes';
 
 export default {
-  name: "Product-Slider",
+  name: 'ProductThumbnail',
+  extends: ProductType,
   components: {
-    AddToCartButton
-  },
-  props: {
-    data: {
-      type: Object,
-      required: true
-    },
-    articleList: {
-      type: Array
-    }
-  },
-  data() {
-    return {
-      image: null,
-      selectedArticle: null,
-      attributeList: null,
-      selected: [""],
-      isBundle: !!this.data.productos
-    };
-  },
-  created() {
-    this.selectedArticle = this.selectedArt;
-    this.attributeList = getAttributeList(this.articleList);
-    this.attributeList.forEach(() => this.selected.push(""));
-    this.image = getImage(this.data.media);
-  },
-  watch: {
-    selected() {
-      this.selectedArticle = this.getArticleBySelectedOptions();
-    }
+    LazyImage,
   },
   methods: {
-    getArticleBySelectedOptions() {
-      if (
-        this.selected.find(el => el === "") === "" ||
-        this.selected.length === 0
-      )
-        return null;
-
-      let filteredArticles = this.articleList;
-
-      this.attributeList.forEach(attribute => {
-        filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]]
-        );
-      });
-
-      return filteredArticles;
-    },
-    getOptions(attribute) {
-      return this.articleList.filter(article => article.atributtes[attribute]);
-    },
-    getPrice: () =>
-      Math.floor(
-        this.selectedArticle ? this.selectedArticle.price : this.data.price
-      ),
     getButtonType() {
-      if (this.isBundle) {
-        if (isBundleOutOfStock(this.articleList)) return "OutOfStock";
-      } else {
-        if (isArticleOutOfStock(this.selectedArticle)) return "OutOfStock";
-        if (this.articleList.length > 1) return "Select";
-      }
+      if (this.data.class === 'product' && this.articleList.length > 1) { return 'Select'; }
+      if (this.isOutOfStock) return 'OutOfStock';
 
-      return "Check";
-    }
+      return 'Normal';
+    },
   },
-  filters: {
-    displayAuthors: authors =>
-      !authors
-        ? ""
-        : authors
-            .filter((v, i) => authors.indexOf(v) === i)
-            .reduce((acc, current) => (acc === "" ? "" : ` + ${current.name}`))
-  }
 };
 </script>
 
 
 <style lang="scss" scoped>
-$abre-grey: #c1c1c1;
 .slide-fade-enter-active {
   transition: all 0.2s ease;
 }
@@ -175,36 +107,10 @@ $abre-grey: #c1c1c1;
     transition: background-color 0.25s ease-out;
   }
 
-  &.slider_product {
-    .description {
-      margin-top: -8%;
-    }
-    p.authors {
-      height: 22px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
   .title {
     @media (min-width: 768px) {
       height: 62px;
       font-size: 32px;
-    }
-    &.slider_title {
-      font-size: 20px !important;
-      width: 100%;
-      text-align: center;
-      height: 40px;
-      line-height: 0.8;
-      z-index: 21;
-      span.price {
-        float: none;
-        color: $abre-grey;
-        span {
-          color: $abre-grey;
-        }
-      }
     }
   }
   p {
@@ -217,10 +123,18 @@ $abre-grey: #c1c1c1;
       font-size: 22px;
     }
   }
+  .price-container {
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 0) 0%,
+      rgba(255, 255, 255, 1) 22%,
+      rgba(255, 255, 255, 1) 100%
+    );
+  }
   span {
     margin: 0;
     display: inline-block;
-    color: $abre-grey;
+    color: $abre-black;
     font-size: 19px;
     @media (min-width: 768px) {
       font-size: 18px;
@@ -280,41 +194,6 @@ $abre-grey: #c1c1c1;
     margin-bottom: 10px;
   }
 
-  button {
-    &.btn {
-      &.btn_primary {
-        background-color: #000;
-        color: #fff;
-        width: 100%;
-        margin: 0;
-        padding: 12px 0;
-        border-radius: 0;
-        font-size: 21px;
-        font-weight: 300;
-        transition: 0.3s ease all;
-        border: 1px solid transparent;
-        &.out_of_stock {
-          transition: 0.3s ease all;
-          background: #fff;
-          color: #000;
-          border: 1px solid #000;
-        }
-        &.green {
-          background-color: #237116;
-          border: none;
-        }
-        &:hover {
-          transition: 0.3s ease all;
-          background: #fff;
-          color: #000;
-          border: 1px solid #000;
-        }
-        &:focus {
-          box-shadow: none;
-        }
-      }
-    }
-  }
   .button_container {
     float: left;
     width: 100%;
@@ -360,7 +239,7 @@ $abre-grey: #c1c1c1;
     font-size: 4.533333333vw;
     @media (min-width: 1024px) {
       margin: 0 !important;
-      color: $abre-grey !important;
+      color: $abre-black !important;
       font-size: 1.02489019vw !important;
     }
   }
@@ -369,14 +248,14 @@ $abre-grey: #c1c1c1;
     @media (min-width: 1024px) {
       line-height: 1.75;
       margin: 0 !important;
-      color: $abre-grey !important;
+      color: $abre-black !important;
       font-size: 1.02489019vw !important;
     }
 
     span {
       @media (min-width: 1024px) {
         margin: 0 0.3vw 0 0 !important;
-        color: $abre-grey !important;
+        color: $abre-black !important;
         font-size: 0.7320644217vw !important;
       }
     }
@@ -389,12 +268,14 @@ $abre-grey: #c1c1c1;
   }
 
   .description {
+    overflow: hidden;
     @media (min-width: 1024px) {
+      height: 45px;
       padding: 0 !important;
     }
   }
 
-  .btn_primary {
+  .addToCartButton {
     @media (min-width: 1024px) {
       position: absolute;
       left: 0;
@@ -459,7 +340,7 @@ $abre-grey: #c1c1c1;
       background: $abre-light-grey;
     }
 
-    .btn_primary {
+    .addToCartButton {
       @media (min-width: 1024px) {
         opacity: 1;
         visibility: visible;

@@ -7,7 +7,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { EditableTextsNamespace, EditableTextsActionTypes } from '../store/module/EditableTexts';
+import { EditableTextsNamespace, EditableTextsActionTypes } from '@/store/module/EditableTexts';
 
 export default {
   name: 'GlobalWarning',

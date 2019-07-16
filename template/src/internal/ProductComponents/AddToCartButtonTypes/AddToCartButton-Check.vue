@@ -12,29 +12,26 @@
 </template>
 
 <script>
-import { animateButton } from "@/utils/addToCartButtonTypesHelper";
+import { animateButton } from '@/utils/addToCartButtonTypesHelper';
+import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
 
 export default {
-  name: "AddToCartButton-Check",
-  props: {
-    callback: {
-      type: Function
-    }
-  },
+  name: 'AddToCartButton-Check',
+  extends: AddToCartButtonType,
   data() {
     return {
-      isAdding: false
+      isAdding: false,
     };
   },
   methods: {
     onClick(event) {
-      this.callback();
+      this.addToCart();
       this.isAdding = true;
       animateButton(event, this.onFinishAnimate);
     },
     onFinishAnimate() {
       this.isAdding = false;
-    }
-  }
+    },
+  },
 };
 </script>

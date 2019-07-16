@@ -10,7 +10,6 @@
 /* eslint-disable import/no-dynamic-require */
 export default {
   name: 'Icon',
-
   props: {
     name: {
       type: String,

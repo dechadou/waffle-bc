@@ -47,25 +47,23 @@ export default {
 <style scoped lang="scss">
 .background {
   background-repeat: no-repeat;
-	background-position: center center;
-	background-size: 100% auto;
+  background-position: center center;
+  background-size: 100% auto;
 }
 
 p{
-	font-weight: 300;
-	text-align: center;
-	font-size: 19px;
+  font-weight: 300;
+  text-align: center;
+  font-size: 19px;
   margin-top: 20px;
   font-weight: 300;
-
-  //margin-top: -280px;
   background-color: #fff;
   padding: 20px 30px!important;
 }
 
 .logo{
-	display: block;
-	margin: 0 auto;
-	padding: 50px 0;
+  display: block;
+  margin: 0 auto;
+  padding: 50px 0;
 }
 </style>
