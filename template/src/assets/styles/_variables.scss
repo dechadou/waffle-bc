@@ -1,4 +1,19 @@
 $abre-black: #1d1d1b;
+$abre-dark-grey: #4d4d4d;
+$abre-description-grey: #B2B2B2;
 $abre-grey: #c1c1c1;
 $abre-light-grey: #f3f3f3;
 $abre-green: #237116;
+
+@mixin md-up {
+  @media (min-width: 768px) { @content; }
+}
+@mixin lg-up {
+  @media (min-width: 992px) { @content; }
+}
+@mixin xl-up {
+  @media (min-width: 1200px) { @content; }
+}
+@mixin landscape {
+  @media screen and (orientation: landscape) { @content; }
+}

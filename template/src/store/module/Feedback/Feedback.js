@@ -21,7 +21,7 @@ export default {
   mutations: {
     [SET_ERROR]: (state, { error }) => {
       state.error = error;
-      console.error(`[Waffle Error]: ${error}`);
+      throw new Error(`[Waffle Error]: ${error}`);
     },
     [ADD_RESPONSE]: (state, payload) => {
       state.response = payload;

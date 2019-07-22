@@ -19,7 +19,9 @@ export default {
       Request.api
         .get(`metas/slug/${slug}`)
         .then(response => commit(SET_EDITABLE_TEXT, response.data))
-        .catch(error => console.error(`[Waffle Error]: ${error}`));
+        .catch((error) => {
+          throw new Error(`[Waffle Error]: ${error}`);
+        });
     },
   },
 };

@@ -9,6 +9,7 @@ import StoreData, {
   GET_TEMPLATE_DATA,
   GET_PRODUCT_LIST_BY_BUNDLE_ID,
   GET_ARTICLE_LIST_BY_PRODUCT_ID,
+  SET_STORE_IDENTIFIER,
 } from './StoreData';
 
 export const StoreDataNamespace = 'StoreData';
@@ -29,6 +30,8 @@ export const StoreDataActionTypes = {
   FETCH_STORE_DATA: `${StoreDataNamespace}/${FETCH_STORE_DATA}`,
 };
 
-export const StoreDataMutationTypes = {};
+export const StoreDataMutationTypes = {
+  SET_STORE_IDENTIFIER: `${StoreDataNamespace}/${SET_STORE_IDENTIFIER}`,
+};
 
 export default StoreData;

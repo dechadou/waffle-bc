@@ -8,10 +8,10 @@
 import Vue from 'vue';
 
 const EventManager = new Vue();
-const trigger = (event, ...params) => EventManager.$emit(event, params);
-const subscribe = (event, callback) => EventManager.$on(event, params => callback(params));
+const Trigger = (event, ...params) => EventManager.$emit(event, params);
+const Subscribe = (event, callback) => EventManager.$on(event, params => callback(params));
 
 export default {
-  trigger,
-  subscribe,
+  Trigger,
+  Subscribe,
 };

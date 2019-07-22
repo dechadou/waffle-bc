@@ -43,7 +43,7 @@
           <AddToCartButton
             :slug="data.slug"
             :id="selectedArticle ? selectedArticle.id : 0"
-            :productType="data.productos ? 'combo' : 'producto'"
+            :productClass="data.productos ? 'combo' : 'producto'"
             :buttonType="getButtonType()"
           />
         </div>
@@ -56,54 +56,56 @@
 import {
   getImage,
   getAttributeList,
-  isOutOfStock,
-} from '@/utils/productTypesHelper';
-import { ProductType } from '@/extendables/ProductTypes';
+  isOutOfStock
+} from "@/utils/productTypesHelper";
+import { ProductType } from "@/extendables/ProductTypes";
 
 export default {
-  name: 'ProductSlider',
+  name: "Product-Slider",
   extends: ProductType,
   props: {
     data: {
       type: Object,
-      required: true,
+      required: true
     },
     articleList: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   data() {
     return {
       image: null,
       selectedArticle: null,
       attributeList: null,
-      selected: [''],
-      isBundle: !!this.data.productos,
+      selected: [""],
+      isBundle: !!this.data.productos
     };
   },
   created() {
     this.selectedArticle = this.selectedArt;
     this.attributeList = getAttributeList(this.articleList);
-    this.attributeList.forEach(() => this.selected.push(''));
+    this.attributeList.forEach(() => this.selected.push(""));
     this.image = getImage(this.data.media);
   },
   watch: {
     selected() {
       this.selectedArticle = this.getArticleBySelectedOptions();
-    },
+    }
   },
   methods: {
     getArticleBySelectedOptions() {
       if (
-        this.selected.find(el => el === '') === ''
-        || this.selected.length === 0
-      ) { return null; }
+        this.selected.find(el => el === "") === "" ||
+        this.selected.length === 0
+      ) {
+        return null;
+      }
 
       let filteredArticles = this.articleList;
 
-      this.attributeList.forEach((attribute) => {
+      this.attributeList.forEach(attribute => {
         filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
+          el => el.atributtes[attribute[0]] === this.selected[attribute[1]]
         );
       });
 
@@ -112,23 +114,28 @@ export default {
     getOptions(attribute) {
       return this.articleList.filter(article => article.atributtes[attribute]);
     },
-    getPrice: () => Math.floor(
-      this.selectedArticle ? this.selectedArticle.price : this.data.price,
-    ),
+    getPrice: () =>
+      Math.floor(
+        this.selectedArticle ? this.selectedArticle.price : this.data.price
+      ),
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) { return this.Select; }
-      if (isOutOfStock(this.articleList, this.data.class)) return this.OutOfStock;
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return this.Select;
+      }
+      if (isOutOfStock(this.articleList, this.data.class))
+        return this.OutOfStock;
 
       return this.Check;
-    },
+    }
   },
   filters: {
-    displayAuthors: authors => (!authors
-      ? ''
-      : authors
-        .filter((v, i) => authors.indexOf(v) === i)
-        .reduce((acc, current) => (acc === '' ? '' : ` + ${current.name}`))),
-  },
+    displayAuthors: authors =>
+      !authors
+        ? ""
+        : authors
+            .filter((v, i) => authors.indexOf(v) === i)
+            .reduce((acc, current) => (acc === "" ? "" : ` + ${current.name}`))
+  }
 };
 </script>
 
@@ -203,7 +210,6 @@ $abre-grey: #c1c1c1;
       font-size: 20px;
     }
     &.authors {
-      color: #b0b0b0;
       font-size: 22px;
     }
   }

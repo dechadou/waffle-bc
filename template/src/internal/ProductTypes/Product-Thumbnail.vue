@@ -43,7 +43,7 @@
               :is="getButtonType()"
               :slug="data.slug"
               :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
-              :productType="data.class"
+              :productClass="data.class"
               :image="singleImage"
             />
           </div>
@@ -55,23 +55,25 @@
 </template>
 
 <script>
-import { LazyImage } from '@/extendables/BaseComponents';
-import { ProductType } from '@/extendables/ProductTypes';
+import { LazyImage } from "@/extendables/BaseComponents";
+import { ProductType } from "@/extendables/ProductTypes";
 
 export default {
-  name: 'ProductThumbnail',
+  name: "Product-Thumbnail",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) { return 'Select'; }
-      if (this.isOutOfStock) return 'OutOfStock';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
+      }
+      if (this.isOutOfStock) return "OutOfStock";
 
-      return 'Normal';
-    },
-  },
+      return "Normal";
+    }
+  }
 };
 </script>
 

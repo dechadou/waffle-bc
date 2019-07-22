@@ -2,7 +2,9 @@
   <transition name="slide-fade">
     <div>
       <GlobalWarning/>
+      <Cart/>
       <Hero
+        :label="template.etiqueta"
         :desktopImage="template.desktop_image"
         :mobileImage="template.mobile_image"
         :introCopy="template.intro_copy"
@@ -11,15 +13,16 @@
         <section id="shop">
           <div class="row">
             <div
-              class="col-12 col-md-4"
+              class="col-12"
               v-for="bundle in data.bundles.filter(x => bundles_id.find(y => x.id === y.id))"
               :key="bundle.id"
             >
-              <Thumbnail :data="bundle"/>
+              <component :is="home_product_type" :data="bundle"/>
             </div>
           </div>
         </section>
         <Profile
+          :title="template.creador_titulo"
           :text="template.creador_bio"
           :image="template.creador_image"
           :facebook="template.creador_social_fb"
@@ -27,7 +30,10 @@
           :instagram="template.creador_social_ig"
           :website="template.creador_social_web"
         />
+        <PageShare/>
       </div>
+
+      <component :is="footer"/>
     </div>
     <!--<div v-if="isLoaded">
       <HeaderSection/>
@@ -53,31 +59,38 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { Hero, GlobalWarning, Profile } from '@/extendables/BaseComponents';
-import { Thumbnail } from '@/extendables/ProductTypes';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { ThemeNamespace } from "@/store/module/Theme";
+import {
+  Hero,
+  GlobalWarning,
+  Profile,
+  PageShare,
+  Cart
+} from "@/extendables/BaseComponents";
+import { ProductDescription } from "@/extendables/ProductTypes";
+import { FooterLogo, FooterAbre } from "@/extendables/FooterTypes";
 
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   components: {
     Hero,
     GlobalWarning,
     Profile,
-    Thumbnail,
-  },
-  data() {
-    return {
-      bundles: null,
-      products: null,
-    };
+    ProductDescription,
+    PageShare,
+    FooterLogo,
+    FooterAbre,
+    Cart
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data', 'template', 'bundles_id']),
+    ...mapState(ThemeNamespace, ["home_product_type", "footer"]),
+    ...mapState(StoreDataNamespace, ["data", "template", "bundles_id"])
   },
   created() {
     console.log(this.template);
-  },
+  }
 };
 </script>
 

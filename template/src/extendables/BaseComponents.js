@@ -16,6 +16,8 @@ export { default as Icon } from '@/internal/Icon.vue';
 export { default as LazyImage } from '@/internal/LazyImage.vue';
 export { default as ProductCarousel } from '@/internal/ProductComponents/ProductCarousel.vue';
 export { default as Profile } from '@/internal/Profile.vue';
+export { default as PageShare } from '@/internal/PageShare.vue';
+export { default as Cart } from '@/internal/Cart.vue';
 
 // USER OVERRIDES
 // example: export { default as Icon } from '@/components/Icon.vue';

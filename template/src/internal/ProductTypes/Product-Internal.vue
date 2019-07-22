@@ -1,24 +1,24 @@
 <template>
   <div>
     <article :id="$style.producto" class="product">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <swiper
-              :options="swiperOption"
-              v-if="carouselImages.length > 1"
-              :class="$style.swiper"
-              class="product-carousel"
-            >
-              <swiper-slide v-for="(img, index) in carouselImages" :key="index">
-                <img class="d-block" :src="img" :class="$style.swiper">
-              </swiper-slide>
-              <div class="swiper-pagination" slot="pagination"></div>
-            </swiper>
-            <img v-else class="d-block w-100" :src="image">
-          </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <swiper
+            :options="swiperOption"
+            v-if="carouselImages.length > 1"
+            :class="$style.swiper"
+            class="product-carousel"
+          >
+            <swiper-slide v-for="(img, index) in carouselImages" :key="index">
+              <img class="d-block" :src="img" :class="$style.swiper">
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+          <img v-else class="d-block w-100" :src="image">
+        </div>
 
-          <div class="col-md-6" :class="$style.descriptionBox">
-            <div :class="$style.containerXs">
+        <div class="col-md-6" :class="$style.descriptionBox">
+          <div :class="$style.containerXs">
             <div class="row">
               <div class="col-8 pr-0">
                 <h1>{{ name }}</h1>
@@ -71,50 +71,50 @@
               />
             </div>
           </div>
-          </div>
         </div>
+      </div>
     </article>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Product-Internal',
+  name: "Product-Internal",
   props: [
-    'type',
-    'name',
-    'slug',
-    'price',
-    'description',
-    'agentsActors',
-    'additionalInformation',
-    'media',
-    'selectedArt',
-    'articleList',
-    'attributeList',
-    'isBundle',
+    "type",
+    "name",
+    "slug",
+    "price",
+    "description",
+    "agentsActors",
+    "additionalInformation",
+    "media",
+    "selectedArt",
+    "articleList",
+    "attributeList",
+    "isBundle"
   ],
   data() {
     return {
       image: null,
       selectedArticle: null,
-      selected: [''],
+      selected: [""],
       carouselImages: [],
       swiperOption: {
         autoplay: {
           delay: 5000,
-          disableOnInteraction: false,
+          disableOnInteraction: false
         },
         initialSlide: 1,
-        direction: 'vertical',
+        direction: "vertical",
         slidesPerView: 1,
         spaceBetween: 30,
         mousewheel: false,
         pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      },
+          el: ".swiper-pagination",
+          clickable: true
+        }
+      }
     };
   },
   created() {
@@ -131,18 +131,18 @@ export default {
       this.carouselImages = [];
       this.getImage();
       this.getCarouselImages();
-    },
+    }
   },
   methods: {
     getArticleBySelectedOptions() {
-      const sel = this.selected.find(el => el === '');
-      if (sel === '' || this.selected.length === 0) return null;
+      const sel = this.selected.find(el => el === "");
+      if (sel === "" || this.selected.length === 0) return null;
 
       let filteredArticles = this.articleList;
 
-      this.attributeList.forEach((attribute) => {
+      this.attributeList.forEach(attribute => {
         filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
+          el => el.atributtes[attribute[0]] === this.selected[attribute[1]]
         );
       });
 
@@ -150,15 +150,16 @@ export default {
     },
     getOptions(attribute) {
       const options = [];
-      this.articleList.forEach((article) => {
-        if (article.atributtes[attribute]) options.push(article.atributtes[attribute]);
+      this.articleList.forEach(article => {
+        if (article.atributtes[attribute])
+          options.push(article.atributtes[attribute]);
       });
       return options;
     },
     getCarouselImages() {
       const med = Object.values(this.media);
 
-      med.forEach((media) => {
+      med.forEach(media => {
         if (media.primary_media) this.carouselImages.unshift(media.url);
         else this.carouselImages.push(media.url);
       });
@@ -166,7 +167,7 @@ export default {
     getImage() {
       const med = Object.values(this.media);
       // Si hay imagen marcada como primary media
-      med.forEach((media) => {
+      med.forEach(media => {
         if (media.primary_media) {
           this.image = media.url;
         }
@@ -175,30 +176,30 @@ export default {
       if (this.image) return;
 
       // Si no hay imagenes marcada como primary media
-      med.forEach((media) => {
+      med.forEach(media => {
         this.image = media.url;
       });
 
       if (this.image) return;
 
       // Si no hay imagenes retorno un placeholder
-      this.image = 'http://via.placeholder.com/1367x1367';
-    },
+      this.image = "http://via.placeholder.com/1367x1367";
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let finalString = '';
+      let finalString = "";
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach((author) => {
+      authors.forEach(author => {
         if (finalString.search(author.name) === -1) {
-          if (finalString !== '') finalString += ' + ';
+          if (finalString !== "") finalString += " + ";
           finalString += author.name;
         }
       });
       return finalString;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -209,7 +210,9 @@ export default {
   left: 5vw;
 }
 
-.swiper-container-vertical > .swiper-pagination-bullets .swiper-pagination-bullet {
+.swiper-container-vertical
+  > .swiper-pagination-bullets
+  .swiper-pagination-bullet {
   border: 1px solid #1a1a1a;
   background: transparent;
   opacity: unset;
@@ -221,117 +224,116 @@ export default {
   background: #1a1a1a;
 }
 
-.swiper-container{
+.swiper-container {
   padding: 0 !important;
 }
 </style>
 
 <style lang="scss" scoped>
 .swiper {
-    display: block;
-    max-height: 100vw;
-    margin: 0 auto;
+  display: block;
+  max-height: 100vw;
+  margin: 0 auto;
 
-    @media (min-width: 768px) {
-      max-height: 100vh;
-      max-width: 50vw;
-    }
+  @include md-up {
+    max-height: 100vh;
+    max-width: 50vw;
   }
+}
 
-  .authors {
-    font-size: 4.533333333vw;
-    @media (min-width: 1024px) {
-      margin: 0 !important;
-      color: $abre-grey !important;
-      font-size: 1.02489019vw !important;
-    }
+.authors {
+  font-size: 4.533333333vw;
+  @include lg-up {
+    margin: 0 !important;
+    color: $abre-grey !important;
+    font-size: 1.02489019vw !important;
   }
+}
 
+#producto {
+  background: #f3f3f3;
+  overflow: hidden;
 
-  #producto{
-    background: #f3f3f3;
-    overflow: hidden;
+  h1 {
+    color: #14273c;
+    font-size: 30px;
+  }
+  .breadcrumb {
+    padding: 0;
+    margin-bottom: 30px;
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 16px;
 
-    h1 {
+    a {
       color: #14273c;
-      font-size: 30px;
     }
-    .breadcrumb {
-      padding: 0;
-      margin-bottom: 30px;
-      background-color: transparent;
-      border-radius: 0;
+  }
+  .breadcrumb > .active {
+    color: #14273c;
+  }
+  .breadcrumb > li + li:before {
+    padding: 0 5px;
+    color: #14273c;
+    content: "\003e";
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #14273c;
+  }
+
+  .price {
+    font-size: 20px;
+    float: left;
+
+    span {
       font-size: 16px;
+    }
+  }
 
-      a {
-        color: #14273c;
-      }
+  .description-box {
+    margin: 20px 0;
+
+    @include md-up {
+      margin: 0;
+      padding-right: 10vw;
+      padding-left: 5vw;
+      margin-top: 10vw;
     }
-    .breadcrumb > .active {
-      color: #14273c;
+  }
+
+  .container-xs {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+    @include md-up {
+      padding: 0;
     }
-    .breadcrumb > li + li:before {
-      padding: 0 5px;
-      color: #14273c;
-      content: '\003e';
+  }
+
+  .additionalInfo {
+    margin-bottom: 50px;
+
+    li {
+      margin-top: 20px;
+    }
+
+    h3 {
+      font-size: 14px;
+      color: #000;
+      margin: 0;
     }
 
     p {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #14273c;
-    }
-
-    .price {
-      font-size: 20px;
-      float: left;
-
-      span {
-        font-size: 16px;
-      }
-    }
-
-    .description-box {
-      margin: 20px 0;
-
-      @media (min-width: 768px){
-        margin: 0;
-        padding-right: 10vw;
-        padding-left: 5vw;
-        margin-top: 10vw;
-      }
-    }
-
-    .container-xs {
-      width: 100%;
-      padding-right: 15px;
-      padding-left: 15px;
-      margin-right: auto;
-      margin-left: auto;
-
-      @media (min-width: 768px){
-        padding: 0;
-      }
-    }
-
-    .additionalInfo {
-      margin-bottom: 50px;
-
-      li {
-        margin-top: 20px;
-      }
-
-      h3 {
-        font-size: 14px;
-        color: #000;
-        margin: 0;
-      }
-
-      p {
-        font-size: 14px;
-        color: #4d4d4d;
-        margin: 0;
-      }
+      font-size: 14px;
+      color: #4d4d4d;
+      margin: 0;
     }
   }
+}
 </style>

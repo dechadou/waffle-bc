@@ -20,7 +20,11 @@
           <div class="row">
             <div class="col-12">
               <div v-for="(socialNetwork, index) in getSocialNetworks()" :key="index">
-                <a v-if="socialNetwork.username" :href="`${ socialNetwork.url }${ socialNetwork.username }/`" target="_blank">{{ socialNetwork.name }}</a>
+                <a
+                  v-if="socialNetwork.username"
+                  :href="`${ socialNetwork.url }${ socialNetwork.username }/`"
+                  target="_blank"
+                >{{ socialNetwork.name }}</a>
               </div>
             </div>
           </div>
@@ -33,53 +37,70 @@
 
 <script>
 export default {
-  name: 'Profile',
+  name: "Profile",
   props: {
     title: {
       type: String,
-      default: 'Conocé al Creador',
+      default: "Conocé al Creador"
     },
     text: String,
     image: String,
     facebook: String,
     twitter: String,
     instagram: String,
-    website: String,
+    website: String
   },
   data() {
     return {
       finalText: null,
       showMoreText: null,
-      isShowingMore: false,
+      isShowingMore: false
     };
   },
   created() {
     this.finalText = this.text;
-    console.log(this.finalText);
-    if (this.finalText.indexOf('<p>[HIDDEN value=&quot;') !== -1) {
-      [this.finalText, this.showMoreText] = this.finalText.split('<p>[HIDDEN value=&quot;');
-      [this.showMoreText] = this.showMoreText.split('&quot;]</p>');
+    if (this.finalText.indexOf("<p>[HIDDEN value=&quot;") !== -1) {
+      [this.finalText, this.showMoreText] = this.finalText.split(
+        "<p>[HIDDEN value=&quot;"
+      );
+      [this.showMoreText] = this.showMoreText.split("&quot;]</p>");
     }
   },
   methods: {
     getSocialNetworks() {
       return [
-        { name: 'Facebook', url: 'https://www.facebook.com/', username: this.facebook },
-        { name: 'Twitter', url: 'https://www.twitter.com/', username: this.twitter },
-        { name: 'Instagram', url: 'https://www.instagram.com/', username: this.instagram },
-        { name: 'Website', url: this.website ? this.website.replace(/\/$/, '') : '', username: '' },
+        {
+          name: "Facebook",
+          url: "https://www.facebook.com/",
+          username: this.facebook
+        },
+        {
+          name: "Twitter",
+          url: "https://www.twitter.com/",
+          username: this.twitter
+        },
+        {
+          name: "Instagram",
+          url: "https://www.instagram.com/",
+          username: this.instagram
+        },
+        {
+          name: "Website",
+          url: this.website ? this.website.replace(/\/$/, "") : "",
+          username: ""
+        }
       ];
     },
     readMore(event) {
       event.preventDefault();
       this.isShowingMore = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-section{
+section {
   margin-top: 100px;
 }
 
@@ -91,71 +112,70 @@ section{
   margin: 0 auto;
   display: block;
 
-  @media (min-width: 992px) {
+  @include lg-up {
     width: 200px;
     height: 200px;
   }
-
 }
 
-h2{
+h2 {
   font-size: 36px;
   font-weight: 400;
   margin-top: 50px;
   margin-bottom: 15px;
 
-  @media (min-width: 992px) {
+  @include lg-up {
     font-size: 30px;
     margin-top: 0px;
   }
 
-  @media (min-width: 1200px) {
+  @include xl-up {
     margin-top: 20px;
   }
 }
 
-p{
+p {
   font-size: 20px;
   margin-bottom: 20px;
 
-  @media (min-width: 992px) {
+  @include lg-up {
     font-size: 18px;
   }
 
-  a{
+  a {
     font-weight: bolder;
     color: #000;
     font-size: 20px;
     text-decoration: none;
 
-    @media (min-width: 992px) {
+    @include lg-up {
       font-size: 18px;
     }
   }
 }
 
-a{
-  color: #C4C4C4;
+a {
+  color: #c4c4c4;
   font-size: 18px;
   display: inline-block;
   text-decoration: none;
   margin-bottom: 5px;
 }
 
-hr{
+hr {
   box-sizing: content-box;
   height: 0;
   overflow: visible;
   border: 0;
-  border-top: 1px solid rgba(0,0,0,.1);
-  @media (min-width: 992px) {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  @include lg-up {
     width: 150%;
     margin: 50px 0;
   }
 }
 
-.contact-info{
-  @media (min-width: 1200px) {
+.contact-info {
+  @include xl-up {
     margin-top: 65px;
   }
 }

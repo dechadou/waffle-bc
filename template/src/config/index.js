@@ -13,8 +13,8 @@ export const VariableNames = {
 };
 
 export const EnumNames = {
-  EventNames: 'event-names-variable',
-  URLParams: 'url-params-variable',
+  EventNames: 'event-names-enum',
+  URLParams: 'url-params-enum',
 };
 
 export const URLNames = {
@@ -27,6 +27,7 @@ const config = {
   environments: {
     [EnvironmentNames.PRODUCTION]: {
       variables: {},
+      enums: {},
       urls: {
         [URLNames.API]: 'https://mate.abrecultura.com/api/',
         [URLNames.S3]: 'https://abrecultura.s3.amazonaws.com/storage/prod/',
@@ -37,6 +38,7 @@ const config = {
       variables: {
         [VariableNames.EnvPassword]: 'waffle',
       },
+      enums: {},
       urls: {
         [URLNames.API]: 'https://staging.abrecultura.com/api/',
         [URLNames.S3]: 'https://abrecultura-dev.s3.amazonaws.com/storage/staging/',
@@ -48,6 +50,7 @@ const config = {
       variables: {
         [VariableNames.EnvPassword]: 'waffle',
       },
+      enums: {},
       urls: {
         [URLNames.API]: 'https://dev.abrecultura.com/api/',
         [URLNames.S3]: 'https://abrecultura-dev.s3.amazonaws.com/storage/dev/',
@@ -80,10 +83,10 @@ const currentEnv = config.environments[+URLParams(config.enums[EnumNames.URLPara
 if (currentEnv.name) console.warn(`%c[Waffle Warn]: ${currentEnv.name} environment!`, 'background: #222; color: #bada55');
 
 export const getUrl = URLName => currentEnv.urls[URLName]
-                              || config.urls[URLName];
+  || config.urls[URLName];
 
 export const getVariable = VariableName => currentEnv.variables[VariableName]
-                                        || config.variables[VariableName];
+  || config.variables[VariableName];
 
-export const getEnum = EnumName => currentEnv.variables[EnumName]
-                                || config.variables[EnumName];
+export const getEnum = EnumName => currentEnv.enums[EnumName]
+  || config.enums[EnumName];

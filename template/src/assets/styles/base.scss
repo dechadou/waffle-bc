@@ -1,3 +1,7 @@
+// GRID SYSTEM
+@import "_gird";
+
+// FONTS
 @font-face {
   font-family: "Founders_Grotesk_Regular";
   src: url("assets/fonts/Founders_Grotesk_Regular/Founders_Grotesk_Regular.woff")
@@ -13,9 +17,12 @@
       format("woff2");
 }
 
+// BASE STYLES 
+
 html {
   font-size: 10px;
   box-sizing: border-box;
+  color: $abre-black;
 }
 
 body {
@@ -24,16 +31,42 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   margin: 0;
+}
+
+p{
+  font-weight: normal;
+  margin-bottom: 1rem;
 }
 
 img {
   display: block;
 }
 
-button {
+a{
+  color: $abre-dark-grey;
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+li, ol, ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+button, a.button {
   font-family: "Founders_Grotesk_Light", sans-serif;
   background-color: $abre-black;
   color: #fff;
@@ -45,6 +78,8 @@ button {
   -webkit-transition: 0.3s ease all;
   transition: 0.3s ease all;
   border: 1px solid $abre-black;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
 
   &.out_of_stock {

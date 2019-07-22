@@ -1,27 +1,33 @@
 <script>
-import { EventManager } from '@/utils';
-import { getEnum, EnumNames } from '@/config';
+import { EventManager } from "@/utils";
+import { getEnum, EnumNames } from "@/config";
 
 export default {
-  name: 'AddToCartButton',
+  name: "AddToCartButton",
   props: {
     slug: {
-      type: String,
+      type: String
     },
     id: {
-      type: Number,
+      type: Number
     },
-    productType: {
-      type: String,
-    },
+    productClass: {
+      type: String
+    }
   },
   methods: {
     addToCart() {
-      EventManager.trigger(getEnum(EnumNames.EventNames).ADD_TO_CART, this.id, this.type); // TODO: que el carrito pueda conseguir la imagen en base al tipo de producto
+      EventManager.Trigger(
+        getEnum(EnumNames.EventNames).ADD_TO_CART,
+        this.id,
+        this.productClass
+      );
+
+      EventManager.Trigger(getEnum(EnumNames.EventNames).ON_CART_TOGGLE);
     },
     openLink() {
       this.$router.push(`/producto/${this.slug}`);
-    },
-  },
+    }
+  }
 };
 </script>
