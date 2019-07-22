@@ -6,15 +6,18 @@
 </template>
 
 <script>
+import Vue from "vue";
+import VueAnalytics from "vue-analytics";
 import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import router from "@/router";
 import {
   StoreDataActionTypes,
   StoreDataGetterTypes,
   StoreDataMutationTypes,
   StoreDataNamespace
-} from "./store/module/StoreData";
-import { ThemeMutationTypes } from "./store/module/Theme";
-import { getVariable, VariableNames } from "./config";
+} from "@/store/module/StoreData";
+import { ThemeMutationTypes } from "@/store/module/Theme";
+import { getVariable, VariableNames } from "@/config";
 
 export default {
   name: "App",
@@ -29,21 +32,7 @@ export default {
       if (!value) return;
       this.setTheme(this.template.template_selector);
       this.setFooter(this.template.footer_type);
-
-      // Si la tienda no pertenece a este dominio redirijo
-      if (
-        this.$route.params.slug &&
-        this.template.tienda_url.indexOf(window.location.host) > -1
-      )
-        window.location.href = `${window.location.protocol}//${
-          window.location.host
-        }`;
-      // Si pertenece le doy un identificador
-      else
-        this.setStoreIdentifier({
-          domain: this.template.tienda_url,
-          storeSlug: this.$route.params.slug
-        });
+      this.setApp();
     },
     error(value) {
       if (!value) return;
@@ -68,7 +57,36 @@ export default {
     }),
     ...mapActions({
       fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA
-    })
+    }),
+    setApp() {
+      if (!this.isValidPage()) return;
+
+      if (this.template.codigo_analytics) {
+        Vue.use(VueAnalytics, {
+          id: this.template.codigo_analytics,
+          router
+        });
+      }
+    },
+    isValidPage() {
+      // Si la tienda no pertenece a este dominio redirijo
+      if (
+        this.$route.params.slug &&
+        this.template.tienda_url.indexOf(window.location.host) > -1
+      ) {
+        window.location.href = `${window.location.protocol}//${
+          window.location.host
+        }`;
+        return false;
+      } else {
+        // Si pertenece le doy un identificador
+        this.setStoreIdentifier({
+          domain: this.template.tienda_url,
+          storeSlug: this.$route.params.slug
+        });
+        return true;
+      }
+    }
   }
 };
 </script>
