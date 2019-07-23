@@ -1,5 +1,5 @@
 <template>
-  <section id="profile">
+  <section id="profile" v-if="text">
     <div class="col-12">
       <hr class="d-none d-md-block">
       <div class="row">
@@ -37,65 +37,66 @@
 
 <script>
 export default {
-  name: "Profile",
+  name: 'Profile',
   props: {
     title: {
       type: String,
-      default: "Conocé al Creador"
+      default: 'Conocé al Creador',
     },
     text: String,
     image: String,
     facebook: String,
     twitter: String,
     instagram: String,
-    website: String
+    website: String,
   },
   data() {
     return {
       finalText: null,
       showMoreText: null,
-      isShowingMore: false
+      isShowingMore: false,
     };
   },
   created() {
+    if (!this.text) return;
     this.finalText = this.text;
-    if (this.finalText.indexOf("<p>[HIDDEN value=&quot;") !== -1) {
+    if (this.finalText.indexOf('<p>[HIDDEN value=&quot;') !== -1) {
       [this.finalText, this.showMoreText] = this.finalText.split(
-        "<p>[HIDDEN value=&quot;"
+        '<p>[HIDDEN value=&quot;',
       );
-      [this.showMoreText] = this.showMoreText.split("&quot;]</p>");
+      [this.showMoreText] = this.showMoreText.split('&quot;]</p>');
     }
   },
   methods: {
     getSocialNetworks() {
       return [
         {
-          name: "Facebook",
-          url: "https://www.facebook.com/",
-          username: this.facebook
+          name: 'Facebook',
+          url: 'https://www.facebook.com/',
+          username: this.facebook,
         },
         {
-          name: "Twitter",
-          url: "https://www.twitter.com/",
-          username: this.twitter
+          name: 'Twitter',
+          url: 'https://www.twitter.com/',
+          username: this.twitter,
         },
         {
-          name: "Instagram",
-          url: "https://www.instagram.com/",
-          username: this.instagram
+          name: 'Instagram',
+          url: 'https://www.instagram.com/',
+          username: this.instagram,
         },
         {
-          name: "Website",
-          url: this.website ? this.website.replace(/\/$/, "") : "",
-          username: ""
-        }
+          name: 'Website',
+          url: this.website ? this.website.replace(/\/$/, '') : '',
+          username: '',
+        },
       ];
     },
     readMore(event) {
       event.preventDefault();
       this.isShowingMore = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -163,11 +164,7 @@ a {
 }
 
 hr {
-  box-sizing: content-box;
-  height: 0;
   overflow: visible;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
   @include lg-up {
     width: 150%;
     margin: 50px 0;

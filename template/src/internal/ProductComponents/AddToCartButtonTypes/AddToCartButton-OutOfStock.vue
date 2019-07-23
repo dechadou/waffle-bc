@@ -1,12 +1,12 @@
 <template>
     <button
       type="button"
-      class="out_of_stock"
+      class="btn out_of_stock"
     >Agotado</button>
 </template>
 
 <script>
-import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
+import { AddToCartButtonType } from '@/extendables/BaseComponents';
 
 export default {
   name: 'AddToCartButtonOutOfStock',

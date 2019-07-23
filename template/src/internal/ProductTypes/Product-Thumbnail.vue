@@ -55,25 +55,24 @@
 </template>
 
 <script>
-import { LazyImage } from "@/extendables/BaseComponents";
-import { ProductType } from "@/extendables/ProductTypes";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "Product-Thumbnail",
+  name: 'Product-Thumbnail',
   extends: ProductType,
   components: {
-    LazyImage
+    LazyImage,
   },
   methods: {
     getButtonType() {
-      if (this.data.class === "product" && this.articleList.length > 1) {
-        return "Select";
+      if (this.data.class === 'product' && this.articleList.length > 1) {
+        return 'Select';
       }
-      if (this.isOutOfStock) return "OutOfStock";
+      if (this.isOutOfStock) return 'OutOfStock';
 
-      return "Normal";
-    }
-  }
+      return 'Normal';
+    },
+  },
 };
 </script>
 

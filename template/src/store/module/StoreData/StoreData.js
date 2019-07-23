@@ -24,6 +24,8 @@ export default {
     template: null,
     totalSold: null,
     storeIdentifier: null,
+    year: null,
+    store_id: null,
     error: null,
   },
   getters: {
@@ -32,35 +34,41 @@ export default {
   mutations: {
     [ADD_DATA]: (state, data) => {
       const products = Object.values(data.productos);
-      products.forEach((x) => {
-        x.class = 'product';
-        x.articles = Object.values(x.articulos);
-        delete x.articulos;
-        x.articles.forEach((y) => {
-          y.class = 'article';
-        });
-      });
-
-      const bundles = Object.values(data.combos);
-      bundles.forEach((x) => {
-        x.class = 'bundle';
-        x.products = Object.values(x.productos);
-        delete x.productos;
-        x.products.forEach((y) => {
-          y.class = 'product';
-          y.articles = Object.values(y.articulos);
-          delete y.articulos;
-          y.articles.forEach((z) => {
-            z.class = 'article';
+      if (products) {
+        products.forEach((x) => {
+          x.class = 'product';
+          x.articles = Object.values(x.articulos);
+          delete x.articulos;
+          x.articles.forEach((y) => {
+            y.class = 'article';
           });
         });
-      });
+      }
+
+      const bundles = Object.values(data.combos);
+      if (bundles) {
+        bundles.forEach((x) => {
+          x.class = 'bundle';
+          x.products = Object.values(x.productos);
+          delete x.productos;
+          x.products.forEach((y) => {
+            y.class = 'product';
+            y.articles = Object.values(y.articulos);
+            delete y.articulos;
+            y.articles.forEach((z) => {
+              z.class = 'article';
+            });
+          });
+        });
+      }
 
       state.data = { products, bundles };
-      state.products_id = Object.values(data.template.productos);
-      state.bundles_id = Object.values(data.template.combos);
+      if (typeof data.template.productos === 'object') state.products_id = Object.values(data.template.productos);
+      if (typeof data.template.combos === 'object') state.bundles_id = Object.values(data.template.combos);
       state.template = data.template;
       state.totalSold = data.totalSold;
+      state.year = data.year;
+      if (state.totalSold.length > 0) state.store_id = state.totalSold[0].id_tienda;
     },
     [ADD_ERROR]: (state, error) => {
       state.error = error;

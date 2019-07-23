@@ -2,7 +2,7 @@
   <article class="product">
       <div class="row">
         <!-- IMAGE -->
-        <div class="col-12 col-md-7">
+        <div class="col-12">
           <LazyImage
             :source="singleImage"
             cssClasses="img-fluid mx-auto d-block"
@@ -11,7 +11,7 @@
         </div>
 
         <!-- DESCRIPTION -->
-        <div class="col-12 col-md-5 description">
+        <div class="col-12 description">
           <!-- TITLE, PRICE, DESCRIPTION -->
           <div class="title_price_block row">
             <div class="col-9">
@@ -46,30 +46,13 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { ProductDescription } from '@/extendables/ProductTypes';
 
 export default {
-  name: 'Product-Description',
-  extends: ProductType,
-  components: {
-    LazyImage,
-  },
-  methods: {
-    getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
-      }
-
-      if (this.isOutOfStock) {
-        return 'OutOfStock';
-      }
-
-      return 'Normal';
-    },
-  },
+  name: 'Product-DescriptionBottom',
+  extends: ProductDescription,
 };
 </script>
-
 
 <style lang="scss" scoped>
 article {
@@ -83,25 +66,13 @@ h1 {
   color: $abre-dark-grey;
   line-height: 1;
   @include md-up {
-    font-size: 32px;
-  }
-}
-
-.description {
-  @include md-up {
-    margin-top: 70px;
-  }
-  @include lg-up {
-    margin-top: 140px;
+    font-size: 22px;
   }
 }
 
 .button_container {
   margin-top: 20px;
   width: 100%;
-  @include md-up {
-    width: 250px;
-  }
 }
 
 p {
@@ -112,7 +83,7 @@ p {
   }
 
   @include md-up {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -124,12 +95,12 @@ p {
   font-family: "Founders_Grotesk_Regular", sans-serif;
 
   span {
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 5px;
   }
 
   @include md-up {
-    margin-top: 10px;
+    font-size: 16px;
   }
 }
 </style>

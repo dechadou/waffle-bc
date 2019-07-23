@@ -1,9 +1,10 @@
 <template>
   <transition name="slide-fade" mode="out-in">
-    <button key="added" v-if="isAdding" class="green" type="button">Agregado ✓</button>
+    <button key="added" v-if="isAdding" class="btn green" type="button">Agregado ✓</button>
     <button
       key="add"
       v-else
+      class="btn"
       :class="[{ animated: (!slider) }]"
       type="button"
       @click="onClick($event)"
@@ -13,7 +14,7 @@
 
 <script>
 import { animateButton } from '@/utils/addToCartButtonTypesHelper';
-import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
+import { AddToCartButtonType } from '@/extendables/BaseComponents';
 
 export default {
   name: 'AddToCartButton-Check',

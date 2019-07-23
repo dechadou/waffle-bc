@@ -1,10 +1,10 @@
 <template>
-  <button class="animated" type="button" @click="onClick($event)">Agregar al Carrito</button>
+  <button class="btn animated" type="button" @click="onClick($event)">Agregar al Carrito</button>
 </template>
 
 <script>
 import { animateButton } from '@/utils/addToCartButtonTypesHelper';
-import { AddToCartButtonType } from '@/extendables/AddToCartButtonTypes';
+import { AddToCartButtonType } from '@/extendables/BaseComponents';
 
 export default {
   name: 'AddToCartButton-Normal',

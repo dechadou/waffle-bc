@@ -7,10 +7,10 @@
           <a
             v-for="(button, index) in buttons"
             :key="index"
-            @click="openShare(`${ button.url }${ button.prepend || '' }${ pageUrl }${ button.append || '' }`, $event)"
+            @click="openShare(button, $event)"
             target="_blank"
             :class="{ 'd-md-none': !button.desktop_visible }"
-            class="button d-block page-share col-12 col-md ml-3 mr-3"
+            class="btn d-block page-share col-12 col-md ml-3 mr-3"
           >
             <span>Compartir en</span>
             <Icon :name="button.icon" class="share-icon" width="25px" height="25px"/>
@@ -22,57 +22,64 @@
 </template>
 
 <script>
-import { Icon } from "@/extendables/BaseComponents";
+import { Icon } from '@/extendables/BaseComponents';
+
 export default {
-  name: "PageShare",
+  name: 'PageShare',
   components: {
-    Icon
+    Icon,
   },
   props: {
     title: String,
-    shareText: String
+    shareText: String,
   },
   data() {
     return {
       pageUrl: `https://${location.host}${location.pathname}`,
       buttons: [
         {
-          name: "Facebook",
-          url: "https://www.facebook.com/sharer/sharer.php?u=",
-          icon: "fb",
-          prepend: "",
-          append: "",
-          desktop_visible: true
+          name: 'Facebook',
+          url: 'https://www.facebook.com/sharer/sharer.php?u=',
+          icon: 'fb',
+          prepend: '',
+          append: '',
+          desktop_visible: true,
         },
         {
-          name: "Twitter",
-          url: "https://twitter.com/intent/tweet?url=",
-          icon: "tw",
-          prepend: "",
-          append: `&text=${this.shareText || ""}`,
-          desktop_visible: true
+          name: 'Twitter',
+          url: 'https://twitter.com/intent/tweet?url=',
+          icon: 'tw',
+          prepend: '',
+          append: `&text=${this.shareText || ''}`,
+          desktop_visible: true,
         },
         {
-          name: "Whatsapp",
-          url: "whatsapp://send?text=",
-          icon: "wpp",
-          prepend: `${this.shareText || ""} `,
-          append: "",
-          desktop_visible: false
-        }
-      ]
+          name: 'Whatsapp',
+          url: 'whatsapp://send?text=',
+          icon: 'wpp',
+          prepend: `${this.shareText || ''} `,
+          append: '',
+          desktop_visible: false,
+        },
+      ],
     };
   },
   methods: {
-    openShare(url, event) {
+    openShare(button, event) {
       event.preventDefault();
       window.open(
-        url,
-        "",
-        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600"
+        `${ button.url }${ button.prepend || '' }${ this.pageUrl }${ button.append || '' }`,
+        '',
+        'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600',
       );
-    }
-  }
+
+      this.$ga.event({
+        eventCategory: 'click',
+        eventAction: 'share',
+        eventLabel: button.name,
+      });
+    },
+  },
 };
 </script>
 

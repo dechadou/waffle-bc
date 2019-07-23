@@ -51,7 +51,8 @@
 
 
 <script>
-import { FooterType } from "@/extendables/FooterTypes";
+import { FooterType } from '@/extendables/BaseComponents';
+
 export default {
   name: 'Footer-Abre',
   extends: FooterType,
@@ -62,7 +63,7 @@ export default {
         city: 'Ciudad de Buenos Aires',
         country: 'Argentina',
         show: false,
-      }, 
+      },
       CTAMail: {
         copy: 'Escribinos a:',
         email: 'hola@abrecultura.com',
@@ -146,7 +147,7 @@ export default {
 
     @include lg-up {
       width: 26%;
-     
+
     }
   }
 
@@ -230,7 +231,7 @@ export default {
     align-items: flex-start;
     @include lg-up {
       width: 25%;
-      
+
     }
   }
   .logo {

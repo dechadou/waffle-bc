@@ -34,6 +34,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   margin: 0;
+  margin-bottom: .5rem;
 }
 
 p{
@@ -66,7 +67,7 @@ ol, ul {
     list-style: none;
 }
 
-button, a.button {
+button.btn, a.btn {
   font-family: "Founders_Grotesk_Light", sans-serif;
   background-color: $abre-black;
   color: #fff;
@@ -119,4 +120,11 @@ input[type="text"] {
 
 figure {
   margin: 0;
+}
+
+hr{
+  box-sizing: content-box;
+  height: 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1); 
 }

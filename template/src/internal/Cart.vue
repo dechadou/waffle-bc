@@ -1,5 +1,9 @@
 <template>
   <div>
+    <button class="open-cart" @click="cartToggle()">
+      <Icon name="cart"/>
+      <span class="items-count animated" v-bind:class="{'jello': changing}" >{{totalItems}}</span>
+    </button>
     <div class="sidemenu" :class="[showCart ? 'open' : '']">
       <div class="inner_menu">
         <div class="cart_title">
@@ -93,7 +97,8 @@
           </div>
           <div class="btn-box">
             <div class="col-8 offset-2">
-              <button class="btn_buy" @click="checkout()" v-html="checkoutText"/>
+              <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
+              <button class="btn" v-else> <Loading class="cart_loader"/> </button>
             </div>
           </div>
         </div>
@@ -104,39 +109,42 @@
 </template>
 
 <script>
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames } from "@/config";
-import { mapState } from "vuex";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { CartHelper, CartObject } from "@/objects/CartObjects";
-import { Icon } from "@/extendables/BaseComponents";
+import { mapState } from 'vuex';
+import { EventManager } from '@/utils';
+import {
+  getEnum, EnumNames, getUrl, URLNames,
+} from '@/config';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { CartHelper } from '@/objects/CartObjects';
+import { Icon, Loading } from '@/extendables/BaseComponents';
 
-const QUERY_STORE_ID = "store_id";
-const QUERY_COMBOS_ARRAY = "combos[]";
-const QUERY_PRODUCTS_ARRAY = "products[]";
+const QUERY_STORE_ID = 'store_id';
+const QUERY_COMBOS_ARRAY = 'combos[]';
+const QUERY_PRODUCTS_ARRAY = 'products[]';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
-    Icon
+    Icon,
+    Loading,
   },
   data() {
     return {
       items: [],
       showCart: false,
-      checkoutText: "Seleccioná envío",
       changing: false,
-      cartHelper: null
+      loading: false,
+      cartHelper: null,
+      cartText: {
+        empty: 'Tu carrito está vacío...',
+        filled: 'Te estás llevando...',
+      },
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "storeIdentifier"]),
+    ...mapState(StoreDataNamespace, ['data', 'storeIdentifier', 'store_id']),
     emptyCartText() {
-      if (this.items.length > 0) {
-        return "Te estás llevando...";
-      }
-
-      return "Tu carrito está vacío...";
+      return this.items.length > 0 ? this.cartText.filled : this.cartText.empty;
     },
     totalItems() {
       let quantity = 0;
@@ -154,17 +162,17 @@ export default {
 
       EventManager.Trigger(
         getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        this.totalItems
+        this.totalItems,
       );
 
       return price;
-    }
+    },
   },
   methods: {
     saveOnLocalStorage() {
       localStorage.setItem(
         `${this.storeIdentifier}_store_cart`,
-        JSON.stringify([this.items, JSON.stringify(new Date())])
+        JSON.stringify([this.items, JSON.stringify(new Date())]),
       );
     },
     deleteLocalStorage() {
@@ -172,7 +180,7 @@ export default {
     },
     getLocalStorage() {
       const localSt = JSON.parse(
-        localStorage.getItem(`${this.storeIdentifier}_store_cart`)
+        localStorage.getItem(`${this.storeIdentifier}_store_cart`),
       );
       if (localSt != null) {
         const yesterday = new Date();
@@ -201,7 +209,7 @@ export default {
       }
 
       this.items.push(
-        this.cartHelper.getCartObjectByProductId(id, productClass)
+        this.cartHelper.getCartObjectByProductId(id, productClass),
       );
     },
     qtMinus(item) {
@@ -223,21 +231,16 @@ export default {
       }
     },
     checkout() {
-      if (this.items.length < 1) {
-        return;
-      }
+      if (this.items.length < 1) return;
+      this.loading = true;
 
-      this.checkoutText = "Cargando...";
-      let url = `${this.checkoutUrl}?${[QUERY_STORE_ID]}=${
-        this.currentStore.id
-      }`;
-
-      for (let i = 0; i < this.items.length; i += 1) {
-        url += "&";
-        if (this.items[i].isBundle) url += [QUERY_COMBOS_ARRAY];
-        else url += [QUERY_PRODUCTS_ARRAY];
-        url += `=${this.items[i].id},${this.items[i].quantity}`;
-      }
+      const url = this.items.reduce(
+        (accumulator, currentValue) => {
+          accumulator += `&${currentValue.class === 'bundle' ? [QUERY_COMBOS_ARRAY] : [QUERY_PRODUCTS_ARRAY]}`;
+          accumulator += `=${currentValue.id},${currentValue.quantity}`;
+          return accumulator;
+        }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${this.store_id}`,
+      );
 
       this.deleteLocalStorage();
       window.location.href = url;
@@ -247,34 +250,30 @@ export default {
       this.hideScrollBar();
     },
     hideScrollBar() {
-      if (this.showCart)
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-      else document.getElementsByTagName("body")[0].style.overflowY = "initial";
+      if (this.showCart) { document.getElementsByTagName('body')[0].style.overflowY = 'hidden'; } else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
     },
     suscribeToEvents() {
       EventManager.Subscribe(
         getEnum(EnumNames.EventNames).ADD_TO_CART,
-        data => {
+        (data) => {
           const [id, productClass] = data;
           this.addToCart(id, productClass);
-        }
+        },
       );
 
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
-        this.cartToggle()
-      );
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
 
       EventManager.Subscribe(
         getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        () => this.saveOnLocalStorage()
+        () => this.saveOnLocalStorage(),
       );
-    }
+    },
   },
   mounted() {
     this.getLocalStorage();
     this.suscribeToEvents();
     this.cartHelper = new CartHelper(this.data);
-  }
+  },
 };
 </script>
 
@@ -372,7 +371,7 @@ export default {
   &.open {
     width: 100%;
     height: 100%;
-    background-color: $abre-dark-grey;
+    background-color: rgba(77,77,77,.35);
     position: fixed;
     top: 0;
     z-index: 100;
@@ -454,5 +453,43 @@ export default {
       color: #000;
     }
   }
+  .btn{
+    margin-top: 15px;
+    padding: 12px 0;
+  }
+  .cart_loader{
+    width: 30px;
+    fill: #fff;
+    height: 30px;
+  }
 }
-</style> 
+.open-cart {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: fixed;
+  right: 30px;
+  top: 15px;
+  svg {
+    width: 35px;
+    height: 35px;
+  }
+  .items-count{
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    right: 3px;
+    font-size: 13px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    overflow: hidden;
+    font-family: Founders Grotesque,sans-serif;
+    font-weight: 300;
+    background-color: #000;
+    color: #fff;
+    z-index: 200;
+  }
+}
+</style>

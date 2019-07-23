@@ -5,10 +5,11 @@
 </template>
 
 <script>
-import { FooterType } from "@/extendables/FooterTypes";
+import { FooterType } from '@/extendables/BaseComponents';
+
 export default {
   name: 'Footer-Logo',
-  extends: FooterType
+  extends: FooterType,
 };
 </script>
 
