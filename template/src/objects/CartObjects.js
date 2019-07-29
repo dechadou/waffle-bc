@@ -18,6 +18,7 @@ export class CartHelper {
   }
 
   getCartObjectByProductId(id, productClass) {
+    console.log(productClass);
     switch (productClass) {
       case 'article': {
         const productArticlePair = this.getProductArticlePairByArticleId(id);

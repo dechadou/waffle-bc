@@ -19,8 +19,7 @@ export default {
   namespaced: true,
   state: {
     data: null,
-    products_id: null,
-    bundles_id: null,
+    home_products: null,
     template: null,
     totalSold: null,
     storeIdentifier: null,
@@ -63,12 +62,11 @@ export default {
       }
 
       state.data = { products, bundles };
-      if (typeof data.template.productos === 'object') state.products_id = Object.values(data.template.productos);
-      if (typeof data.template.combos === 'object') state.bundles_id = Object.values(data.template.combos);
+      if (typeof data.template.descatados === 'object') state.home_products = Object.values(data.template.descatados);
       state.template = data.template;
       state.totalSold = data.totalSold;
       state.year = data.year;
-      if (state.totalSold.length > 0) state.store_id = state.totalSold[0].id_tienda;
+      state.store_id = data.id_tienda;
     },
     [ADD_ERROR]: (state, error) => {
       state.error = error;

@@ -22,64 +22,67 @@
 </template>
 
 <script>
-import { Icon } from '@/extendables/BaseComponents';
+import { Icon } from "@/extendables/BaseComponents";
 
 export default {
-  name: 'PageShare',
+  name: "PageShare",
   components: {
-    Icon,
+    Icon
   },
   props: {
     title: String,
-    shareText: String,
+    shareText: String
   },
   data() {
     return {
       pageUrl: `https://${location.host}${location.pathname}`,
       buttons: [
         {
-          name: 'Facebook',
-          url: 'https://www.facebook.com/sharer/sharer.php?u=',
-          icon: 'fb',
-          prepend: '',
-          append: '',
-          desktop_visible: true,
+          name: "Facebook",
+          url: "https://www.facebook.com/sharer/sharer.php?u=",
+          icon: "fb",
+          prepend: "",
+          append: "",
+          desktop_visible: true
         },
         {
-          name: 'Twitter',
-          url: 'https://twitter.com/intent/tweet?url=',
-          icon: 'tw',
-          prepend: '',
-          append: `&text=${this.shareText || ''}`,
-          desktop_visible: true,
+          name: "Twitter",
+          url: "https://twitter.com/intent/tweet?url=",
+          icon: "tw",
+          prepend: "",
+          append: `&text=${this.shareText || ""}`,
+          desktop_visible: true
         },
         {
-          name: 'Whatsapp',
-          url: 'whatsapp://send?text=',
-          icon: 'wpp',
-          prepend: `${this.shareText || ''} `,
-          append: '',
-          desktop_visible: false,
-        },
-      ],
+          name: "Whatsapp",
+          url: "whatsapp://send?text=",
+          icon: "wpp",
+          prepend: `${this.shareText || ""} `,
+          append: "",
+          desktop_visible: false
+        }
+      ]
     };
   },
   methods: {
     openShare(button, event) {
       event.preventDefault();
       window.open(
-        `${ button.url }${ button.prepend || '' }${ this.pageUrl }${ button.append || '' }`,
-        '',
-        'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600',
+        `${button.url}${button.prepend || ""}${this.pageUrl}${button.append ||
+          ""}`,
+        "",
+        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600"
       );
 
-      this.$ga.event({
-        eventCategory: 'click',
-        eventAction: 'share',
-        eventLabel: button.name,
-      });
-    },
-  },
+      if (this.$ga) {
+        this.$ga.event({
+          eventCategory: "click",
+          eventAction: "share",
+          eventLabel: button.name
+        });
+      }
+    }
+  }
 };
 </script>
 
@@ -88,13 +91,13 @@ section {
   margin: 30px 0;
 }
 h1 {
-  font-size: 1.75rem;
+  font-size: 4rem;
   margin: 0.5rem 0.5rem 2rem;
   padding: 5px 0 20px;
-  font-family: inherit;
+  font-family: "Founders_Grotesk_Regular", sans-serif;
   font-weight: 500;
   line-height: 1.2;
-  color: inherit;
+  color: $abre_dark_grey;
   text-align: center;
 }
 a {

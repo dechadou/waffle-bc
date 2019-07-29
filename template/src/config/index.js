@@ -61,7 +61,7 @@ const config = {
   },
   variables: {
     [VariableNames.WaffleVersion]: 1,
-    [VariableNames.DefaultSlug]: 'abre',
+    [VariableNames.DefaultSlug]: 'samurai-de-ensaladas',
   },
   enums: {
     [EnumNames.EventNames]: {

@@ -19,11 +19,13 @@ export default {
 
       EventManager.Trigger(getEnum(EnumNames.EventNames).ON_CART_TOGGLE);
 
-      this.$ga.event({
-        eventCategory: 'click',
-        eventAction: 'addToCart',
-        eventLabel: this.slug,
-      });
+      if(this.$ga){
+        this.$ga.event({
+          eventCategory: 'click',
+          eventAction: 'addToCart',
+          eventLabel: this.slug,
+        });
+      } 
     },
     openLink() {
       this.$router.push(`/producto/${this.slug}`);

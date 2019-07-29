@@ -11,39 +11,25 @@
       />
       <div class="container">
         <section id="shop">
-          <div class="row">
-            <div
-              class="col-12"
-              v-for="bundle in getBundles(false)"
-              :key="bundle.id"
-            >
-              <component :is="home_product_type" :data="bundle"/>
-            </div>
-            <div
-              class="col-12"
-              v-for="product in getProducts(false)"
-              :key="product.id"
-            >
+          <div class="row" v-if="mainProducts.length > 0">
+            <div class="col-12" v-for="product in mainProducts" :key="product.id">
               <component :is="home_product_type" :data="product"/>
             </div>
           </div>
-          <div class="row">
+          <div
+            class="row"
+            v-if="home_product_type !== 'thumbnail' && recommendedProducts.length > 0"
+          >
             <div class="col-12 col-md-3">
-              <h3>Aprovechá el envío y agregá a tu pedido:</h3>
+              <h3>
+                Aprovechá
+                <br class="d-none d-md-block">el envío
+                <br class="d-block d-md-none">y agregá
+                <br class="d-none d-md-block">a tu pedido:
+              </h3>
             </div>
-            <div
-              class="col-12 col-md-3"
-              v-for="bundle in getBundles(false)"
-              :key="bundle.id"
-            >
-              <Product-DescriptionBottom v-if="home_product_type !== 'thumbnail'" :data="bundle"/>
-            </div>
-            <div
-              class="col-12 col-md-3"
-              v-for="product in getProducts(false)"
-              :key="product.id"
-            >
-              <Product-DescriptionBottom v-if="home_product_type !== 'thumbnail'" :data="product"/>
+            <div class="col-12 col-md-3" v-for="product in recommendedProducts" :key="product.id">
+              <Product-DescriptionBottom :data="product"/>
             </div>
           </div>
         </section>
@@ -56,66 +42,84 @@
           :instagram="template.creador_social_ig"
           :website="template.creador_social_web"
         />
-        <PageShare/>
+        <PageShare :title="template.call_to_action_title"/>
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { ThemeNamespace } from '@/store/module/Theme';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { ThemeNamespace } from "@/store/module/Theme";
 import {
   Hero,
   GlobalWarning,
   Profile,
   PageShare,
-  Cart,
-} from '@/extendables/BaseComponents';
-import { ProductDescription, ProductDescriptionBottom } from '@/extendables/ProductTypes';
+  Cart
+} from "@/extendables/BaseComponents";
+import * as Products from "@/extendables/ProductTypes";
 
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   components: {
     Hero,
     GlobalWarning,
     Profile,
-    ProductDescription,
-    ProductDescriptionBottom,
+    ...Products,
     PageShare,
-    Cart,
+    Cart
+  },
+  data() {
+    return {
+      mainProducts: [],
+      recommendedProducts: []
+    };
   },
   computed: {
-    ...mapState(ThemeNamespace, ['home_product_type']),
-    ...mapState(StoreDataNamespace, ['data', 'template', 'bundles_id', 'products_id']),
+    ...mapState(ThemeNamespace, ["home_product_type"]),
+    ...mapState(StoreDataNamespace, ["data", "template", "home_products"])
   },
   methods: {
-    getBundles(main) {
-      try {
-        return this.data.bundles.filter(x => this.bundles_id.find(y => y.principal === main && x.id === y.id));
-      }catch (e){
-        console.error(`[Waffle Error]: ${e}`);
-        return [];
-      }
-    },
-    getProducts(main) {
-      try {
-        return this.data.products.filter(x => this.products_id.find(y => y.principal === main && x.id === y.id));
-      }catch (e){
-        console.error(`[Waffle Error]: ${e}`);
-        return [];
-      }
-    },
+    getProducts() {
+      const products = [...this.home_products].sort(
+        (a, b) => a.position - b.position
+      );
+      products.forEach(x => {
+        let product =
+          x.type === "combo" ? this.data.bundles : this.data.products;
+
+        product = product.find(y => {
+          return +y.id === +x.id;
+        });
+
+        if (!product) return;
+
+        if (x.principal) this.mainProducts.push(product);
+        else this.recommendedProducts.push(product);
+      });
+    }
   },
   created() {
     console.log(this.template);
-  },
+    this.getProducts();
+  }
 };
 </script>
 
 <style scoped lang="scss">
 #shop {
   margin-top: 10px;
+}
+h3 {
+  font-size: 24px;
+  font-family: "Founders_Grotesk_Regular", sans-serif;
+  color: $abre_dark_grey;
+  text-align: center;
+  margin-bottom: 30px;
+  @include md-up {
+    text-align: left;
+  }
 }
 </style>

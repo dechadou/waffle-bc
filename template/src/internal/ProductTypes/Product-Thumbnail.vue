@@ -16,34 +16,36 @@
         <!-- DESCRIPTION -->
         <div class="col-12 description">
           <!-- TITLE AND PRICE -->
-          <div class="title_price_block row">
-            <div class="col-9">
-              <h3 class="title">{{ data.name }}</h3>
+          <div class="title_price_block">
+            <div class="row">
+              <div class="col-9">
+                <h3 class="title">{{ data.name }}</h3>
+              </div>
+              <div class="col-3 pl-0 price-container">
+                <span class="price">
+                  <span>$</span>
+                  {{ price }}
+                </span>
+              </div>
             </div>
-            <div class="col-3 pl-0 price-container">
-              <span class="price">
-                <span>$</span>
-                {{ price }}
-              </span>
+
+            <!-- AUTHORS -->
+            <div class="row">
+              <div class="col-12">
+                <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+              </div>
             </div>
+            <!-- /AUTHORS -->
           </div>
           <!-- /TITLE AND PRICE -->
-
-          <!-- AUTHORS -->
-          <div class="row">
-            <div class="col-12">
-              <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
-            </div>
-          </div>
-          <!-- /AUTHORS -->
 
           <div class="button_container">
             <component
               class="addToCartButton"
               :is="getButtonType()"
               :slug="data.slug"
-              :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
-              :productClass="data.class"
+              :id="productId"
+              :productClass="productClass"
               :image="singleImage"
             />
           </div>
@@ -55,24 +57,36 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
 export default {
-  name: 'Product-Thumbnail',
+  name: "Product-Thumbnail",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
       }
-      if (this.isOutOfStock) return 'OutOfStock';
+      if (this.isOutOfStock) return "OutOfStock";
 
-      return 'Normal';
-    },
+      return "Normal";
+    }
   },
+  filters: {
+    displayAuthors(authors) {
+      let str = "";
+      authors
+        .filter((v, i) => authors.indexOf(v) === i)
+        .forEach(x => {
+          str += str === "" ? x.name : ` + ${x.name}`;
+        });
+
+      return str;
+    }
+  }
 };
 </script>
 
@@ -122,6 +136,7 @@ export default {
     &.authors {
       color: #b0b0b0;
       font-size: 22px;
+      margin-top: 0;
     }
   }
   .price-container {
@@ -191,8 +206,8 @@ export default {
     }
   }
   .title_price_block {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 0;
   }
 
   .button_container {
@@ -270,9 +285,9 @@ export default {
 
   .description {
     overflow: hidden;
+    padding: 0 !important;
     @media (min-width: 1024px) {
       height: 45px;
-      padding: 0 !important;
     }
   }
 
