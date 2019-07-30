@@ -62,11 +62,11 @@ export default {
       }
 
       state.data = { products, bundles };
-      if (typeof data.template.descatados === 'object') state.home_products = Object.values(data.template.descatados);
       state.template = data.template;
       state.totalSold = data.totalSold;
       state.year = data.year;
       state.store_id = data.id_tienda;
+      if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {
       state.error = error;
@@ -78,7 +78,7 @@ export default {
   actions: {
     [FETCH_STORE_DATA]: ({ commit }, slug) => {
       if (typeof $storeData !== 'undefined') {
-        commit(ADD_DATA, $storeData);
+        commit(ADD_DATA, $storeData.data);
       } else {
         Request.s3(`${slug}.json`)
           .catch((error) => {

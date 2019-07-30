@@ -7,7 +7,7 @@ import { EnvCheck } from './utils';
 import { getVariable, VariableNames } from './config';
 import App from './App.vue';
 import router from './router';
-import './registerServiceWorker';
+// import './registerServiceWorker'; Uncomment for service worker
 
 console.log(`Waffle Release v${getVariable(VariableNames.WaffleVersion)}`);
 EnvCheck();

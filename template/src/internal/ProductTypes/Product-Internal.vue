@@ -1,28 +1,27 @@
 <template>
   <div>
-    <article :id="$style.producto" class="product">
+    <article id="producto" class="product">
       <div class="row">
         <div class="col-12 col-md-6">
           <swiper
             :options="swiperOption"
-            v-if="carouselImages.length > 1"
-            :class="$style.swiper"
-            class="product-carousel"
+            v-if="this.data.media > 1"
+            class="swiper product-carousel"
           >
-            <swiper-slide v-for="(img, index) in carouselImages" :key="index">
-              <img class="d-block" :src="img" :class="$style.swiper">
+            <swiper-slide v-for="(img, index) in getCarouselImages()" :key="index">
+              <img class="d-block swiper" :src="img">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
-          <img v-else class="d-block w-100" :src="image">
+          <img v-else class="d-block w-100" :src="singleImage">
         </div>
 
-        <div class="col-md-6" :class="$style.descriptionBox">
-          <div :class="$style.containerXs">
+        <div class="col-md-6 descriptionBox">
+          <div class="containerXs">
             <div class="row">
               <div class="col-8 pr-0">
-                <h1>{{ name }}</h1>
-                <p :class="$style.authors">{{ agentsActors | displayAuthors }}</p>
+                <h1>{{ data.name }}</h1>
+                <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
               </div>
               <div class="col-4 pl-0">
                 <span class="price float-right">
@@ -32,11 +31,11 @@
               </div>
             </div>
             <!-- Product Description -->
-            <p v-html="description"></p>
+            <p v-html="data.description"></p>
 
-            <ul :class="$style.additionalInfo" v-if="additionalInformation.length > 0">
+            <ul class="additionalInfo" v-if="data.informacion_adicional.length > 0">
               <div class="row">
-                <li v-for="info in additionalInformation" :key="info.meta" class="col-6 col-md-4">
+                <li v-for="info in data.informacion_adicional" :key="info.meta" class="col-6 col-md-4">
                   <div class="row">
                     <div class="col-12">
                       <h3 v-html="info.meta"/>
@@ -78,27 +77,16 @@
 </template>
 
 <script>
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+
 export default {
   name: "Product-Internal",
-  props: [
-    "type",
-    "name",
-    "slug",
-    "price",
-    "description",
-    "agentsActors",
-    "additionalInformation",
-    "media",
-    "selectedArt",
-    "articleList",
-    "attributeList",
-    "isBundle"
-  ],
+  extends: ProductType,
   data() {
     return {
-      image: null,
       selectedArticle: null,
       selected: [""],
+      attributeList: [],
       carouselImages: [],
       swiperOption: {
         autoplay: {
@@ -118,9 +106,7 @@ export default {
     };
   },
   created() {
-    this.selectedArticle = this.selectedArt;
-    this.getImage();
-    this.getCarouselImages();
+    this.getSelectedArticleOrSelector();
   },
   watch: {
     selected() {
@@ -128,12 +114,22 @@ export default {
     },
     $route() {
       this.selectedArticle = this.selectedArt;
-      this.carouselImages = [];
-      this.getImage();
-      this.getCarouselImages();
     }
   },
   methods: {
+    getSelectedArticleOrSelector(){
+      if (this.data.articles[0].atributtes.length === 0) {
+        [this.selectedArticle] = this.data.articles;
+        return;
+      }
+
+      let ind = 0;
+      Object.keys(this.data.articles[0].atributtes).forEach(attribute => {
+        this.attributeList.push([attribute, ind]);
+        this.selected.push('');
+        ind += 1;
+      });
+    },
     getArticleBySelectedOptions() {
       const sel = this.selected.find(el => el === "");
       if (sel === "" || this.selected.length === 0) return null;
@@ -157,34 +153,13 @@ export default {
       return options;
     },
     getCarouselImages() {
-      const med = Object.values(this.media);
-
-      med.forEach(media => {
-        if (media.primary_media) this.carouselImages.unshift(media.url);
-        else this.carouselImages.push(media.url);
+      const carouselImages = [];
+      Object.values(this.data.media).forEach(media => {
+        if (media.primary_media) carouselImages.unshift(media.url);
+        else carouselImages.push(media.url);
       });
+      return carouselImages;
     },
-    getImage() {
-      const med = Object.values(this.media);
-      // Si hay imagen marcada como primary media
-      med.forEach(media => {
-        if (media.primary_media) {
-          this.image = media.url;
-        }
-      });
-
-      if (this.image) return;
-
-      // Si no hay imagenes marcada como primary media
-      med.forEach(media => {
-        this.image = media.url;
-      });
-
-      if (this.image) return;
-
-      // Si no hay imagenes retorno un placeholder
-      this.image = "http://via.placeholder.com/1367x1367";
-    }
   },
   filters: {
     displayAuthors(authors) {

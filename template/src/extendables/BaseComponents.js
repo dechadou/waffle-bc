@@ -13,6 +13,7 @@
 export { default as Icon } from '@/internal/Icon.vue';
 export { default as AddToCartButtonType } from '@/internal/ProductComponents/AddToCartButtonType.vue';
 export { default as FooterType } from '@/internal/FooterType.vue';
+export { default as ProductDisplayerType } from '@/internal/ProductDisplayerType.vue';
 export { default as ProductType } from '@/internal/ProductType.vue';
 export { default as GlobalWarning } from '@/internal/GlobalWarning.vue';
 export { default as Hero } from '@/internal/Hero.vue';
@@ -22,3 +23,4 @@ export { default as Profile } from '@/internal/Profile.vue';
 export { default as PageShare } from '@/internal/PageShare.vue';
 export { default as Loading } from '@/internal/Loading.vue';
 export { default as Cart } from '@/internal/Cart.vue';
+

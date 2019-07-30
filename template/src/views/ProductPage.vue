@@ -1,55 +1,41 @@
 <template>
   <transition name="slide-fade">
-    <!--<section id="shop" class="internal" v-if="isLoaded">
-      <HeaderSection/>
-      <cart/>
-      <product :type="'internal'" :data="prod"/>
-      <FeedbackSection/>
-      <RelatedProducts :products="product"/>
-      <FooterSection/>
-    </section>-->
+    <ProductInternal :data="product" />
   </transition>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { StoreDataActionTypes, StoreDataGetterTypes } from '../store/module/StoreData';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { ProductInternal } from "@/extendables/ProductTypes";
 
 export default {
-  name: 'ProductPage',
+  name: "HomePage",
+  components: {
+    ProductInternal,
+  },
   data() {
     return {
-      prod: null,
+      product: null,
+      productClass: null,
+      productSlug: null,
     };
   },
   computed: {
-    ...mapGetters({
-      product: StoreDataGetterTypes.GET_PRODUCTS,
-      bundle: StoreDataGetterTypes.GET_BUNDLES,
-      isLoaded: StoreDataGetterTypes.IS_LOADED,
-    }),
-  },
-  created() {
-    this.fetchProducts();
-    if (this.isLoaded) this.getProduct();
-  },
-  watch: {
-    isLoaded(value) {
-      if (value) this.getProduct();
-    },
-    // eslint-disable-next-line func-names
-    '$route.params.slug': function () {
-      this.getProduct();
-    },
+    ...mapState(StoreDataNamespace, ["data"])
   },
   methods: {
-    ...mapActions({
-      fetchProducts: StoreDataActionTypes.FETCH_PRODUCTS,
-    }),
     getProduct() {
-      [this.prod] = this.product.filter(product => product.slug === this.$route.params.slug);
-      if (!this.prod) this.$route.push('/');
-    },
+      const productData = this.productClass === 'combo' ? this.data.bundles : this.data.products;
+      this.product = productData.find(x => x.slug === this.productSlug);
+      if (!this.product) this.$route.params.slug ? router.push('StoreHomePage') : router.push('DefaultHomePage');
+    }
   },
+  created() {
+    const queryUrl = document.location.href.split('/');
+    this.productClass = this.$route.params.slug ? queryUrl[0] : queryUrl[1];
+    this.productSlug = this.$route.params.product_slug;
+    this.getProduct();
+  }
 };
 </script>

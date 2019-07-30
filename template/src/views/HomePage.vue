@@ -11,27 +11,8 @@
       />
       <div class="container">
         <section id="shop">
-          <div class="row" v-if="mainProducts.length > 0">
-            <div class="col-12" v-for="product in mainProducts" :key="product.id">
-              <component :is="home_product_type" :data="product"/>
-            </div>
-          </div>
-          <div
-            class="row"
-            v-if="home_product_type !== 'thumbnail' && recommendedProducts.length > 0"
-          >
-            <div class="col-12 col-md-3">
-              <h3>
-                Aprovechá
-                <br class="d-none d-md-block">el envío
-                <br class="d-block d-md-none">y agregá
-                <br class="d-none d-md-block">a tu pedido:
-              </h3>
-            </div>
-            <div class="col-12 col-md-3" v-for="product in recommendedProducts" :key="product.id">
-              <Product-DescriptionBottom :data="product"/>
-            </div>
-          </div>
+          <ProductDisplayer-Main :products="mainProducts" />
+          <ProductDisplayer-Recommended :products="recommendedProducts" />
         </section>
         <Profile
           :title="template.creador_titulo"
@@ -51,15 +32,14 @@
 <script>
 import { mapState } from "vuex";
 import { StoreDataNamespace } from "@/store/module/StoreData";
-import { ThemeNamespace } from "@/store/module/Theme";
+import * as ProductDisplayers from "@/extendables/ProductDisplayerTypes";
 import {
   Hero,
   GlobalWarning,
   Profile,
   PageShare,
-  Cart
+  Cart,
 } from "@/extendables/BaseComponents";
-import * as Products from "@/extendables/ProductTypes";
 
 export default {
   name: "HomePage",
@@ -67,7 +47,7 @@ export default {
     Hero,
     GlobalWarning,
     Profile,
-    ...Products,
+    ...ProductDisplayers,
     PageShare,
     Cart
   },
@@ -78,11 +58,14 @@ export default {
     };
   },
   computed: {
-    ...mapState(ThemeNamespace, ["home_product_type"]),
     ...mapState(StoreDataNamespace, ["data", "template", "home_products"])
   },
   methods: {
     getProducts() {
+      if (!this.home_products || this.home_products.length === 0){
+        console.error("[Waffle Error]: There are no products nor bundles to show");
+        return;
+      } 
       const products = [...this.home_products].sort(
         (a, b) => a.position - b.position
       );
@@ -111,15 +94,5 @@ export default {
 <style scoped lang="scss">
 #shop {
   margin-top: 10px;
-}
-h3 {
-  font-size: 24px;
-  font-family: "Founders_Grotesk_Regular", sans-serif;
-  color: $abre_dark_grey;
-  text-align: center;
-  margin-bottom: 30px;
-  @include md-up {
-    text-align: left;
-  }
 }
 </style>

@@ -1,4 +1,4 @@
 /* Parent Component: FooterType */
-export { default as FooterLogo } from '@/internal/FooterTypes/Footer-Logo.vue';
-export { default as FooterAbre } from '@/internal/FooterTypes/Footer-Abre.vue';
-export { default as FooterNone } from '@/internal/FooterTypes/Footer-None.vue';
+export const FooterLogo = () => import('@/internal/FooterTypes/Footer-Logo.vue');
+export const FooterAbre = () => import('@/internal/FooterTypes/Footer-Abre.vue');
+export const FooterNone = () => import('@/internal/FooterTypes/Footer-None.vue');

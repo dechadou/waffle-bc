@@ -19,22 +19,22 @@ export default new Router({
       component: HomePage,
     },
     {
-      path: '/producto/:productid',
+      path: '/producto/:product_slug',
       name: 'DefaultProductPage',
       component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
     },
     {
-      path: '/combo/:productid',
+      path: '/combo/:product_slug',
       name: 'DefaultBundlePage',
       component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
     },
     {
-      path: '/:slug/producto/:productid',
+      path: '/:slug/producto/:product_slug',
       name: 'StoreProductPage',
       component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
     },
     {
-      path: '/:slug/combo/:productid',
+      path: '/:slug/combo/:product_slug',
       name: 'StoreBundlePage',
       component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
     },
