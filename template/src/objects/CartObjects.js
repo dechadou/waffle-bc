@@ -49,7 +49,6 @@ export class CartHelper {
       default:
         throw new Error('Unexpected product class');
     }
-
   }
 
   getProductArticlePairByArticleId(id) {

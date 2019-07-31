@@ -58,46 +58,44 @@
 <script>
 let uid = 0;
 export default {
-  name: "LazyImage",
+  name: 'LazyImage',
   props: {
     source: {
       type: String,
-      required: true
+      required: true,
     },
     cssClasses: String,
-    description: String
+    description: String,
   },
   data() {
     uid += 1;
     return {
       loaded: false,
-      uid: `lazy-${uid}`
+      uid: `lazy-${uid}`,
     };
   },
   directives: {
     lazyload: {
-      inserted: el => {
+      inserted: (el) => {
         function loadImage() {
           const imageElement = Array.from(el.children).find(
-            elem => elem.nodeName === "IMG"
+            elem => elem.nodeName === 'IMG',
           );
           if (imageElement) {
-            imageElement.addEventListener("load", () => {
-              setTimeout(() => el.classList.add("loaded"), 100);
+            imageElement.addEventListener('load', () => {
+              setTimeout(() => el.classList.add('loaded'), 100);
             });
-            imageElement.addEventListener("error", () =>
-              console.error(
-                `[Waffle Error]: Image URL ${
-                  imageElement.dataset.url
-                } is invalid`
-              )
-            );
+            imageElement.addEventListener('error', () => console.error(
+              `[Waffle Error]: Image URL ${
+                imageElement.dataset.url
+              } is invalid`,
+            ));
             imageElement.src = imageElement.dataset.url;
           }
         }
 
         function handleIntersect(entries, observer) {
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             if (entry.isIntersecting) {
               loadImage();
               observer.unobserve(el);
@@ -108,7 +106,7 @@ export default {
         function createObserver() {
           const options = {
             root: null,
-            threshold: "0"
+            threshold: '0',
           };
           const observer = new IntersectionObserver(handleIntersect, options);
           observer.observe(el);
@@ -118,9 +116,9 @@ export default {
         } else {
           loadImage();
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

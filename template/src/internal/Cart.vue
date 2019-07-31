@@ -1,13 +1,13 @@
 <template>
   <div>
-    <button class="open-cart" @click="cartToggle()">
+    <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
       <Icon name="cart"/>
       <span class="items-count animated" v-bind:class="{'jello': changing}">{{totalItems}}</span>
     </button>
     <div class="sidemenu" :class="[showCart ? 'open' : '']">
       <div class="inner_menu">
         <div class="cart_title">
-          <button class="close_cart" @click="cartToggle()">
+          <button class="close_cart" @click="cartToggle()" aria-label="Close Cart">
             <Icon class="closeIcon" name="close"/>
           </button>
           <div class="col-12 title_cont">
@@ -98,7 +98,7 @@
           <div class="btn-box">
             <div class="col-8 offset-2">
               <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
-              <button class="btn" v-else>
+              <button class="btn" aria-label="Loading" v-else>
                 <Loading class="cart_loader"/>
               </button>
             </div>
@@ -111,22 +111,24 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames, getUrl, URLNames } from "@/config";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { CartHelper } from "@/objects/CartObjects";
-import { Icon, Loading } from "@/extendables/BaseComponents";
+import { mapState } from 'vuex';
+import { EventManager } from '@/utils';
+import {
+  getEnum, EnumNames, getUrl, URLNames,
+} from '@/config';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { CartHelper } from '@/objects/CartObjects';
+import { Icon, Loading } from '@/extendables/BaseComponents';
 
-const QUERY_STORE_ID = "store_id";
-const QUERY_COMBOS_ARRAY = "combos[]";
-const QUERY_PRODUCTS_ARRAY = "products[]";
+const QUERY_STORE_ID = 'store_id';
+const QUERY_COMBOS_ARRAY = 'combos[]';
+const QUERY_PRODUCTS_ARRAY = 'products[]';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     Icon,
-    Loading
+    Loading,
   },
   data() {
     return {
@@ -136,13 +138,13 @@ export default {
       loading: false,
       cartHelper: null,
       cartText: {
-        empty: "Tu carrito está vacío...",
-        filled: "Te estás llevando..."
-      }
+        empty: 'Tu carrito está vacío...',
+        filled: 'Te estás llevando...',
+      },
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "storeIdentifier", "store_id"]),
+    ...mapState(StoreDataNamespace, ['data', 'storeIdentifier', 'store_id']),
     emptyCartText() {
       return this.items.length > 0 ? this.cartText.filled : this.cartText.empty;
     },
@@ -162,17 +164,17 @@ export default {
 
       EventManager.Trigger(
         getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        this.totalItems
+        this.totalItems,
       );
 
       return price;
-    }
+    },
   },
   methods: {
     saveOnLocalStorage() {
       localStorage.setItem(
         `${this.storeIdentifier}_store_cart`,
-        JSON.stringify([this.items, JSON.stringify(new Date())])
+        JSON.stringify([this.items, JSON.stringify(new Date())]),
       );
     },
     deleteLocalStorage() {
@@ -180,7 +182,7 @@ export default {
     },
     getLocalStorage() {
       const localSt = JSON.parse(
-        localStorage.getItem(`${this.storeIdentifier}_store_cart`)
+        localStorage.getItem(`${this.storeIdentifier}_store_cart`),
       );
       if (localSt != null) {
         const yesterday = new Date();
@@ -209,7 +211,7 @@ export default {
       }
 
       this.items.push(
-        this.cartHelper.getCartObjectByProductId(id, productClass)
+        this.cartHelper.getCartObjectByProductId(id, productClass),
       );
     },
     qtMinus(item) {
@@ -236,7 +238,7 @@ export default {
 
       const url = this.items.reduce((accumulator, currentValue) => {
         accumulator += `&${
-          currentValue.class === "bundle"
+          currentValue.class === 'bundle'
             ? [QUERY_COMBOS_ARRAY]
             : [QUERY_PRODUCTS_ARRAY]
         }`;
@@ -253,34 +255,31 @@ export default {
     },
     hideScrollBar() {
       if (this.showCart) {
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-      } else
-        document.getElementsByTagName("body")[0].style.overflowY = "initial";
+        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+      } else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
     },
     suscribeToEvents() {
       EventManager.Subscribe(
         getEnum(EnumNames.EventNames).ADD_TO_CART,
-        data => {
+        (data) => {
           const [id, productClass] = data;
           this.addToCart(id, productClass);
-        }
+        },
       );
 
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
-        this.cartToggle()
-      );
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
 
       EventManager.Subscribe(
         getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        () => this.saveOnLocalStorage()
+        () => this.saveOnLocalStorage(),
       );
-    }
+    },
   },
   mounted() {
     this.getLocalStorage();
     this.suscribeToEvents();
     this.cartHelper = new CartHelper(this.data);
-  }
+  },
 };
 </script>
 

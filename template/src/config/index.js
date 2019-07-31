@@ -1,3 +1,5 @@
+/* global $defaultSlug */
+
 import URLParams from '../utils/urlparams';
 
 export const EnvironmentNames = {
@@ -61,7 +63,7 @@ const config = {
   },
   variables: {
     [VariableNames.WaffleVersion]: 1,
-    [VariableNames.DefaultSlug]: 'samurai-de-ensaladas',
+    [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'samurai-de-ensaladas',
   },
   enums: {
     [EnumNames.EventNames]: {

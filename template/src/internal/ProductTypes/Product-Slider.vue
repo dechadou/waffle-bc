@@ -115,8 +115,8 @@ export default {
       return this.articleList.filter(article => article.atributtes[attribute]);
     },
     getPrice: () => Math.floor(
-        this.selectedArticle ? this.selectedArticle.price : this.data.price,
-      ),
+      this.selectedArticle ? this.selectedArticle.price : this.data.price,
+    ),
     getButtonType() {
       if (this.data.class === 'product' && this.articleList.length > 1) {
         return this.Select;
@@ -128,10 +128,10 @@ export default {
   },
   filters: {
     displayAuthors: authors => (!authors
-        ? ''
-        : authors
-          .filter((v, i) => authors.indexOf(v) === i)
-          .reduce((acc, current) => (acc === '' ? '' : ` + ${current.name}`))),
+      ? ''
+      : authors
+        .filter((v, i) => authors.indexOf(v) === i)
+        .reduce((acc, current) => (acc === '' ? '' : ` + ${current.name}`))),
   },
 };
 </script>

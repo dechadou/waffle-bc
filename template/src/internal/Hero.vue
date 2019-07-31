@@ -5,7 +5,7 @@
         <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
           <div class="container">
             <div class="col-12 col-md-6 offset-md-3 label-container">
-              <img :src="label" class="label img-fluid mx-auto d-block" v-if="label">
+              <img :src="label" class="label img-fluid mx-auto d-block" alt="label" v-if="label">
             </div>
             <div class="col-12 col-md-8 offset-md-2" v-if="introCopy">
               <p v-html="introCopy"/>

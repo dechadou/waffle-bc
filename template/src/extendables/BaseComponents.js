@@ -23,4 +23,3 @@ export { default as Profile } from '@/internal/Profile.vue';
 export { default as PageShare } from '@/internal/PageShare.vue';
 export { default as Loading } from '@/internal/Loading.vue';
 export { default as Cart } from '@/internal/Cart.vue';
-

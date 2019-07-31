@@ -77,32 +77,32 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "Product-Internal",
+  name: 'Product-Internal',
   extends: ProductType,
   data() {
     return {
       selectedArticle: null,
-      selected: [""],
+      selected: [''],
       attributeList: [],
       carouselImages: [],
       swiperOption: {
         autoplay: {
           delay: 5000,
-          disableOnInteraction: false
+          disableOnInteraction: false,
         },
         initialSlide: 1,
-        direction: "vertical",
+        direction: 'vertical',
         slidesPerView: 1,
         spaceBetween: 30,
         mousewheel: false,
         pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        }
-      }
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
     };
   },
   created() {
@@ -114,31 +114,31 @@ export default {
     },
     $route() {
       this.selectedArticle = this.selectedArt;
-    }
+    },
   },
   methods: {
-    getSelectedArticleOrSelector(){
+    getSelectedArticleOrSelector() {
       if (this.data.articles[0].atributtes.length === 0) {
         [this.selectedArticle] = this.data.articles;
         return;
       }
 
       let ind = 0;
-      Object.keys(this.data.articles[0].atributtes).forEach(attribute => {
+      Object.keys(this.data.articles[0].atributtes).forEach((attribute) => {
         this.attributeList.push([attribute, ind]);
         this.selected.push('');
         ind += 1;
       });
     },
     getArticleBySelectedOptions() {
-      const sel = this.selected.find(el => el === "");
-      if (sel === "" || this.selected.length === 0) return null;
+      const sel = this.selected.find(el => el === '');
+      if (sel === '' || this.selected.length === 0) return null;
 
       let filteredArticles = this.articleList;
 
-      this.attributeList.forEach(attribute => {
+      this.attributeList.forEach((attribute) => {
         filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]]
+          el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
         );
       });
 
@@ -146,15 +146,14 @@ export default {
     },
     getOptions(attribute) {
       const options = [];
-      this.articleList.forEach(article => {
-        if (article.atributtes[attribute])
-          options.push(article.atributtes[attribute]);
+      this.articleList.forEach((article) => {
+        if (article.atributtes[attribute]) options.push(article.atributtes[attribute]);
       });
       return options;
     },
     getCarouselImages() {
       const carouselImages = [];
-      Object.values(this.data.media).forEach(media => {
+      Object.values(this.data.media).forEach((media) => {
         if (media.primary_media) carouselImages.unshift(media.url);
         else carouselImages.push(media.url);
       });
@@ -163,18 +162,18 @@ export default {
   },
   filters: {
     displayAuthors(authors) {
-      let finalString = "";
+      let finalString = '';
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach(author => {
+      authors.forEach((author) => {
         if (finalString.search(author.name) === -1) {
-          if (finalString !== "") finalString += " + ";
+          if (finalString !== '') finalString += ' + ';
           finalString += author.name;
         }
       });
       return finalString;
-    }
-  }
+    },
+  },
 };
 </script>
 

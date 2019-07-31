@@ -15,6 +15,9 @@ module.exports = {
         plainSprite: true,
       },
     },
+    webpackBundleAnalyzer: {
+      openAnalyzer: false,
+    },
   },
 
   css: {
@@ -34,8 +37,5 @@ module.exports = {
       .rule('svg-sprite')
       .use('svgo-loader')
       .loader('svgo-loader');
-    config.plugins.delete('html');
-    config.plugins.delete('preload');
-    config.plugins.delete('prefetch');
   },
 };

@@ -18,22 +18,22 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 export default {
-  name: "Icon",
+  name: 'Icon',
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     title: String,
     width: String,
     height: String,
     iconFill: String,
-    iconStroke: String
+    iconStroke: String,
   },
   computed: {
     iconPath() {
       let icon = require(`@/assets/icons/${this.name}.svg`);
-      if (Object.prototype.hasOwnProperty.call(icon, "default")) {
+      if (Object.prototype.hasOwnProperty.call(icon, 'default')) {
         icon = icon.default;
       }
 
@@ -42,7 +42,7 @@ export default {
 
     className() {
       return `svg-icon svg-icon--${this.name}`;
-    }
-  }
+    },
+  },
 };
 </script>

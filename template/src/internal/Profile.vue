@@ -4,7 +4,7 @@
       <hr class="d-none d-md-block">
       <div class="row">
         <div class="col-lg-3">
-          <img v-if="image" :src="image" class="centered-and-cropped">
+          <img v-if="image" :src="image" class="centered-and-cropped" alt="Author">
         </div>
         <div class="col-lg-6">
           <h2>{{ title }}</h2>
@@ -24,6 +24,7 @@
                   v-if="socialNetwork.username"
                   :href="`${ socialNetwork.url }${ socialNetwork.username }/`"
                   target="_blank"
+                  rel="noopener"
                 >{{ socialNetwork.name }}</a>
               </div>
             </div>
@@ -156,11 +157,11 @@ p {
 }
 
 a {
-  color: #c4c4c4;
-  font-size: 18px;
+  color: #777777;
+  font-size: 20px;
   display: inline-block;
   text-decoration: none;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 hr {

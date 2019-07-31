@@ -1,5 +1,6 @@
 <script>
-import { Icon } from "@/extendables/BaseComponents";
+import { Icon } from '@/extendables/BaseComponents';
+
 export default {
   name: 'FooterTpe',
   props: {
@@ -10,6 +11,6 @@ export default {
   },
   components: {
     Icon,
-  }
+  },
 };
 </script>

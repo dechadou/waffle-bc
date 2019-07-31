@@ -14,6 +14,7 @@ module.exports = {
     'max-len': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
+    'linebreak-style': ['error', 'windows'],
   },
   parserOptions: {
     parser: 'babel-eslint',
