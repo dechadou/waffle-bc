@@ -1,5 +1,6 @@
 <template>
   <div
+    id="ProductDisplayer-Recommended"
     class="row"
     v-if="home_product_type !== 'thumbnail' && products.length > 0"
   >
@@ -27,6 +28,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#ProductDisplayer-Recommended{
+  margin: 50px 0;
+}
 h3 {
   font-size: 24px;
   font-family: "Founders_Grotesk_Regular", sans-serif;

@@ -1,15 +1,20 @@
 <template>
   <div>
     <section id="hero">
-      <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
-        <div class="container">
-          <div class="col-12 col-md-6 offset-md-3" v-if="label">
-            <img :src="label" class="label img-fluid mx-auto d-block">
-          </div>
-          <div class="col-12 col-md-8 offset-md-2" v-if="introCopy">
-            <p v-html="introCopy"/>
+      <div v-if="label || introCopy">
+        <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
+          <div class="container">
+            <div class="col-12 col-md-6 offset-md-3 label-container">
+              <img :src="label" class="label img-fluid mx-auto d-block" v-if="label">
+            </div>
+            <div class="col-12 col-md-8 offset-md-2" v-if="introCopy">
+              <p v-html="introCopy"/>
+            </div>
           </div>
         </div>
+      </div>
+      <div v-else>
+        <img :src="bg" class="heroImg">
       </div>
     </section>
   </div>
@@ -62,10 +67,18 @@ p{
   padding: 20px 30px!important;
 }
 
+.label-container{
+  min-height: 30px;
+}
+
 .label{
   display: block;
   margin: 0 auto;
   padding: 50px 0;
+  width: 100%;
+}
+
+.heroImg{
   width: 100%;
 }
 </style>

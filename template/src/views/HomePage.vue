@@ -11,18 +11,19 @@
       />
       <div class="container">
         <section id="shop">
-          <ProductDisplayer-Main :products="mainProducts" />
-          <ProductDisplayer-Recommended :products="recommendedProducts" />
+          <ProductDisplayer-Main :products="mainProducts" v-if="mainProducts.length > 0"/>
+          <ProductDisplayer-Recommended :products="recommendedProducts" v-if="recommendedProducts.length > 0 && template.productos_relacionados" />
+          <Profile
+            :title="template.creador_titulo"
+            :text="template.creador_bio"
+            :image="template.creador_image"
+            :facebook="template.creador_social_fb"
+            :twitter="template.creador_social_tw"
+            :instagram="template.creador_social_ig"
+            :website="template.creador_social_web"
+          />
+          <ProductDisplayer-Recommended :products="recommendedProducts" v-if="recommendedProducts.length > 0 && !template.productos_relacionados" />
         </section>
-        <Profile
-          :title="template.creador_titulo"
-          :text="template.creador_bio"
-          :image="template.creador_image"
-          :facebook="template.creador_social_fb"
-          :twitter="template.creador_social_tw"
-          :instagram="template.creador_social_ig"
-          :website="template.creador_social_web"
-        />
         <PageShare :title="template.call_to_action_title"/>
       </div>
     </div>
@@ -30,64 +31,60 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import * as ProductDisplayers from "@/extendables/ProductDisplayerTypes";
+import { mapState } from 'vuex';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import * as ProductDisplayers from '@/extendables/ProductDisplayerTypes';
 import {
   Hero,
   GlobalWarning,
   Profile,
   PageShare,
   Cart,
-} from "@/extendables/BaseComponents";
+} from '@/extendables/BaseComponents';
 
 export default {
-  name: "HomePage",
+  name: 'HomePage',
   components: {
     Hero,
     GlobalWarning,
     Profile,
     ...ProductDisplayers,
     PageShare,
-    Cart
+    Cart,
   },
   data() {
     return {
       mainProducts: [],
-      recommendedProducts: []
+      recommendedProducts: [],
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "template", "home_products"])
+    ...mapState(StoreDataNamespace, ['data', 'template', 'home_products']),
   },
   methods: {
     getProducts() {
-      if (!this.home_products || this.home_products.length === 0){
-        console.error("[Waffle Error]: There are no products nor bundles to show");
-        return;
-      } 
+      if (!this.home_products || this.home_products.length === 0) {
+        throw new Error('There are no products nor bundles to show');
+      }
       const products = [...this.home_products].sort(
-        (a, b) => a.position - b.position
+        (a, b) => a.position - b.position,
       );
-      products.forEach(x => {
-        let product =
-          x.type === "combo" ? this.data.bundles : this.data.products;
+      products.forEach((x) => {
+        let product = x.type === 'combo' ? this.data.bundles : this.data.products;
 
-        product = product.find(y => {
-          return +y.id === +x.id;
-        });
+        product = product.find(y => +y.id === +x.id);
 
         if (!product) return;
 
         if (x.principal) this.mainProducts.push(product);
         else this.recommendedProducts.push(product);
       });
-    }
+    },
   },
   created() {
     console.log(this.template);
     this.getProducts();
-  }
+  },
 };
 </script>
 

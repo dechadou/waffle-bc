@@ -102,7 +102,7 @@ export default {
 
 <style lang="scss" scoped>
 section {
-  margin-top: 100px;
+  margin-top: 50px 0;
 }
 
 .centered-and-cropped {
