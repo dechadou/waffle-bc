@@ -474,8 +474,15 @@ export default {
   background: transparent;
   cursor: pointer;
   position: fixed;
-  right: 30px;
-  top: 15px;
+  right: 8%;
+  top: 10px;
+  padding: 0;
+  z-index: 1000;
+
+  @include lg-up{
+    top: 15px;
+  }
+
   svg {
     width: 35px;
     height: 35px;
@@ -484,7 +491,7 @@ export default {
     border-radius: 50%;
     position: absolute;
     top: 20px;
-    right: 3px;
+    right: 0;
     font-size: 13px;
     width: 18px;
     height: 18px;

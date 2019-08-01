@@ -1,8 +1,6 @@
 <template>
   <transition name="slide-fade">
     <div>
-      <GlobalWarning/>
-      <Cart/>
       <Hero
         :label="template.etiqueta"
         :desktopImage="template.desktop_image"
@@ -36,21 +34,17 @@ import { StoreDataNamespace } from '@/store/module/StoreData';
 import * as ProductDisplayers from '@/extendables/ProductDisplayerTypes';
 import {
   Hero,
-  GlobalWarning,
   Profile,
   PageShare,
-  Cart,
 } from '@/extendables/BaseComponents';
 
 export default {
   name: 'HomePage',
   components: {
     Hero,
-    GlobalWarning,
     Profile,
     ...ProductDisplayers,
     PageShare,
-    Cart,
   },
   data() {
     return {

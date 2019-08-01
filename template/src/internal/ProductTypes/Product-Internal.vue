@@ -1,14 +1,15 @@
 <template>
   <div>
     <article id="producto" class="product">
+      <router-link class="go-back" :to="$route.params.slug ? `/${$route.params.slug}/` : '/'"><Icon class="arrow-left-button" name="arrow-left"/> <span>Volver a Tienda</span></router-link>
       <div class="row">
         <div class="col-12 col-md-6">
           <swiper
             :options="swiperOption"
-            v-if="this.data.media > 1"
+            v-if="carouselImages.length > 1"
             class="swiper product-carousel"
           >
-            <swiper-slide v-for="(img, index) in getCarouselImages()" :key="index">
+            <swiper-slide v-for="(img, index) in carouselImages" :key="index">
               <img class="d-block swiper" :src="img">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -16,8 +17,8 @@
           <img v-else class="d-block w-100" :src="singleImage">
         </div>
 
-        <div class="col-md-6 descriptionBox">
-          <div class="containerXs">
+        <div class="col-md-6 description-box">
+          <div class="container-xs">
             <div class="row">
               <div class="col-8 pr-0">
                 <h1>{{ data.name }}</h1>
@@ -33,7 +34,7 @@
             <!-- Product Description -->
             <p v-html="data.description"></p>
 
-            <ul class="additionalInfo" v-if="data.informacion_adicional.length > 0">
+            <ul class="additional-info" v-if="data.informacion_adicional.length > 0">
               <div class="row">
                 <li v-for="info in data.informacion_adicional" :key="info.meta" class="col-6 col-md-4">
                   <div class="row">
@@ -61,13 +62,16 @@
               </div>
             </div>
             <div class="row">
-              <AddToCartButton
-                v-if="selectedArticle"
-                :data="selectedArticle"
-                :isBundle="isBundle"
-                :image="image"
-                class="col-12 col-md-8"
+              <div class="col-12 col-md-10 col-lg-7">
+              <component
+                class="addToCartButton"
+                :is="getButtonType()"
+                :slug="data.slug"
+                :id="productId"
+                :productClass="productClass"
+                :image="singleImage"
               />
+              </div>
             </div>
           </div>
         </div>
@@ -77,11 +81,18 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { ProductType, Icon } from '@/extendables/BaseComponents';
+import 'swiper/dist/css/swiper.css' ;
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 
 export default {
   name: 'Product-Internal',
   extends: ProductType,
+  components: {
+    swiper,
+    swiperSlide,
+    Icon,
+  },
   data() {
     return {
       selectedArticle: null,
@@ -107,16 +118,21 @@ export default {
   },
   created() {
     this.getSelectedArticleOrSelector();
+    this.carouselImages = this.getCarouselImages();
   },
   watch: {
     selected() {
       this.selectedArticle = this.getArticleBySelectedOptions();
     },
     $route() {
-      this.selectedArticle = this.selectedArt;
+      this.selectedArticle = this.getArticleBySelectedOptions();
     },
   },
   methods: {
+    getButtonType() {
+      if (this.isOutOfStock)  return 'OutOfStock';
+      return 'Normal';
+    },
     getSelectedArticleOrSelector() {
       if (this.data.articles[0].atributtes.length === 0) {
         [this.selectedArticle] = this.data.articles;
@@ -204,6 +220,15 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.addToCartButton{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  @include md-up {
+    position: initial;
+  }
+}
 .swiper {
   display: block;
   max-height: 100vw;
@@ -212,6 +237,37 @@ export default {
   @include md-up {
     max-height: 100vh;
     max-width: 50vw;
+  }
+}
+
+.go-back{
+  font-size: 16px;
+  position: fixed;
+  z-index: 3;
+  left: 3%;
+
+  @include md-up {
+    left: unset;
+    right: 55%;
+    top: 22px;
+  }
+  span {
+    display: none;
+    position: relative;
+    bottom: 29px;
+    left: 40px;
+    @include md-up {
+      display: block;
+    }
+  }
+
+  .arrow-left-button{
+    width: 50px;
+    height: 50px;
+    @include md-up {
+      width: 30px;
+      height: 30px;
+    }
   }
 }
 
@@ -227,6 +283,7 @@ export default {
 #producto {
   background: #f3f3f3;
   overflow: hidden;
+  padding-bottom: 65px;
 
   h1 {
     color: #14273c;
@@ -260,7 +317,8 @@ export default {
 
   .price {
     font-size: 20px;
-    float: left;
+    float: right;
+    margin-top: 5px;
 
     span {
       font-size: 16px;

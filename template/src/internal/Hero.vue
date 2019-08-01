@@ -1,6 +1,7 @@
 <template>
   <div>
     <section id="hero">
+      <GlobalWarning/>
       <div v-if="label || introCopy">
         <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
           <div class="container">
@@ -21,8 +22,12 @@
 </template>
 
 <script>
+import { GlobalWarning } from '@/extendables/BaseComponents';
 export default {
   name: 'Hero',
+  components: {
+    GlobalWarning,
+  },
   props: {
     label: String,
     desktopImage: String,

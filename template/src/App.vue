@@ -4,6 +4,7 @@
 <template>
   <div>
     <div v-if="show">
+      <Cart/>
       <router-view/>
       <component :is="footer" :year="year"/>
     </div>
@@ -29,13 +30,14 @@ import {
 import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
 import { getVariable, VariableNames } from '@/config';
 import * as FooterTypes from '@/extendables/FooterTypes';
-import { Loading } from '@/extendables/BaseComponents';
+import { Loading, Cart } from '@/extendables/BaseComponents';
 
 export default {
   name: 'App',
   components: {
     ...FooterTypes,
     Loading,
+    Cart,
   },
   data() {
     return {
