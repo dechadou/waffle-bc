@@ -68,11 +68,16 @@ export default {
         }`;
       } */
     },
+    $route (to, from){
+      /* Por alguna razón, en ciertos casos el router no carga inmediatamente y devuelve null aunque
+         haya una ruta válida, por lo tanto espero a que el router se actualice antes de fetchear la info */
+
+      if(this.isLoaded) return;
+      this.fetchData();
+    }
   },
-  created() {
-    this.fetchStoreData(
-      this.$route.params.slug || getVariable(VariableNames.DefaultSlug),
-    );
+  created(){
+    this.fetchData();
   },
   methods: {
     ...mapMutations({
@@ -83,6 +88,10 @@ export default {
     ...mapActions({
       fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA,
     }),
+    fetchData(){
+      if(!this.$route.name) return;
+      this.fetchStoreData(this.$route.params.slug || getVariable(VariableNames.DefaultSlug));
+    },
     setApp() {
       // Si la tienda no pertenece a este dominio redirijo
       if (!this.isValidPage()) {

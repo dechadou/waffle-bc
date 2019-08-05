@@ -1,6 +1,8 @@
 <template>
   <footer>
-    <Icon name="abre" class="logo"/>
+    <a href="https://abrecultura.com/" target="_blank" rel="noopener">
+      <Icon name="abre" class="logo"/>
+    </a>
   </footer>
 </template>
 

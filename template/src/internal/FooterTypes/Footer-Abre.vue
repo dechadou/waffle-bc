@@ -3,9 +3,9 @@
     <div class="content">
       <aside class="logoBox">
         <h2 class="logo">
-          <router-link to="/">
+          <a href="https://abrecultura.com/" target="_blank" rel="noopener">
             <Icon class="logoIcon" name="abre"/>
-          </router-link>
+          </a>
         </h2>
       </aside>
       <ul class="menu">

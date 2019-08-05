@@ -1,9 +1,9 @@
 <template>
   <div
     id="ProductDisplayer-Recommended"
-    class="row"
     v-if="home_product_type !== 'thumbnail' && products.length > 0"
   >
+  <div class="row">
     <div class="col-12 col-md-3">
       <h3>
         Aprovechá
@@ -12,24 +12,114 @@
         <br class="d-none d-md-block">a tu pedido:
       </h3>
     </div>
-    <div class="col-12 col-md-3" v-for="product in products" :key="`${product.id}-${product.class}`">
-      <Product-DescriptionBottom :data="product"/>
+    <div class="col-md-9 d-none d-md-block">
+      <div class="row">
+        <div v-for="product in products" :key="`${product.id}-${product.class}`" class="col-4">
+          <Product-DescriptionBottom :data="product"/>
+        </div>
+      </div>
     </div>
+  </div>
+
+    <swiper :options="swiperOption" class="d-block d-md-none">
+      <swiper-slide v-for="product in products" :key="`${product.id}-${product.class}`">
+         <Product-SliderMobile :data="product"/>
+      </swiper-slide>
+    </swiper>
+
+
   </div>
 </template>
 
 <script>
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
+
 import { ProductDisplayerType } from '@/extendables/BaseComponents';
+import 'swiper/dist/css/swiper.css' ;
 
 export default {
   name: 'ProductDisplayer-Recommended',
   extends: ProductDisplayerType,
+  components: {
+    swiper,
+    swiperSlide,
+  },
+  data(){
+    return {
+      swiperOption: {
+        slidesPerView: 1.8,
+        centeredSlides: true,
+        initialSlide: 1,
+        spaceBetween: -30,
+      },
+    };
+  },
 };
 </script>
 
+<style lang="scss">
+.swiper-container {
+  padding: 0 10%;
+      margin: 0 -15px;
+  @media (min-width: 768px) {
+    padding: 0;
+  }
+}
+.swiper-slide .product {
+  .description {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s ease;
+    @media (min-width: 768px) {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  p.authors {
+    text-align: center;
+    font-size: 18px;
+  }
+}
+.swiper-slide.swiper-slide-active .product {
+  .description {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s ease;
+  }
+}
+.swiper-slide .product .image_wrap img {
+  transition: all 0.3s ease;
+}
+.swiper-slide .product .image__wrapper.loaded img {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.swiper-slide-active .product .image__wrapper.loaded img {
+  
+  max-width: 120%;
+  width: 120% !important;
+  z-index: 21;
+  top: -5vw;
+  left: -10%;
+  transition: all 0.3s ease;
+  @media (min-width: 768px) {
+    max-width: 100%;
+    width: 100% !important;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+}
+</style>
+
 <style scoped lang="scss">
 #ProductDisplayer-Recommended{
-  margin: 50px 0;
+  margin: 50px -15px;
+  overflow: hidden;
+  @include md-up {
+    margin: 50px 0;
+  }
 }
 h3 {
   font-size: 24px;

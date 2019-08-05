@@ -5,7 +5,7 @@
         <div class="col-12">
           <LazyImage
             :source="singleImage"
-            cssClasses="img-fluid mx-auto d-block"
+            cssClasses="img-fluid mx-auto d-block position-relative"
             :description="`${data.title} image`"
           />
         </div>
@@ -13,19 +13,14 @@
         <!-- DESCRIPTION -->
         <div class="col-12 description">
           <!-- TITLE, PRICE, DESCRIPTION -->
-          <div class="title_price_block row">
-            <div class="col-9">
-              <h1 class="title">{{ data.name }}</h1>
-            </div>
-            <div class="col-3 pl-0 price-container">
+          <div class="title_price_block">
+            <h1 class="title">{{ data.name }}
+              &nbsp;•&nbsp;
               <span class="price">
                 <span>$</span>
                 {{ price }}
               </span>
-            </div>
-            <div class="col-12 col-md-11">
-              <p v-html="data.description"></p>
-            </div>
+            </h1>
           </div>
           <!-- /TITLE, PRICE, DESCRIPTION -->
 
@@ -49,7 +44,7 @@
 import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 export default {
-  name: 'Product-Slider',
+  name: 'Product-SliderMobile',
   extends: ProductType,
   components: {
     LazyImage,
@@ -78,7 +73,8 @@ article {
 h1 {
   font-family: "Founders_Grotesk_Regular", sans-serif;
   font-weight: 400;
-  font-size: 26px;
+  font-size: 16px;
+  text-align: center;
   color: $abre-dark-grey;
   line-height: 1;
   @include md-up {
@@ -103,20 +99,11 @@ p {
   }
 }
 
-.price {
-  float: right;
-  font-size: 18px;
-  margin-top: 3px;
-  font-weight: 400;
-  font-family: "Founders_Grotesk_Regular", sans-serif;
+.price span {
+  font-size: 12px;
+}
 
-  span {
-    font-size: 12px;
-    margin-right: 5px;
-  }
-
-  @include md-up {
-    font-size: 16px;
-  }
+.description{
+  margin-top: -18%;
 }
 </style>

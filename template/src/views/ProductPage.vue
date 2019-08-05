@@ -1,18 +1,23 @@
 <template>
   <transition name="slide-fade">
+    <div>
+    <a class="go-back" @click="goBack()" href="#"><Icon class="arrow-left-button" name="arrow-left"/> <span>Volver a Tienda</span></a>
     <ProductInternal :data="product" />
+    </div>
   </transition>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { Icon } from '@/extendables/BaseComponents';
 import { StoreDataNamespace } from '@/store/module/StoreData';
 import { ProductInternal } from '@/extendables/ProductTypes';
 
 export default {
-  name: 'HomePage',
+  name: 'ProductPage',
   components: {
     ProductInternal,
+    Icon,
   },
   data() {
     return {
@@ -28,7 +33,10 @@ export default {
     getProduct() {
       const productData = this.productClass === 'combo' ? this.data.bundles : this.data.products;
       this.product = productData.find(x => x.slug === this.productSlug);
-      if (!this.product) this.$route.params.slug ? router.push('StoreHomePage') : router.push('DefaultHomePage');
+      if (!this.product) window.location = `/${this.$route.params.slug || ''}`;
+    },
+    goBack(){
+      window.location = `/${this.$route.params.slug || ''}`;
     },
   },
   created() {
@@ -39,3 +47,37 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+
+.go-back{
+  font-size: 16px;
+  position: fixed;
+  z-index: 3;
+  left: 3%;
+
+  @include md-up {
+    left: unset;
+    right: 55%;
+    top: 22px;
+  }
+  span {
+    display: none;
+    position: relative;
+    bottom: 29px;
+    left: 40px;
+    @include md-up {
+      display: block;
+    }
+  }
+
+  .arrow-left-button{
+    width: 50px;
+    height: 50px;
+    @include md-up {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+</style>

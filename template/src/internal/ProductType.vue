@@ -25,6 +25,7 @@ export default {
       isOutOfStock: null,
       productId: null,
       productClass: null,
+      internalLink: null
     };
   },
   beforeMount() {
@@ -38,6 +39,11 @@ export default {
     this.productClass = this.data.class === 'product'
       ? this.articleList[0].class
       : this.data.class;
+
+    const internalLinkClass = this.productClass === 'article' ? 'producto' : 'combo';
+    this.internalLink = this.$route.params.slug 
+      ? `/${this.$route.params.slug}/${internalLinkClass}/${this.data.slug || ''}`
+      : `/${internalLinkClass}/${this.data.slug || ''}`;
   },
 };
 </script>
