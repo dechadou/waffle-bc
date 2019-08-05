@@ -21,6 +21,7 @@
                 {{ price }}
               </span>
             </h1>
+            <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
           </div>
           <!-- /TITLE, PRICE, DESCRIPTION -->
 
@@ -62,6 +63,18 @@ export default {
       return 'Normal';
     },
   },
+  filters: {
+    displayAuthors(authors) {
+      let str = '';
+      authors
+        .filter((v, i) => authors.indexOf(v) === i)
+        .forEach((x) => {
+          str += str === '' ? x.name : ` + ${x.name}`;
+        });
+
+      return str;
+    },
+  },
 };
 </script>
 
@@ -73,7 +86,7 @@ article {
 h1 {
   font-family: "Founders_Grotesk_Regular", sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   color: $abre-dark-grey;
   line-height: 1;
@@ -94,6 +107,12 @@ p {
     color: $abre-description-grey;
   }
 
+  &.authors {
+    color: #b0b0b0;
+    font-size: 16px;
+    margin-top: 0;
+  }
+
   @include md-up {
     font-size: 16px;
   }
@@ -105,5 +124,6 @@ p {
 
 .description{
   margin-top: -18%;
+  position: relative;
 }
 </style>
