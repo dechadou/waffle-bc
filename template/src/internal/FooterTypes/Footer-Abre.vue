@@ -36,26 +36,21 @@
       </div>
     </div>
 
-    <aside class="social-footer">
-      <ul class="social">
-        <li  v-for="item in social" :key="item.name">
-          <a :href="item.url" target="_blank">
-            <Icon :name="item.name"/>
-          </a>
-        </li>
-      </ul>
-      <p class="copyright"> ABRE© {{ year }}</p>
-    </aside>
+    <Social :year="year" class="social" />
   </section>
 </template>
 
 
 <script>
-import { FooterType } from '@/extendables/BaseComponents';
+import { FooterType, Social, Icon } from '@/extendables/BaseComponents';
 
 export default {
   name: 'Footer-Abre',
   extends: FooterType,
+  components: {
+    Social,
+    Icon,
+  },
   data() {
     return {
       address: {
@@ -94,16 +89,6 @@ export default {
           url: 'https://abrecultura.com/pasar-a-buscar/',
           isRoute: false,
           showForLandscape: true,
-        },
-      ],
-      social: [
-        {
-          name: 'ig',
-          url: 'https://www.instagram.com/abre_cultura/',
-        },
-        {
-          name: 'fb',
-          url: 'https://www.facebook.com/abreculturapuntocom/',
         },
       ],
     };
@@ -256,60 +241,6 @@ export default {
     svg {
       height: 100%;
       width: 100%;
-    }
-  }
-
-  .social-footer {
-    width: 100%;
-    padding: 0 4%;
-    display: flex;
-    justify-content: space-between;
-
-    @include lg-up {
-      padding: 0 7vw;
-    }
-  }
-  // social
-  .social {
-    width: 17.5%;
-    margin: 2vw 0 2.5vw;
-    display: flex;
-    justify-content: space-between;
-
-    @include lg-up {
-      width: 5%;
-    }
-
-    svg {
-      width: 7vw;
-      height: 5vw;
-      max-width: 40px;
-      max-height: 40px;
-
-      @include lg-up {
-        max-width: 16px;
-        max-height: 16px;
-      }
-    }
-  }
-
-  .copyright {
-    width: 46%;
-    text-align: left;
-    font-size: 4vw;
-    color: $abre-description-grey;
-    margin: 3%;
-
-    @include landscape{
-      font-size: 2vw;
-    }
-
-    @include lg-up {
-      width: 25%;
-      font-size: 1.1vw;
-      line-height: 1;
-      margin-top: 12px;
-      margin-bottom: 10px;
     }
   }
 </style>

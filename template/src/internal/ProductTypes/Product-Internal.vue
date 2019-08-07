@@ -81,9 +81,10 @@
 </template>
 
 <script>
-import { ProductType, Icon } from '@/extendables/BaseComponents';
-import 'swiper/dist/css/swiper.css' ;
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { ProductType, Icon } from '@/extendables/BaseComponents';
+import 'swiper/dist/css/swiper.css';
+
 
 export default {
   name: 'Product-Internal',
@@ -130,7 +131,7 @@ export default {
   },
   methods: {
     getButtonType() {
-      if (this.isOutOfStock)  return 'OutOfStock';
+      if (this.isOutOfStock) return 'OutOfStock';
       return 'Normal';
     },
     getSelectedArticleOrSelector() {

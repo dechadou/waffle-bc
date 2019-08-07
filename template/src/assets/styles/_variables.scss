@@ -4,6 +4,8 @@ $abre-description-grey: #B2B2B2;
 $abre-grey: #c1c1c1;
 $abre-light-grey: #f3f3f3;
 $abre-green: #237116;
+$easeInCubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$easeOutExpo: cubic-bezier(0.19, 1, 0.22, 1);
 
 @mixin md-up {
   @media (min-width: 768px) { @content; }

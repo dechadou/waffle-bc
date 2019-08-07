@@ -4,9 +4,8 @@
       ${width ? `width:${width};` : ''}
       ${height ? `height:${height};` : ''}
       ${iconFill ? `fill:${iconFill};` : ''}
-      ${iconStroke ? `fill:${iconStroke};` : ''}
+      ${iconStroke ? `stroke:${iconStroke};` : ''}
     `"
-    :class="className"
     xmlns="http://www.w3.org/2000/svg"
   >
     <title v-if="title">{{ title }}</title>

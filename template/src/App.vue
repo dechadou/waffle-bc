@@ -4,6 +4,7 @@
 <template>
   <div>
     <div v-if="show">
+      <HeaderSection :year="year" v-if="store_id === 8" />
       <Cart/>
       <router-view/>
       <component :is="footer" :year="year"/>
@@ -30,7 +31,7 @@ import {
 import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
 import { getVariable, VariableNames } from '@/config';
 import * as FooterTypes from '@/extendables/FooterTypes';
-import { Loading, Cart } from '@/extendables/BaseComponents';
+import { Loading, Cart, HeaderSection } from '@/extendables/BaseComponents';
 
 export default {
   name: 'App',
@@ -38,6 +39,7 @@ export default {
     ...FooterTypes,
     Loading,
     Cart,
+    HeaderSection,
   },
   data() {
     return {
@@ -46,7 +48,7 @@ export default {
   },
   computed: {
     ...mapState(ThemeNamespace, ['footer']),
-    ...mapState(StoreDataNamespace, ['template', 'error', 'year']),
+    ...mapState(StoreDataNamespace, ['template', 'error', 'year', 'store_id']),
     ...mapGetters({
       isLoaded: StoreDataGetterTypes.IS_LOADED,
     }),
@@ -62,11 +64,11 @@ export default {
       if (!value) return;
 
       // Si la tienda no existe
-      /* if (this.$route.params.slug) {
+      if (this.$route.params.slug) {
         window.location.href = `${window.location.protocol}//${
           window.location.host
         }`;
-      } */
+      }
     },
   },
   created() {

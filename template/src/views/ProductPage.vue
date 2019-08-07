@@ -28,7 +28,8 @@ export default {
     getProduct() {
       const productData = this.productClass === 'combo' ? this.data.bundles : this.data.products;
       this.product = productData.find(x => x.slug === this.productSlug);
-      if (!this.product) this.$route.params.slug ? router.push('StoreHomePage') : router.push('DefaultHomePage');
+      if (this.product) return;
+      if (this.$route.params.slug) this.router.push('StoreHomePage'); else this.router.push('DefaultHomePage');
     },
   },
   created() {

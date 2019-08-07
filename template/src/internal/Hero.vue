@@ -23,6 +23,7 @@
 
 <script>
 import { GlobalWarning } from '@/extendables/BaseComponents';
+
 export default {
   name: 'Hero',
   components: {
