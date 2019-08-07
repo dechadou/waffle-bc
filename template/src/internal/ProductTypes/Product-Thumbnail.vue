@@ -4,7 +4,7 @@
       <div class="row">
         <!-- IMAGE -->
         <div class="col-12 p-0">
-          <router-link :to="`/producto/${data.slug}`">
+          <router-link :to="internalLink">
             <LazyImage
               :source="singleImage"
               cssClasses="img-fluid mx-auto d-block"
@@ -15,35 +15,40 @@
 
         <!-- DESCRIPTION -->
         <div class="col-12 description">
-          <!-- TITLE AND PRICE -->
-          <div class="title_price_block">
-            <div class="row">
-              <div class="col-9">
-                <h3 class="title">{{ data.name }}</h3>
-              </div>
-              <div class="col-3 pl-0 price-container">
-                <span class="price">
-                  <span>$</span>
-                  {{ price }}
-                </span>
-              </div>
-            </div>
 
-            <!-- AUTHORS -->
-            <div class="row">
-              <div class="col-12">
-                <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+          <router-link :to="internalLink">
+
+            <!-- TITLE AND PRICE -->
+            <div class="title_price_block">
+              <div class="row">
+                <div class="col-9">
+                  <h3 class="title">{{ data.name }}</h3>
+                </div>
+                <div class="col-3 pl-0 price-container">
+                  <span class="price">
+                    <span>$</span>
+                    {{ price }}
+                  </span>
+                </div>
               </div>
+
+              <!-- AUTHORS -->
+              <div class="row">
+                <div class="col-12">
+                  <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+                </div>
+              </div>
+              <!-- /AUTHORS -->
             </div>
-            <!-- /AUTHORS -->
-          </div>
-          <!-- /TITLE AND PRICE -->
+            <!-- /TITLE AND PRICE -->
+
+          </router-link>
 
           <div class="button_container">
             <component
               class="addToCartButton"
               :is="getButtonType()"
-              :slug="data.slug"
+              :link="internalLink"
               :id="productId"
               :productClass="productClass"
               :image="singleImage"

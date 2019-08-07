@@ -5,7 +5,7 @@ import { getEnum, EnumNames } from '@/config';
 export default {
   name: 'AddToCartButton',
   props: {
-    slug: String,
+    link: String,
     id: Number,
     productClass: String,
   },
@@ -23,12 +23,12 @@ export default {
         this.$ga.event({
           eventCategory: 'click',
           eventAction: 'addToCart',
-          eventLabel: this.slug,
+          eventLabel: this.link,
         });
       }
     },
     openLink() {
-      this.$router.push(`/producto/${this.slug}`);
+      this.$router.push(this.link);
     },
   },
 };

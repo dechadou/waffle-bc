@@ -4,8 +4,7 @@
     <button
       key="add"
       v-else
-      class="btn"
-      :class="[{ animated: (!slider) }]"
+      class="btn animated"
       type="button"
       @click="onClick($event)"
     >Agregar al Carrito</button>

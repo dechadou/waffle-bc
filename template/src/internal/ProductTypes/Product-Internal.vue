@@ -1,7 +1,6 @@
 <template>
   <div>
     <article id="producto" class="product">
-      <router-link class="go-back" :to="$route.params.slug ? `/${$route.params.slug}/` : '/'"><Icon class="arrow-left-button" name="arrow-left"/> <span>Volver a Tienda</span></router-link>
       <div class="row">
         <div class="col-12 col-md-6">
           <swiper
@@ -10,7 +9,8 @@
             class="swiper product-carousel"
           >
             <swiper-slide v-for="(img, index) in carouselImages" :key="index">
-              <img class="d-block swiper" :src="img">
+              <img class="d-block swiper swiper-lazy" :data-src="img">
+              <Loading class="swiper-loader"/>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
@@ -49,25 +49,26 @@
               </div>
             </ul>
 
-            <div v-if="attributeList.length > 0">
-              <div v-for="attribute in attributeList" :key="attribute">
-                <select v-model="selected[attribute[1]]" class="form-control">
-                  <option disabled value selected>{{attribute[0]}}</option>
+            <div v-if="attributeSelectors.length > 0">
+              <div v-for="(attributeSelector, index) in attributeSelectors" :key="attributeSelector.name">
+                <select v-model="selectedProperties[index]" class="form-control">
                   <option
-                    v-for="option in getOptions(attribute[0])"
-                    v-bind:value="option"
-                    :key="option"
-                  >{{ option }}</option>
+                    v-for="property in attributeSelector.properties"
+                    :value="property.value"
+                    :key="property.name"
+                    :disabled="property.main ? 'disabled' : null"
+                  >{{ property.name }}</option>
                 </select>
               </div>
             </div>
-            <div class="row">
+
+            <div class="row" v-if="selectedArticle">
               <div class="col-12 col-md-10 col-lg-7">
               <component
                 class="addToCartButton"
                 :is="getButtonType()"
                 :slug="data.slug"
-                :id="productId"
+                :id="selectedArticle.id"
                 :productClass="productClass"
                 :image="singleImage"
               />
@@ -82,9 +83,9 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import { ProductType, Icon } from '@/extendables/BaseComponents';
 import 'swiper/dist/css/swiper.css';
 
+import { ProductType, Icon } from '@/extendables/BaseComponents';
 
 export default {
   name: 'Product-Internal',
@@ -92,24 +93,24 @@ export default {
   components: {
     swiper,
     swiperSlide,
-    Icon,
+    Loading,
   },
   data() {
     return {
       selectedArticle: null,
-      selected: [''],
-      attributeList: [],
+      selectedProperties: null,
+      attributeSelectors: [],
       carouselImages: [],
       swiperOption: {
+        // Enable lazy loading
+        lazy: true,
         autoplay: {
           delay: 5000,
           disableOnInteraction: false,
         },
-        initialSlide: 1,
-        direction: 'vertical',
         slidesPerView: 1,
+        initialSlide: 1,
         spaceBetween: 30,
-        mousewheel: false,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
@@ -118,55 +119,69 @@ export default {
     };
   },
   created() {
-    this.getSelectedArticleOrSelector();
-    this.carouselImages = this.getCarouselImages();
+    this.onCreated();
   },
   watch: {
-    selected() {
-      this.selectedArticle = this.getArticleBySelectedOptions();
+    selectedProperties() {
+      const abc = this.getArticleBySelectedOptions();
+      console.log(abc);
+      this.selectedArticle = abc;
     },
     $route() {
-      this.selectedArticle = this.getArticleBySelectedOptions();
+      this.onCreated();
     },
   },
   methods: {
+    onCreated() {
+      this.getSelectedArticleOrSelector();
+      this.carouselImages = this.getCarouselImages();
+    },
     getButtonType() {
-      if (this.isOutOfStock) return 'OutOfStock';
+      if (this.selectedArticle.stock < 1) return 'OutOfStock';
       return 'Normal';
     },
     getSelectedArticleOrSelector() {
+      // Si no hay atributos significa que no hay forma de seleccionar un elemento distinto,
+      // por lo tanto no importa si el producto tiene mas de un articulo, seleccionamos el primer articulo.
       if (this.data.articles[0].atributtes.length === 0) {
         [this.selectedArticle] = this.data.articles;
         return;
       }
 
-      let ind = 0;
-      Object.keys(this.data.articles[0].atributtes).forEach((attribute) => {
-        this.attributeList.push([attribute, ind]);
-        this.selected.push('');
-        ind += 1;
-      });
+      // Si hay atributos, los mapeamos a attributeSelectors para que se generen sus respectivos selectores de cada atributo
+      this.attributeSelectors = Object.keys(this.data.articles[0].atributtes).map(attributeName => ({
+        name: attributeName,
+        properties: this.data.articles
+          .map(article => ({
+            name: article.atributtes[attributeName],
+            value: article.atributtes[attributeName],
+            main: false,
+          })).filter(property => property.name !== ''),
+      }));
+
+      this.attributeSelectors.forEach(x => x.properties.push({ name: x.name, value: 'default', main: true }));
+
+      // Por cada selector se puede seleccionar una propiedad. Por default la propiedad de cada selector debe ser '' para que
+      // el selector indique al usuario que debe seleccionar una propiedad.
+      this.selectedProperties = this.attributeSelectors.map(x => 'default');
     },
     getArticleBySelectedOptions() {
-      const sel = this.selected.find(el => el === '');
-      if (sel === '' || this.selected.length === 0) return null;
-
-      let filteredArticles = this.articleList;
-
-      this.attributeList.forEach((attribute) => {
-        filteredArticles = filteredArticles.find(
-          el => el.atributtes[attribute[0]] === this.selected[attribute[1]],
-        );
-      });
-
-      return filteredArticles;
+      // Si faltan seleccionar propiedades devuelve null
+      if (this.selectedProperties.some(x => x === 'default')) return null;
+      return this.articleList.find(article => this.isSelectedArticle(article.atributtes));
     },
-    getOptions(attribute) {
-      const options = [];
-      this.articleList.forEach((article) => {
-        if (article.atributtes[attribute]) options.push(article.atributtes[attribute]);
-      });
-      return options;
+    isSelectedArticle(attributes) {
+      const isSelectedArticle = true;
+      const attributesValues = Object.values(attributes);
+
+      console.log(this.selectedProperties);
+
+
+      for (let i = 0; i < this.attributeSelectors.length; i++) {
+        console.log(this.selectedProperties[i] === attributesValues[i]);
+        if (this.selectedProperties[i] !== attributesValues[i]) return false;
+      }
+      return true;
     },
     getCarouselImages() {
       const carouselImages = [];
@@ -196,12 +211,14 @@ export default {
 
 
 <style lang="css">
-.swiper-container-vertical > .swiper-pagination-bullets {
-  right: unset;
-  left: 5vw;
+.swiper-container > .swiper-pagination-bullets {
+  transform: rotate(90deg);
+  top: 50%;
+  left: -45%;
+  bottom: unset;
 }
 
-.swiper-container-vertical
+.swiper-container
   > .swiper-pagination-bullets
   .swiper-pagination-bullet {
   border: 1px solid #1a1a1a;
@@ -209,7 +226,7 @@ export default {
   opacity: unset;
 }
 
-.swiper-container-vertical
+.swiper-container
   > .swiper-pagination-bullets
   .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background: #1a1a1a;
@@ -221,6 +238,23 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+select{
+    border: none;
+    border-bottom: 1px solid #4D4D4D;
+    width: 100%;
+    background: transparent;
+    font-family: "Founders_Grotesk_Light";
+    font-size: 21px;
+    padding: 10px 0;
+    margin: 10px 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent url(https://abrecultura.s3.amazonaws.com/data/media/0a72da8851361a00b97ba933803c8d8d068ddfa9_1565032767/fit_crop-50-50-id_479-width_12-height_12.jpg) no-repeat 98% center;
+    background-size: 12px;
+    outline: none;
+}
+
 .addToCartButton{
   position: fixed;
   bottom: 0;
@@ -230,6 +264,13 @@ export default {
     position: initial;
   }
 }
+.swiper-loader{
+  width: 50px;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 50%;
+}
 .swiper {
   display: block;
   max-height: 100vw;
@@ -238,37 +279,6 @@ export default {
   @include md-up {
     max-height: 100vh;
     max-width: 50vw;
-  }
-}
-
-.go-back{
-  font-size: 16px;
-  position: fixed;
-  z-index: 3;
-  left: 3%;
-
-  @include md-up {
-    left: unset;
-    right: 55%;
-    top: 22px;
-  }
-  span {
-    display: none;
-    position: relative;
-    bottom: 29px;
-    left: 40px;
-    @include md-up {
-      display: block;
-    }
-  }
-
-  .arrow-left-button{
-    width: 50px;
-    height: 50px;
-    @include md-up {
-      width: 30px;
-      height: 30px;
-    }
   }
 }
 
