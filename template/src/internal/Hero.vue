@@ -1,7 +1,6 @@
 <template>
   <div>
     <section id="hero">
-      <GlobalWarning/>
       <div v-if="label || introCopy">
         <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
           <div class="container">
@@ -22,28 +21,23 @@
 </template>
 
 <script>
-import { GlobalWarning } from '@/extendables/BaseComponents';
-
 export default {
-  name: 'Hero',
-  components: {
-    GlobalWarning,
-  },
+  name: "Hero",
   props: {
     label: String,
     desktopImage: String,
     mobileImage: String,
-    introCopy: String,
+    introCopy: String
   },
   data() {
     return {
-      bg: null,
+      bg: null
     };
   },
   created() {
     if (this.desktopImage && this.mobileImage) {
       this.assignBgImage();
-      window.addEventListener('resize', this.assignBgImage, true);
+      window.addEventListener("resize", this.assignBgImage, true);
     } else if (this.desktopImage) this.bg = this.desktopImage;
     else this.bg = this.mobileImage;
   },
@@ -51,8 +45,8 @@ export default {
     assignBgImage() {
       if (window.innerWidth >= 768) this.bg = this.desktopImage;
       else this.bg = this.mobileImage;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -63,28 +57,28 @@ export default {
   background-size: 100% auto;
 }
 
-p{
+p {
   font-weight: 300;
   text-align: center;
   font-size: 19px;
   margin-top: 20px;
   font-weight: 300;
   background-color: #fff;
-  padding: 20px 30px!important;
+  padding: 20px 30px !important;
 }
 
-.label-container{
+.label-container {
   min-height: 30px;
 }
 
-.label{
+.label {
   display: block;
   margin: 0 auto;
   padding: 50px 0;
   width: 100%;
 }
 
-.heroImg{
+.heroImg {
   width: 100%;
 }
 </style>

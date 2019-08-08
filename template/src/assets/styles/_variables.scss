@@ -19,3 +19,6 @@ $easeOutExpo: cubic-bezier(0.19, 1, 0.22, 1);
 @mixin landscape {
   @media screen and (orientation: landscape) { @content; }
 }
+
+$font-light: "Founders_Grotesk_Light", sans-serif;
+$font-regular: "Founders_Grotesk_Regular", sans-serif;

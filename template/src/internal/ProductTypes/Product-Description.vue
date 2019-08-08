@@ -3,6 +3,7 @@
     <div class="row">
       <!-- IMAGE -->
       <div class="col-12 col-md-7">
+        <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
         <LazyImage
           :source="singleImage"
           cssClasses="img-fluid mx-auto d-block"
@@ -46,27 +47,27 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
 export default {
-  name: 'Product-Description',
+  name: "Product-Description",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
       }
 
       if (this.isOutOfStock) {
-        return 'OutOfStock';
+        return "OutOfStock";
       }
 
-      return 'Normal';
-    },
-  },
+      return "Normal";
+    }
+  }
 };
 </script>
 
@@ -77,7 +78,7 @@ article {
 }
 
 h1 {
-  font-family: "Founders_Grotesk_Regular", sans-serif;
+  font-family: $font-regular;
   font-weight: 400;
   font-size: 26px;
   color: $abre-dark-grey;
@@ -121,7 +122,7 @@ p {
   font-size: 18px;
   margin-top: 3px;
   font-weight: 400;
-  font-family: "Founders_Grotesk_Regular", sans-serif;
+  font-family: $font-regular;
 
   span {
     font-size: 14px;
@@ -130,6 +131,14 @@ p {
 
   @include md-up {
     margin-top: 10px;
+  }
+}
+
+.badge-free-shipping {
+  right: 20px;
+  @include md-up {
+    right: 20%;
+    top: 10%;
   }
 }
 </style>

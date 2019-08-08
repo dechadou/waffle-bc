@@ -37,67 +37,75 @@
 </template>
 
 <script>
+class SocialNetworksObject {
+  constructor(name, url, username) {
+    this.name = name;
+    this.url = url;
+    this.username = username;
+  }
+}
+
 export default {
-  name: 'Profile',
+  name: "Profile",
   props: {
     title: {
       type: String,
-      default: 'Conocé al Creador',
+      default: "Conocé al Creador"
     },
     text: String,
     image: String,
     facebook: String,
     twitter: String,
     instagram: String,
-    website: String,
+    website: String
   },
   data() {
     return {
       finalText: null,
       showMoreText: null,
-      isShowingMore: false,
+      isShowingMore: false
     };
   },
   created() {
     if (!this.text) return;
     this.finalText = this.text;
-    if (this.finalText.indexOf('<p>[HIDDEN value=&quot;') !== -1) {
+    if (this.finalText.indexOf("<p>[HIDDEN value=&quot;") !== -1) {
       [this.finalText, this.showMoreText] = this.finalText.split(
-        '<p>[HIDDEN value=&quot;',
+        "<p>[HIDDEN value=&quot;"
       );
-      [this.showMoreText] = this.showMoreText.split('&quot;]</p>');
+      [this.showMoreText] = this.showMoreText.split("&quot;]</p>");
     }
   },
   methods: {
     getSocialNetworks() {
       return [
-        {
-          name: 'Facebook',
-          url: 'https://www.facebook.com/',
-          username: this.facebook,
-        },
-        {
-          name: 'Twitter',
-          url: 'https://www.twitter.com/',
-          username: this.twitter,
-        },
-        {
-          name: 'Instagram',
-          url: 'https://www.instagram.com/',
-          username: this.instagram,
-        },
-        {
-          name: 'Website',
-          url: this.website ? this.website.replace(/\/$/, '') : '',
-          username: '',
-        },
+        new SocialNetworksObject(
+          "Facebook",
+          "https://www.facebook.com/",
+          this.facebook
+        ),
+        new SocialNetworksObject(
+          "Twitter",
+          "https://www.twitter.com/",
+          this.twitter
+        ),
+        new SocialNetworksObject(
+          "Instagram",
+          "https://www.instagram.com/",
+          this.instagram
+        ),
+        new SocialNetworksObject(
+          "Website",
+          this.website ? this.website.replace(/\/$/, "") : "",
+          ""
+        )
       ];
     },
     readMore(event) {
       event.preventDefault();
       this.isShowingMore = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

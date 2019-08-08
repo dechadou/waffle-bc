@@ -1,80 +1,82 @@
 <template>
   <article class="product">
-      <div class="row">
-        <!-- IMAGE -->
-        <div class="col-12">
-          <LazyImage
-            :source="singleImage"
-            cssClasses="img-fluid mx-auto d-block position-relative"
-            :description="`${data.title} image`"
+    <div class="row">
+      <!-- IMAGE -->
+      <div class="col-12">
+        <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
+        <LazyImage
+          :source="singleImage"
+          cssClasses="img-fluid mx-auto d-block position-relative"
+          :description="`${data.title} image`"
+        />
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="col-12 description">
+        <!-- TITLE, PRICE, DESCRIPTION -->
+        <div class="title_price_block">
+          <h1 class="title">
+            {{ data.name }}
+            &nbsp;•&nbsp;
+            <span class="price">
+              <span>$</span>
+              {{ price }}
+            </span>
+          </h1>
+          <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+        </div>
+        <!-- /TITLE, PRICE, DESCRIPTION -->
+
+        <div class="button_container">
+          <component
+            class="addToCartButton"
+            :is="getButtonType()"
+            :slug="data.slug"
+            :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
+            :productClass="data.class"
+            :image="singleImage"
           />
         </div>
-
-        <!-- DESCRIPTION -->
-        <div class="col-12 description">
-          <!-- TITLE, PRICE, DESCRIPTION -->
-          <div class="title_price_block">
-            <h1 class="title">{{ data.name }}
-              &nbsp;•&nbsp;
-              <span class="price">
-                <span>$</span>
-                {{ price }}
-              </span>
-            </h1>
-            <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
-          </div>
-          <!-- /TITLE, PRICE, DESCRIPTION -->
-
-          <div class="button_container">
-            <component
-              class="addToCartButton"
-              :is="getButtonType()"
-              :slug="data.slug"
-              :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
-              :productClass="data.class"
-              :image="singleImage"
-            />
-          </div>
-        </div>
-        <!-- /DESCRIPTION -->
       </div>
+      <!-- /DESCRIPTION -->
+    </div>
   </article>
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
 export default {
-  name: 'Product-SliderMobile',
+  name: "Product-SliderMobile",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
       }
 
       if (this.isOutOfStock) {
-        return 'OutOfStock';
+        return "OutOfStock";
       }
 
-      return 'Normal';
-    },
+      return "Normal";
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let str = '';
+      let str = "";
       authors
         .filter((v, i) => authors.indexOf(v) === i)
-        .forEach((x) => {
-          str += str === '' ? x.name : ` + ${x.name}`;
+        .forEach(x => {
+          str += str === "" ? x.name : ` + ${x.name}`;
         });
 
       return str;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -84,7 +86,7 @@ article {
 }
 
 h1 {
-  font-family: "Founders_Grotesk_Regular", sans-serif;
+  font-family: $font-regular;
   font-weight: 400;
   font-size: 18px;
   text-align: center;
@@ -122,8 +124,13 @@ p {
   font-size: 12px;
 }
 
-.description{
+.description {
   margin-top: -18%;
   position: relative;
+}
+
+.badge-free-shipping {
+  right: 0;
+  z-index: 22;
 }
 </style>

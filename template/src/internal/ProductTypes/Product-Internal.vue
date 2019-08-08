@@ -3,6 +3,7 @@
     <article id="producto" class="product">
       <div class="row">
         <div class="col-12 col-md-6">
+          <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
           <swiper
             :options="swiperOption"
             v-if="carouselImages.length > 1"
@@ -36,7 +37,11 @@
 
             <ul class="additional-info" v-if="data.informacion_adicional.length > 0">
               <div class="row">
-                <li v-for="info in data.informacion_adicional" :key="info.meta" class="col-6 col-md-4">
+                <li
+                  v-for="info in data.informacion_adicional"
+                  :key="info.meta"
+                  class="col-6 col-md-4"
+                >
                   <div class="row">
                     <div class="col-12">
                       <h3 v-html="info.meta"/>
@@ -50,7 +55,10 @@
             </ul>
 
             <div v-if="attributeSelectors.length > 0">
-              <div v-for="(attributeSelector, index) in attributeSelectors" :key="attributeSelector.name">
+              <div
+                v-for="(attributeSelector, index) in attributeSelectors"
+                :key="attributeSelector.name"
+              >
                 <select v-model="selectedProperties[index]" class="form-control">
                   <option
                     v-for="property in attributeSelector.properties"
@@ -64,14 +72,14 @@
 
             <div class="row" v-if="selectedArticle">
               <div class="col-12 col-md-10 col-lg-7">
-              <component
-                class="addToCartButton"
-                :is="getButtonType()"
-                :slug="data.slug"
-                :id="selectedArticle.id"
-                :productClass="productClass"
-                :image="singleImage"
-              />
+                <component
+                  class="addToCartButton"
+                  :is="getButtonType()"
+                  :slug="data.slug"
+                  :id="selectedArticle.id"
+                  :productClass="productClass"
+                  :image="singleImage"
+                />
               </div>
             </div>
           </div>
@@ -82,18 +90,33 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import 'swiper/dist/css/swiper.css';
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
-import { ProductType, Icon } from '@/extendables/BaseComponents';
+import { ProductType, Icon, Loading } from "@/extendables/BaseComponents";
+
+class AttributeSelector {
+  constructor(name, properties) {
+    this.name = name;
+    this.properties = properties;
+  }
+}
+
+class SelectorProperty {
+  constructor(name, value, main) {
+    this.name = name;
+    this.value = value;
+    this.main = main;
+  }
+}
 
 export default {
-  name: 'Product-Internal',
+  name: "Product-Internal",
   extends: ProductType,
   components: {
     swiper,
     swiperSlide,
-    Loading,
+    Loading
   },
   data() {
     return {
@@ -106,16 +129,16 @@ export default {
         lazy: true,
         autoplay: {
           delay: 5000,
-          disableOnInteraction: false,
+          disableOnInteraction: false
         },
         slidesPerView: 1,
         initialSlide: 1,
         spaceBetween: 30,
         pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      },
+          el: ".swiper-pagination",
+          clickable: true
+        }
+      }
     };
   },
   created() {
@@ -129,7 +152,7 @@ export default {
     },
     $route() {
       this.onCreated();
-    },
+    }
   },
   methods: {
     onCreated() {
@@ -137,8 +160,8 @@ export default {
       this.carouselImages = this.getCarouselImages();
     },
     getButtonType() {
-      if (this.selectedArticle.stock < 1) return 'OutOfStock';
-      return 'Normal';
+      if (this.selectedArticle.stock < 1) return "OutOfStock";
+      return "Normal";
     },
     getSelectedArticleOrSelector() {
       // Si no hay atributos significa que no hay forma de seleccionar un elemento distinto,
@@ -149,33 +172,45 @@ export default {
       }
 
       // Si hay atributos, los mapeamos a attributeSelectors para que se generen sus respectivos selectores de cada atributo
-      this.attributeSelectors = Object.keys(this.data.articles[0].atributtes).map(attributeName => ({
-        name: attributeName,
-        properties: this.data.articles
-          .map(article => ({
-            name: article.atributtes[attributeName],
-            value: article.atributtes[attributeName],
-            main: false,
-          })).filter(property => property.name !== ''),
-      }));
+      this.attributeSelectors = Object.keys(
+        this.data.articles[0].atributtes
+      ).map(
+        attributeName =>
+          new AttributeSelector(
+            attributeName,
+            this.data.articles
+              .map(
+                article =>
+                  new SelectorProperty(
+                    article.atributtes[attributeName],
+                    article.atributtes[attributeName],
+                    false
+                  )
+              )
+              .filter(property => property.name !== "")
+          )
+      );
 
-      this.attributeSelectors.forEach(x => x.properties.push({ name: x.name, value: 'default', main: true }));
+      this.attributeSelectors.forEach(x =>
+        x.properties.push(new SelectorProperty(x.name, "default", true))
+      );
 
       // Por cada selector se puede seleccionar una propiedad. Por default la propiedad de cada selector debe ser '' para que
       // el selector indique al usuario que debe seleccionar una propiedad.
-      this.selectedProperties = this.attributeSelectors.map(x => 'default');
+      this.selectedProperties = this.attributeSelectors.map(x => "default");
     },
     getArticleBySelectedOptions() {
       // Si faltan seleccionar propiedades devuelve null
-      if (this.selectedProperties.some(x => x === 'default')) return null;
-      return this.articleList.find(article => this.isSelectedArticle(article.atributtes));
+      if (this.selectedProperties.some(x => x === "default")) return null;
+      return this.articleList.find(article =>
+        this.isSelectedArticle(article.atributtes)
+      );
     },
     isSelectedArticle(attributes) {
       const isSelectedArticle = true;
       const attributesValues = Object.values(attributes);
 
       console.log(this.selectedProperties);
-
 
       for (let i = 0; i < this.attributeSelectors.length; i++) {
         console.log(this.selectedProperties[i] === attributesValues[i]);
@@ -185,27 +220,27 @@ export default {
     },
     getCarouselImages() {
       const carouselImages = [];
-      Object.values(this.data.media).forEach((media) => {
+      Object.values(this.data.media).forEach(media => {
         if (media.primary_media) carouselImages.unshift(media.url);
         else carouselImages.push(media.url);
       });
       return carouselImages;
-    },
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let finalString = '';
+      let finalString = "";
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach((author) => {
+      authors.forEach(author => {
         if (finalString.search(author.name) === -1) {
-          if (finalString !== '') finalString += ' + ';
+          if (finalString !== "") finalString += " + ";
           finalString += author.name;
         }
       });
       return finalString;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -218,9 +253,7 @@ export default {
   bottom: unset;
 }
 
-.swiper-container
-  > .swiper-pagination-bullets
-  .swiper-pagination-bullet {
+.swiper-container > .swiper-pagination-bullets .swiper-pagination-bullet {
   border: 1px solid #1a1a1a;
   background: transparent;
   opacity: unset;
@@ -238,24 +271,26 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-select{
-    border: none;
-    border-bottom: 1px solid #4D4D4D;
-    width: 100%;
-    background: transparent;
-    font-family: "Founders_Grotesk_Light";
-    font-size: 21px;
-    padding: 10px 0;
-    margin: 10px 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background: transparent url(https://abrecultura.s3.amazonaws.com/data/media/0a72da8851361a00b97ba933803c8d8d068ddfa9_1565032767/fit_crop-50-50-id_479-width_12-height_12.jpg) no-repeat 98% center;
-    background-size: 12px;
-    outline: none;
+select {
+  border: none;
+  border-bottom: 1px solid #4d4d4d;
+  width: 100%;
+  background: transparent;
+  font-family: $font-light;
+  font-size: 21px;
+  padding: 10px 0;
+  margin: 10px 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent
+    url(https://abrecultura.s3.amazonaws.com/data/media/0a72da8851361a00b97ba933803c8d8d068ddfa9_1565032767/fit_crop-50-50-id_479-width_12-height_12.jpg)
+    no-repeat 98% center;
+  background-size: 12px;
+  outline: none;
 }
 
-.addToCartButton{
+.addToCartButton {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -264,7 +299,7 @@ select{
     position: initial;
   }
 }
-.swiper-loader{
+.swiper-loader {
   width: 50px;
   height: 50px;
   display: block;
@@ -359,7 +394,7 @@ select{
     }
   }
 
-  .additionalInfo {
+  .additional-info {
     margin-bottom: 50px;
 
     li {
@@ -377,6 +412,18 @@ select{
       color: #4d4d4d;
       margin: 0;
     }
+  }
+}
+
+.badge-free-shipping {
+  right: 20px;
+  z-index: 2;
+  bottom: 20px;
+  @include md-up {
+    right: 0;
+    z-index: 2;
+    bottom: unset;
+    top: 40%;
   }
 }
 </style>

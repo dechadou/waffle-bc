@@ -140,3 +140,38 @@ use #menu {
   stroke-width: 1px;
   }
 }
+
+.badge-free-shipping{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: $abre-black;
+  position: absolute;
+  z-index: 1;
+  &:after{
+    content: "Env\EDo Gratuito";
+    display: block;
+    top: 24%;
+    font-family: "Founders_Grotesk_Light", sans-serif;
+    font-size: 20px;
+    margin: 0 auto;
+    color: #fff;
+    width: 65px;
+    text-align: center;
+    position: relative;
+  }
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
