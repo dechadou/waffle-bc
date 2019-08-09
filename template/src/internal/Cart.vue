@@ -2,7 +2,7 @@
   <div>
     <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
       <Icon name="cart"/>
-      <span class="items-count animated" v-bind:class="{'jello': changing}">{{totalItems}}</span>
+      <span class="items-count animated" v-bind:class="{'jello': changing}">{{cartQuantity}}</span>
     </button>
     <div class="sidemenu" :class="[showCart ? 'open' : '']">
       <div class="inner_menu">
@@ -21,60 +21,75 @@
             </div>
           </div>
         </div>
-        <div v-if="totalItems" class="cart_body">
-          <div v-for="item in items" :key="item.id" class="col-12 item">
-            <div class="row">
-              <div class="col-6">
-                <div class="col-12">
-                  <div class="row">
-                    <h2>{{ item.name }}</h2>
-                  </div>
-                  <div class="row qt-plus-minus">
-                    <p>Cantidad</p>
-                    <div>
-                      <button class="qt_minus" @click="qtMinus(item)">-</button>
-                      <span class="qt">{{ item.quantity }}</span>
-                      <button class="qt_plus" @click="qtPlus(item)">+</button>
+        <div class="cart_body">
+          <div v-if="cartQuantity">
+            <div v-for="(item, index) in cartItems" :key="item.id" class="col-12 item">
+              <div class="row">
+                <div class="col-6">
+                  <div class="col-12">
+
+                    <!-- TITULO -->
+                    <div class="row">
+                      <h2>{{ item.name }}</h2>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6 p-0 subtotal">
-                      <p>Subtotal:</p>
+
+                    <!-- SELECTOR CANTIDAD -->
+                    <div class="row qt-plus-minus">
+                      <p>Cantidad</p>
+                      <div>
+                        <button class="qt_minus" @click="itemQuantity(index, -1)">-</button>
+                        <span class="qt">{{ item.quantity }}</span>
+                        <button class="qt_plus" @click="itemQuantity(index, +1)">+</button>
+                      </div>
                     </div>
-                    <div class="col-6 p-0 subtotal_price">
-                      <p>
-                        <span>$</span>
-                        {{ item.price * item.quantity }}
-                      </p>
-                    </div>
-                  </div>
-                  <div v-if="item.attributes != null">
-                    <div v-for="(atr, val) in item.attributes" :key="val" class="row">
+
+                    <!-- PRODUCTO SUBTOTAL -->
+                    <div class="row">
                       <div class="col-6 p-0 subtotal">
-                        <p>{{ val }}:</p>
+                        <p>Subtotal:</p>
                       </div>
                       <div class="col-6 p-0 subtotal_price">
-                        <p>{{ atr }}</p>
+                        <p>
+                          <span>$</span>
+                          {{ item.price * item.quantity }}
+                        </p>
                       </div>
                     </div>
+
+                    <!-- ATRIBUTOS -->
+                    <div v-if="item.attributes != null">
+                      <div v-for="(atr, val) in item.attributes" :key="val" class="row">
+                        <div class="col-6 p-0 subtotal">
+                          <p>{{ val }}:</p>
+                        </div>
+                        <div class="col-6 p-0 subtotal_price">
+                          <p>{{ atr }}</p>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-              </div>
-              <div class="col-6 p-0">
-                <div class="row">
-                  <div class="col-12">
-                    <img
-                      :src="item.media"
-                      class="img-fluid"
-                      style="height: 150px; margin: 0px auto; display: block;"
-                    >
+                <div class="col-6 p-0">
+                  <div class="row">
+
+                    <!-- IMAGEN -->
+                    <div class="col-12">
+                      <img
+                        :src="item.media"
+                        class="img-fluid"
+                        style="height: 150px; margin: 0px auto; display: block;"
+                      >
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div v-else class="cart_body"/>
+
+        <!-- CART FOOTER -->
         <div class="cart_footer">
           <hr>
           <div class="col-12">
@@ -88,7 +103,7 @@
                 <div class="col-6 subtotal_price">
                   <p>
                     <span>$</span>
-                    {{ totalPrice }}
+                    {{ cartSubtotal }}
                   </p>
                 </div>
               </div>
@@ -104,6 +119,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
     <div class="cart_wrapper" :class="[showCart ? 'open' : '']" @click="cartToggle()"/>
@@ -111,198 +127,132 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames, getUrl, URLNames } from "@/config";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { CartHelper } from "@/objects/CartObjects";
-import { Icon, Loading } from "@/extendables/BaseComponents";
+import { mapState, mapActions, mapMutations } from 'vuex';
+import { CartActionTypes, CartMutationTypes, CartNamespace } from '@/store/module/Cart';
+import { EventManager } from '@/utils';
+import {
+  getEnum, EnumNames, getUrl, URLNames,
+} from '@/config';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { CartHelper } from '@/objects/CartObjects';
+import { Icon, Loading } from '@/extendables/BaseComponents';
 
-const QUERY_STORE_ID = "store_id";
-const QUERY_COMBOS_ARRAY = "combos[]";
-const QUERY_PRODUCTS_ARRAY = "products[]";
+class ItemQuantityObject {
+  constructor(index, quantity){
+    this.index = index;
+    this.quantity = quantity;
+  }
+}
+
+class CartConfig{
+  constructor(data, storeIdentifier, storeId){
+    this.cartHelper = new CartHelper(data);
+    this.storeIdentifier = storeIdentifier;
+    this.storeId = storeId;
+  }
+}
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     Icon,
-    Loading
+    Loading,
   },
   data() {
     return {
-      items: [],
       showCart: false,
       changing: false,
       loading: false,
-      cartHelper: null,
+      bodyElement: null,
       cartText: {
-        empty: "Tu carrito está vacío...",
-        filled: "Te estás llevando..."
-      }
+        empty: 'Tu carrito está vacío...',
+        filled: 'Te estás llevando...',
+      },
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "storeIdentifier", "store_id"]),
+    ...mapState(StoreDataNamespace, ['data', 'storeIdentifier', 'store_id']),
+    ...mapState(CartNamespace, ['cartItems', 'cartQuantity', 'cartSubtotal', 'cartRedirect']),
     emptyCartText() {
-      return this.items.length > 0 ? this.cartText.filled : this.cartText.empty;
+      return this.cartItems.length > 0 ? this.cartText.filled : this.cartText.empty;
     },
-    totalItems() {
-      let quantity = 0;
-      for (let i = 0; i < this.items.length; i += 1) {
-        quantity += this.items[i].quantity;
-      }
-
-      return quantity;
-    },
-    totalPrice() {
-      let price = 0;
-      for (let i = 0; i < this.items.length; i += 1) {
-        price += this.items[i].quantity * this.items[i].price;
-      }
-
-      EventManager.Trigger(
-        getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        this.totalItems
-      );
-
-      return price;
-    }
   },
   watch: {
-    $route() {
-      this.onBackButtonPressed();
-    }
-  },
-  methods: {
-    onBackButtonPressed() {
-      if (this.showCart) this.cartToggle(true);
-    },
-    saveOnLocalStorage() {
-      localStorage.setItem(
-        `${this.storeIdentifier}_store_cart`,
-        JSON.stringify([this.items, JSON.stringify(new Date())])
-      );
-    },
-    deleteLocalStorage() {
-      localStorage.removeItem(`${this.storeIdentifier}_store_cart`);
-    },
-    getLocalStorage() {
-      const localSt = JSON.parse(
-        localStorage.getItem(`${this.storeIdentifier}_store_cart`)
-      );
-      if (localSt != null) {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        const localStDate = new Date(JSON.parse(localSt[1]));
-
-        if (localStDate > yesterday) {
-          [this.items] = localSt;
-        }
-      }
-    },
-    addToCart(id, productClass) {
+    cartQuantity(){
+      this.storeCart();
       const scop = this;
       this.changing = true;
       setTimeout(() => {
         scop.changing = false;
       }, 1000);
-
-      // Recorro todos los items en el carrito y si ya existe le sumo +1
-      for (let i = 0; i < this.items.length; i += 1) {
-        if (this.items[i].id === id && this.items[i].class === productClass) {
-          this.qtPlus(this.items[i]);
-          return;
-        }
-      }
-
-      this.items.push(
-        this.cartHelper.getCartObjectByProductId(id, productClass)
-      );
     },
-    qtMinus(item) {
-      const newQty = item.quantity - 1;
-      if (newQty > 0) {
-        item.quantity = newQty;
-      } else {
-        this.deleteItem(item);
+    cartRedirect(value){
+      if(!value) return;
+      this.deleteCart();
+      window.location.href = value;
+    },
+  },
+  methods: {
+    ...mapActions({
+      fetchStoredCart: CartActionTypes.FETCH_STORED_CART,
+      deleteCart: CartActionTypes.DELETE_CART,
+      getCheckoutUrl: CartActionTypes.GET_CHECKOUT_URL,
+      storeCart: CartActionTypes.STORE_CART,
+    }),
+    ...mapMutations({
+      setCartConfig: CartMutationTypes.SET_CART_CONFIG,
+      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
+    }),
+    onBackButtonPressed() {
+      if (this.showCart){
+        this.cartToggle();
       }
     },
-    qtPlus(item) {
-      item.quantity += 1;
-    },
-    deleteItem(item) {
-      const index = this.items.indexOf(item);
-      if (index > -1) {
-        this.items.splice(index, 1);
-        this.saveOnLocalStorage();
-      }
+    itemQuantity(index, quantity) {
+      this.changeItemQuantity(new ItemQuantityObject(index, quantity));
     },
     checkout() {
-      if (this.items.length < 1) return;
+      if (this.cartItems.length < 1) return;
       this.loading = true;
-
-      const url = this.items.reduce((accumulator, currentValue) => {
-        accumulator += `&${
-          currentValue.class === "bundle"
-            ? [QUERY_COMBOS_ARRAY]
-            : [QUERY_PRODUCTS_ARRAY]
-        }`;
-        accumulator += `=${currentValue.id},${currentValue.quantity}`;
-        return accumulator;
-      }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${this.store_id}`);
-
-      this.deleteLocalStorage();
-      window.location.href = url;
+      this.getCheckoutUrl();
     },
-    cartToggle(backButtonPressed = false) {
+    cartToggle() {
       this.showCart = !this.showCart;
-      if (!this.showCart) {
-        history.back();
-        if (!backButtonPressed) history.back();
-      }
-      this.hideScrollBar();
+
+      if (!this.showCart) this.removeFromHistory();
+      else this.addToHistory();
+
+      this.toggleScrollBar();
     },
-    hideScrollBar() {
-      if (this.showCart) {
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-        window.history.pushState(
-          { state: "Cart" },
-          `${this.name} Cart`,
-          `${window.location.pathname}?cart=1`
-        );
-        window.history.pushState(
-          { state: "Cart" },
-          `${this.name} Cart`,
-          `${window.location.pathname}?cart=1`
-        );
-      } else
-        document.getElementsByTagName("body")[0].style.overflowY = "initial";
+    toggleScrollBar() {
+      if (this.showCart) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+      else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
+    },
+    addToHistory(){
+      window.history.pushState(
+        { state: 'Cart' },
+        `${this.name} Cart`,
+        `${window.location.pathname}?cart=1`,
+      );
+    },
+    removeFromHistory(backButtonPressed = false){
+      window.history.back();
     },
     suscribeToEvents() {
-      EventManager.Subscribe(
-        getEnum(EnumNames.EventNames).ADD_TO_CART,
-        data => {
-          const [id, productClass] = data;
-          this.addToCart(id, productClass);
-        }
-      );
-
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
-        this.cartToggle()
-      );
-
-      EventManager.Subscribe(
-        getEnum(EnumNames.EventNames).ON_CART_ITEM_QUANTITY_CHANGE,
-        () => this.saveOnLocalStorage()
-      );
-    }
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
+    },
   },
   mounted() {
-    this.getLocalStorage();
+    this.setCartConfig(new CartConfig(this.data, this.storeIdentifier, this.store_id));
+    this.fetchStoredCart();
     this.suscribeToEvents();
-    this.cartHelper = new CartHelper(this.data);
-  }
+    this.bodyElement = document.getElementsByTagName('body')[0];
+
+    const scope = this;
+    window.onpopstate = function (event) {
+      scope.onBackButtonPressed();
+    };
+  },
 };
 </script>
 
@@ -321,19 +271,20 @@ export default {
   }
 }
 .sidemenu.open {
-  right: 0 !important;
-  transition: ease all 0.5s;
+  transform: translate(0, 0);
+  transition: $easeOutExpo all 0.8s;
 }
 .sidemenu {
   background-color: #fff;
   padding: 20px 0;
   position: fixed;
-  right: -100%;
+  transform: translate(100%, 0);
+  right: 0;
   bottom: 0;
   top: 0;
   height: 101%;
   width: 100%;
-  transition: ease all 0.5s;
+  transition: $easeInCubic all 0.5s;
   z-index: 1500;
   @media (min-width: 768px) {
     width: 50%;
@@ -441,8 +392,8 @@ export default {
       border: none;
       width: 100%;
       span {
-        font-size: 13px;
-        margin-right: 3px;
+        font-size: 12px;
+        margin-right: 0;
       }
     }
     h2 {
@@ -460,8 +411,8 @@ export default {
     font-weight: 400;
   }
   span {
-    font-size: 16px;
-    margin-right: 4px;
+    font-size: 12px;
+    margin-right: 0;
   }
 }
 .cart_footer {
@@ -485,12 +436,16 @@ export default {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
+    .cart_loader {
+      width: 19px;
+      fill: #fff;
+      height: 19px;
+    }
+    &:hover .cart_loader{
+      fill: #000;
+    }
   }
-  .cart_loader {
-    width: 30px;
-    fill: #fff;
-    height: 30px;
-  }
+  
 }
 .open-cart {
   border: none;

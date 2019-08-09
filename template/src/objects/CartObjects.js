@@ -18,7 +18,6 @@ export class CartHelper {
   }
 
   getCartObjectByProductId(id, productClass) {
-    console.log(productClass);
     switch (productClass) {
       case 'article': {
         const productArticlePair = this.getProductArticlePairByArticleId(id);
@@ -26,7 +25,7 @@ export class CartHelper {
           id,
           productArticlePair.product.name,
           productArticlePair.article.price,
-          1,
+          0,
           getImage(productArticlePair.product.media),
           productClass,
           productArticlePair.article.atributtes,
@@ -39,7 +38,7 @@ export class CartHelper {
           id,
           bundle.name,
           bundle.price,
-          1,
+          0,
           getImage(bundle.media),
           productClass,
           null,
