@@ -22,7 +22,7 @@
         <div class="relatedProductsContainer">
           <ProductDisplayerMain
             :products="relatedList"
-            classes="col-4 pl-3 pr-3"
+            containerClasses="col-4"
             v-if="breakpoint >= breakpoints.MD"
             class="desktopContainer"
             :openModules="false"

@@ -13,7 +13,7 @@
           <ProductDisplayer-Main
             :products="mainProducts"
             v-if="mainProducts.length > 0"
-            classes="col-12"
+            :containerClasses="themeConfig.homeProductClasses"
           />
           <ProductDisplayer-Recommended
             :products="recommendedProducts"
@@ -33,7 +33,7 @@
             v-if="recommendedProducts.length > 0 && template.productos_relacionados"
           />
         </section>
-        <PageShare :title="template.call_to_action_title"/>
+        <PageShare :title="template.call_to_action_title" v-if="themeConfig.showPageShare"/>
       </div>
     </div>
   </transition>
@@ -42,7 +42,11 @@
 <script>
 import { mapState } from "vuex";
 import { StoreDataNamespace } from "@/store/module/StoreData";
-import * as ProductDisplayers from "@/extendables/ProductDisplayerTypes";
+import { ThemeNamespace } from "@/store/module/Theme";
+import {
+  ProductDisplayerRecommended,
+  ProductDisplayerMain
+} from "@/extendables/ProductDisplayerTypes";
 import {
   Hero,
   Profile,
@@ -55,7 +59,8 @@ export default {
   components: {
     Hero,
     Profile,
-    ...ProductDisplayers,
+    ProductDisplayerRecommended,
+    ProductDisplayerMain,
     PageShare,
     GlobalWarning
   },
@@ -66,7 +71,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data", "template", "home_products"])
+    ...mapState(StoreDataNamespace, ["data", "template", "home_products"]),
+    ...mapState(ThemeNamespace, ["themeConfig"])
   },
   methods: {
     getProducts() {

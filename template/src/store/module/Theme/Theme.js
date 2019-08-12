@@ -2,9 +2,16 @@ export const SET_THEME = 'set-theme';
 export const SET_FOOTER = 'set-footer';
 
 class ThemeConfig {
-  constructor(homeProductType, showRelatedProducts) {
+  constructor(
+    homeProductType,
+    homeProductClasses,
+    showRelatedProducts,
+    showPageShare,
+  ) {
     this.homeProductType = homeProductType;
+    this.homeProductClasses = homeProductClasses;
     this.showRelatedProducts = showRelatedProducts;
+    this.showPageShare = showPageShare;
   }
 }
 
@@ -16,8 +23,18 @@ export default {
     themeConfig: null,
     configurations: {
       themes: {
-        marketplace: new ThemeConfig('Product-Thumbnail', true),
-        landing: new ThemeConfig('Product-Description', false),
+        marketplace: new ThemeConfig(
+          'Product-Thumbnail',
+          'col-4',
+          true,
+          false,
+        ),
+        landing: new ThemeConfig(
+          'Product-Description',
+          'col-12',
+          false,
+          true,
+        ),
       },
       footerNames: ['Footer-None', 'Footer-Logo', 'Footer-Abre'],
     },

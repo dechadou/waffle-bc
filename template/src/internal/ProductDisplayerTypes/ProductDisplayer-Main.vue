@@ -1,13 +1,17 @@
 <template>
   <div class="row">
-    <component
-      :is="themeConfig.homeProductType"
+    <div
       v-for="product in products"
       :key="`${product.id}-${product.class}`"
-      :data="product"
-      :class="classes"
-      :openModules="openModules"
-    />
+      :class="containerClasses"
+    >
+      <component
+        :is="themeConfig.homeProductType"
+        :data="product"
+        :class="classes"
+        :openModules="openModules"
+      />
+    </div>
   </div>
 </template>
 
@@ -19,6 +23,7 @@ export default {
   extends: ProductDisplayerType,
   props: {
     classes: String,
+    containerClasses: String,
     openModules: {
       type: Boolean,
       default: true
