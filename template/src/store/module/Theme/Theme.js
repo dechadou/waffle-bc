@@ -1,39 +1,38 @@
 export const SET_THEME = 'set-theme';
 export const SET_FOOTER = 'set-footer';
 
+class ThemeConfig {
+  constructor(homeProductType, showRelatedProducts) {
+    this.homeProductType = homeProductType;
+    this.showRelatedProducts = showRelatedProducts;
+  }
+}
+
 export default {
   namespaced: true,
   state: {
     theme: null,
     footer: null,
-    home_product_type: null,
+    themeConfig: null,
+    configurations: {
+      themes: {
+        marketplace: new ThemeConfig('Product-Thumbnail', true),
+        landing: new ThemeConfig('Product-Description', false),
+      },
+      footerNames: ['Footer-None', 'Footer-Logo', 'Footer-Abre'],
+    },
+
   },
   getters: {},
   mutations: {
     [SET_THEME]: (state, theme) => {
       state.theme = theme;
-      let name;
-      switch (theme) {
-        case 'marketplace':
-          name = 'Product-Thumbnail';
-          break;
-        default:
-          name = 'Product-Description';
-      }
-      state.home_product_type = name;
+      state.themeConfig = state.configurations.themes[theme];
     },
     [SET_FOOTER]: (state, footer) => {
       let name;
-      switch (footer) {
-        case 1:
-          name = 'Footer-Abre';
-          break;
-        case 2:
-          name = 'Footer-Logo';
-          break;
-        default:
-          name = 'Footer-None';
-      }
+      if (footer > state.configurations.footerNames.length - 1) [name] = state.configurations.footerNames;
+      else name = state.configurations.footerNames[footer];
       state.footer = name;
     },
   },

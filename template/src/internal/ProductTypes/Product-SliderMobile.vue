@@ -32,8 +32,8 @@
             class="addToCartButton"
             :is="getButtonType()"
             :slug="data.slug"
-            :id="data.class === 'product' ? this.articleList[0].id : this.data.id"
-            :productClass="data.class"
+            :id="productId"
+            :productClass="productClass"
             :image="singleImage"
           />
         </div>
@@ -62,7 +62,7 @@ export default {
         return "OutOfStock";
       }
 
-      return "Normal";
+      return "Check";
     }
   },
   filters: {

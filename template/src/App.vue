@@ -2,16 +2,15 @@
 <style src="@/assets/styles/third-party/animate.min.css"></style>
 
 <template>
-  <div>
-    <transition name="slide-fade">
-      <div v-if="show">
-        <HeaderSection :year="year" v-if="hasHeader"/>
-        <Cart/>
-        <router-view :class="[{'has-header': hasHeader}]"/>
-        <component :is="footer" :year="year"/>
-      </div>
-    </transition>
-  </div>
+  <transition name="slide-fade">
+    <div v-if="show">
+      <HeaderSection :year="year" v-if="hasHeader"/>
+      <Cart :cartHelper="cartHelper"/>
+      <router-view :class="[{'has-header': hasHeader}]"/>
+      <component :is="footer" :year="year"/>
+      <RelatedProducts :cartHelper="cartHelper" v-if="themeConfig.showRelatedProducts"/>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -26,9 +25,16 @@ import {
   StoreDataNamespace
 } from "@/store/module/StoreData";
 import { ThemeMutationTypes, ThemeNamespace } from "@/store/module/Theme";
+import { BreakpointsMutationTypes } from "@/store/module/Breakpoints";
 import { getVariable, VariableNames } from "@/config";
 import * as FooterTypes from "@/extendables/FooterTypes";
-import { Loading, Cart, HeaderSection } from "@/extendables/BaseComponents";
+import { CartHelper } from "@/objects/CartObjects";
+import {
+  Loading,
+  Cart,
+  HeaderSection,
+  RelatedProducts
+} from "@/extendables/BaseComponents";
 
 export default {
   name: "App",
@@ -36,16 +42,24 @@ export default {
     ...FooterTypes,
     Loading,
     Cart,
-    HeaderSection
+    HeaderSection,
+    RelatedProducts
   },
   data() {
     return {
-      show: false
+      show: false,
+      cartHelper: null
     };
   },
   computed: {
-    ...mapState(ThemeNamespace, ["footer"]),
-    ...mapState(StoreDataNamespace, ["template", "error", "year", "store_id"]),
+    ...mapState(ThemeNamespace, ["footer", "themeConfig"]),
+    ...mapState(StoreDataNamespace, [
+      "data",
+      "template",
+      "error",
+      "year",
+      "store_id"
+    ]),
     ...mapGetters({
       isLoaded: StoreDataGetterTypes.IS_LOADED
     }),
@@ -74,22 +88,36 @@ export default {
       /* Por alguna razón, en ciertos casos el router no carga inmediatamente y devuelve null aunque
          haya una ruta válida, por lo tanto espero a que el router se actualice antes de fetchear la info */
 
-      if (this.isLoaded) return;
-      this.fetchData();
+      if (!this.isLoaded) {
+        this.fetchData();
+      } else {
+        this.show = false;
+        window.scrollTo(0, 0);
+        const scope = this;
+        setTimeout(() => {
+          scope.show = true;
+        }, 500);
+      }
     }
   },
   created() {
     this.fetchData();
+    this.setBreakpoint();
+    window.addEventListener("resize", this.onResize, true);
   },
   methods: {
     ...mapMutations({
       setTheme: ThemeMutationTypes.SET_THEME,
       setFooter: ThemeMutationTypes.SET_FOOTER,
-      setStoreIdentifier: StoreDataMutationTypes.SET_STORE_IDENTIFIER
+      setStoreIdentifier: StoreDataMutationTypes.SET_STORE_IDENTIFIER,
+      setBreakpoint: BreakpointsMutationTypes.SET_BREAKPOINT
     }),
     ...mapActions({
       fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA
     }),
+    onResize() {
+      this.setBreakpoint();
+    },
     fetchData() {
       if (!this.$route.name) return;
       this.fetchStoreData(
@@ -117,6 +145,8 @@ export default {
           router
         });
       }
+
+      this.cartHelper = new CartHelper(this.data);
 
       var loadingScreen = document.getElementById("loadingScreen");
       loadingScreen.parentElement.removeChild(loadingScreen);

@@ -65,6 +65,8 @@ export default {
         return "OutOfStock";
       }
 
+      if (!this.openModules) return "Check";
+
       return "Normal";
     }
   }

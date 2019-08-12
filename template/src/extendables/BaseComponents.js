@@ -25,3 +25,4 @@ export { default as Loading } from '@/internal/Loading.vue';
 export { default as Cart } from '@/internal/Cart.vue';
 export const HeaderSection = () => import('@/internal/HeaderSection.vue');
 export const Social = () => import('@/internal/Social.vue');
+export const RelatedProducts = () => import('@/internal/RelatedProducts.vue');

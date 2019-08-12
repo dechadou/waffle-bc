@@ -10,7 +10,11 @@
       />
       <div class="container">
         <section id="shop">
-          <ProductDisplayer-Main :products="mainProducts" v-if="mainProducts.length > 0"/>
+          <ProductDisplayer-Main
+            :products="mainProducts"
+            v-if="mainProducts.length > 0"
+            classes="col-12"
+          />
           <ProductDisplayer-Recommended
             :products="recommendedProducts"
             v-if="recommendedProducts.length > 0 && !template.productos_relacionados"

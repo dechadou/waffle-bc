@@ -90,10 +90,10 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import 'swiper/dist/css/swiper.css';
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
-import { ProductType, Icon, Loading } from '@/extendables/BaseComponents';
+import { ProductType, Icon, Loading } from "@/extendables/BaseComponents";
 
 class AttributeSelector {
   constructor(name, properties) {
@@ -111,12 +111,12 @@ class SelectorProperty {
 }
 
 export default {
-  name: 'Product-Internal',
+  name: "Product-Internal",
   extends: ProductType,
   components: {
     swiper,
     swiperSlide,
-    Loading,
+    Loading
   },
   data() {
     return {
@@ -129,16 +129,16 @@ export default {
         lazy: true,
         autoplay: {
           delay: 5000,
-          disableOnInteraction: false,
+          disableOnInteraction: false
         },
         slidesPerView: 1,
         initialSlide: 1,
         spaceBetween: 30,
         pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      },
+          el: ".swiper-pagination",
+          clickable: true
+        }
+      }
     };
   },
   created() {
@@ -151,7 +151,7 @@ export default {
     },
     $route() {
       this.onCreated();
-    },
+    }
   },
   methods: {
     onCreated() {
@@ -159,8 +159,9 @@ export default {
       this.carouselImages = this.getCarouselImages();
     },
     getButtonType() {
-      if (this.selectedArticle.stock < 1) return 'OutOfStock';
-      return 'Normal';
+      if (this.selectedArticle.stock < 1) return "OutOfStock";
+      if (!this.openModules) return "Check";
+      return "Normal";
     },
     getSelectedArticleOrSelector() {
       // Si no hay atributos significa que no hay forma de seleccionar un elemento distinto,
@@ -172,32 +173,38 @@ export default {
 
       // Si hay atributos, los mapeamos a attributeSelectors para que se generen sus respectivos selectores de cada atributo
       this.attributeSelectors = Object.keys(
-        this.data.articles[0].atributtes,
+        this.data.articles[0].atributtes
       ).map(
-        attributeName => new AttributeSelector(
-          attributeName,
-          this.data.articles
-            .map(
-              article => new SelectorProperty(
-                article.atributtes[attributeName],
-                article.atributtes[attributeName],
-                false,
-              ),
-            )
-            .filter(property => property.name !== ''),
-        ),
+        attributeName =>
+          new AttributeSelector(
+            attributeName,
+            this.data.articles
+              .map(
+                article =>
+                  new SelectorProperty(
+                    article.atributtes[attributeName],
+                    article.atributtes[attributeName],
+                    false
+                  )
+              )
+              .filter(property => property.name !== "")
+          )
       );
 
-      this.attributeSelectors.forEach(x => x.properties.push(new SelectorProperty(x.name, 'default', true)));
+      this.attributeSelectors.forEach(x =>
+        x.properties.push(new SelectorProperty(x.name, "default", true))
+      );
 
       // Por cada selector se puede seleccionar una propiedad. Por default la propiedad de cada selector debe ser '' para que
       // el selector indique al usuario que debe seleccionar una propiedad.
-      this.selectedProperties = this.attributeSelectors.map(x => 'default');
+      this.selectedProperties = this.attributeSelectors.map(x => "default");
     },
     getArticleBySelectedOptions() {
       // Si faltan seleccionar propiedades devuelve null
-      if (this.selectedProperties.some(x => x === 'default')) return null;
-      return this.articleList.find(article => this.isSelectedArticle(article.atributtes));
+      if (this.selectedProperties.some(x => x === "default")) return null;
+      return this.articleList.find(article =>
+        this.isSelectedArticle(article.atributtes)
+      );
     },
     isSelectedArticle(attributes) {
       const attributesValues = Object.values(attributes);
@@ -208,27 +215,27 @@ export default {
     },
     getCarouselImages() {
       const carouselImages = [];
-      Object.values(this.data.media).forEach((media) => {
+      Object.values(this.data.media).forEach(media => {
         if (media.primary_media) carouselImages.unshift(media.url);
         else carouselImages.push(media.url);
       });
       return carouselImages;
-    },
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let finalString = '';
+      let finalString = "";
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach((author) => {
+      authors.forEach(author => {
         if (finalString.search(author.name) === -1) {
-          if (finalString !== '') finalString += ' + ';
+          if (finalString !== "") finalString += " + ";
           finalString += author.name;
         }
       });
       return finalString;
-    },
-  },
+    }
+  }
 };
 </script>
 

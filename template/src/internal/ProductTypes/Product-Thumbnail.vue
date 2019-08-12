@@ -15,9 +15,7 @@
 
         <!-- DESCRIPTION -->
         <div class="col-12 description">
-
           <router-link :to="internalLink">
-
             <!-- TITLE AND PRICE -->
             <div class="title_price_block">
               <div class="row">
@@ -41,7 +39,6 @@
               <!-- /AUTHORS -->
             </div>
             <!-- /TITLE AND PRICE -->
-
           </router-link>
 
           <div class="button_container">
@@ -62,36 +59,38 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
 export default {
-  name: 'Product-Thumbnail',
+  name: "Product-Thumbnail",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
       }
-      if (this.isOutOfStock) return 'OutOfStock';
+      if (this.isOutOfStock) return "OutOfStock";
 
-      return 'Normal';
-    },
+      if (!this.openModules) return "Check";
+
+      return "Normal";
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let str = '';
+      let str = "";
       authors
         .filter((v, i) => authors.indexOf(v) === i)
-        .forEach((x) => {
-          str += str === '' ? x.name : ` + ${x.name}`;
+        .forEach(x => {
+          str += str === "" ? x.name : ` + ${x.name}`;
         });
 
       return str;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -350,10 +349,6 @@ export default {
         }
       }
     }
-  }
-
-  @media (min-width: 1024px) {
-    padding: 0 !important;
   }
 
   &:hover {

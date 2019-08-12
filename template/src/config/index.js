@@ -16,6 +16,7 @@ export const VariableNames = {
 
 export const EnumNames = {
   EventNames: 'event-names-enum',
+  Breakpoints: 'breakpoints-enum',
   URLParams: 'url-params-enum',
 };
 
@@ -75,6 +76,13 @@ const config = {
     },
     [EnumNames.URLParams]: {
       ENV: 'env',
+    },
+    [EnumNames.Breakpoints]: {
+      XS: 0,
+      SM: 1,
+      MD: 2,
+      LG: 3,
+      XL: 5,
     },
   },
   urls: {},

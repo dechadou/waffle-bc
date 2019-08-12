@@ -27,7 +27,6 @@
               <div class="row">
                 <div class="col-6">
                   <div class="col-12">
-
                     <!-- TITULO -->
                     <div class="row">
                       <h2>{{ item.name }}</h2>
@@ -67,12 +66,10 @@
                         </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
                 <div class="col-6 p-0">
                   <div class="row">
-
                     <!-- IMAGEN -->
                     <div class="col-12">
                       <img
@@ -81,7 +78,6 @@
                         style="height: 150px; margin: 0px auto; display: block;"
                       >
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -119,7 +115,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <div class="cart_wrapper" :class="[showCart ? 'open' : '']" @click="cartToggle()"/>
@@ -127,36 +122,40 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
-import { CartActionTypes, CartMutationTypes, CartNamespace } from '@/store/module/Cart';
-import { EventManager } from '@/utils';
+import { mapState, mapActions, mapMutations } from "vuex";
 import {
-  getEnum, EnumNames, getUrl, URLNames,
-} from '@/config';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { CartHelper } from '@/objects/CartObjects';
-import { Icon, Loading } from '@/extendables/BaseComponents';
+  CartActionTypes,
+  CartMutationTypes,
+  CartNamespace
+} from "@/store/module/Cart";
+import { EventManager } from "@/utils";
+import { getEnum, EnumNames, getUrl, URLNames } from "@/config";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { Icon, Loading } from "@/extendables/BaseComponents";
 
 class ItemQuantityObject {
-  constructor(index, quantity){
+  constructor(index, quantity) {
     this.index = index;
     this.quantity = quantity;
   }
 }
 
-class CartConfig{
-  constructor(data, storeIdentifier, storeId){
-    this.cartHelper = new CartHelper(data);
+class CartConfig {
+  constructor(cartHelper, storeIdentifier, storeId) {
+    this.cartHelper = cartHelper;
     this.storeIdentifier = storeIdentifier;
     this.storeId = storeId;
   }
 }
 
 export default {
-  name: 'Cart',
+  name: "Cart",
   components: {
     Icon,
-    Loading,
+    Loading
+  },
+  props: {
+    cartHelper: Object
   },
   data() {
     return {
@@ -165,20 +164,27 @@ export default {
       loading: false,
       bodyElement: null,
       cartText: {
-        empty: 'Tu carrito está vacío...',
-        filled: 'Te estás llevando...',
-      },
+        empty: "Tu carrito está vacío...",
+        filled: "Te estás llevando..."
+      }
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data', 'storeIdentifier', 'store_id']),
-    ...mapState(CartNamespace, ['cartItems', 'cartQuantity', 'cartSubtotal', 'cartRedirect']),
+    ...mapState(StoreDataNamespace, ["storeIdentifier", "store_id"]),
+    ...mapState(CartNamespace, [
+      "cartItems",
+      "cartQuantity",
+      "cartSubtotal",
+      "cartRedirect"
+    ]),
     emptyCartText() {
-      return this.cartItems.length > 0 ? this.cartText.filled : this.cartText.empty;
-    },
+      return this.cartItems.length > 0
+        ? this.cartText.filled
+        : this.cartText.empty;
+    }
   },
   watch: {
-    cartQuantity(){
+    cartQuantity() {
       this.storeCart();
       const scop = this;
       this.changing = true;
@@ -186,25 +192,25 @@ export default {
         scop.changing = false;
       }, 1000);
     },
-    cartRedirect(value){
-      if(!value) return;
+    cartRedirect(value) {
+      if (!value) return;
       this.deleteCart();
       window.location.href = value;
-    },
+    }
   },
   methods: {
     ...mapActions({
       fetchStoredCart: CartActionTypes.FETCH_STORED_CART,
       deleteCart: CartActionTypes.DELETE_CART,
       getCheckoutUrl: CartActionTypes.GET_CHECKOUT_URL,
-      storeCart: CartActionTypes.STORE_CART,
+      storeCart: CartActionTypes.STORE_CART
     }),
     ...mapMutations({
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
-      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
+      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
     }),
     onBackButtonPressed() {
-      if (this.showCart){
+      if (this.showCart) {
         this.cartToggle();
       }
     },
@@ -225,34 +231,39 @@ export default {
       this.toggleScrollBar();
     },
     toggleScrollBar() {
-      if (this.showCart) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-      else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
+      if (this.showCart)
+        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
+      else document.getElementsByTagName("body")[0].style.overflowY = "initial";
     },
-    addToHistory(){
+    addToHistory() {
       window.history.pushState(
-        { state: 'Cart' },
+        { state: "Cart" },
         `${this.name} Cart`,
-        `${window.location.pathname}?cart=1`,
+        `${window.location.pathname}?cart=1`
       );
     },
-    removeFromHistory(backButtonPressed = false){
+    removeFromHistory(backButtonPressed = false) {
       window.history.back();
     },
     suscribeToEvents() {
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
-    },
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
+        this.cartToggle()
+      );
+    }
   },
   mounted() {
-    this.setCartConfig(new CartConfig(this.data, this.storeIdentifier, this.store_id));
+    this.setCartConfig(
+      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id)
+    );
     this.fetchStoredCart();
     this.suscribeToEvents();
-    this.bodyElement = document.getElementsByTagName('body')[0];
+    this.bodyElement = document.getElementsByTagName("body")[0];
 
     const scope = this;
-    window.onpopstate = function (event) {
+    window.onpopstate = function(event) {
       scope.onBackButtonPressed();
     };
-  },
+  }
 };
 </script>
 
@@ -441,11 +452,10 @@ export default {
       fill: #fff;
       height: 19px;
     }
-    &:hover .cart_loader{
+    &:hover .cart_loader {
       fill: #000;
     }
   }
-  
 }
 .open-cart {
   border: none;
