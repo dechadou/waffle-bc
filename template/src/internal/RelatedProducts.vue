@@ -80,8 +80,8 @@ export default {
     ...mapState(BreakpointsNamespace, ["breakpoint"])
   },
   methods: {
-    onBackButtonPressed() {
-      if (this.showRelatedProducts) this.toggleRelatedProducts();
+    onBackButtonPressed(event) {
+      if (this.showRelatedProducts && event.state && event.state.state == "RelatedProducts") this.toggleRelatedProducts(true);
     },
     toggleRelatedProductsDelay(parentProduct) {
       const scop = this;
@@ -92,19 +92,17 @@ export default {
         scop.changing = false;
       }, 500);
     },
-    toggleRelatedProducts() {
+    toggleRelatedProducts(pressedBack = false) {
       this.showRelatedProducts = !this.showRelatedProducts;
 
       if (this.showRelatedProducts) {
         document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-        window.history.pushState(
-          { state: "RelatedProducts" },
-          `${this.name} Related products`,
-          `${window.location.pathname}?related=1`
-        );
+        window.history.replaceState({state: 'RelatedProducts'}, 'RelatedProducts');
+        window.history.pushState({state: 'RelatedProducts'}, 'RelatedProducts');
       } else {
         this.relatedList = [];
         document.getElementsByTagName("body")[0].style.overflowY = "initial";
+        if (!pressedBack) window.history.back();
         return;
       }
 

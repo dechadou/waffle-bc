@@ -121,26 +121,29 @@ export default {
     }
   }
 
-  @media (min-width: 1024px) {
+  @include lg-up {
     margin-bottom: 30px;
     transition: background-color 0.25s ease-out;
   }
 
   .title {
-    @media (min-width: 768px) {
+    @include md-up {
       height: 62px;
       font-size: 32px;
     }
   }
   p {
     font-size: 22px;
-    @media (min-width: 768px) {
+    @include md-up {
       font-size: 20px;
     }
     &.authors {
       color: #b0b0b0;
-      font-size: 22px;
+      font-size: 5vw;
       margin-top: 0;
+      @include md-up {
+        font-size: 22px;
+      }
     }
   }
   .price-container {
@@ -156,7 +159,7 @@ export default {
     display: inline-block;
     color: $abre-black;
     font-size: 19px;
-    @media (min-width: 768px) {
+    @include md-up {
       font-size: 18px;
     }
     &.price {
@@ -168,7 +171,7 @@ export default {
         font-size: 14px;
         margin-right: 5px;
       }
-      @media (min-width: 768px) {
+      @include md-up {
         margin-top: 10px;
       }
     }
@@ -179,7 +182,7 @@ export default {
     position: relative;
     overflow: hidden;
 
-    @media (min-width: 1024px) {
+    @include lg-up {
       background: transparent;
     }
 
@@ -217,7 +220,7 @@ export default {
   .button_container {
     float: left;
     width: 100%;
-    @media (min-width: 768px) {
+    @include md-up {
       .button_container {
         padding: 0;
       }
@@ -227,13 +230,13 @@ export default {
   // new css - had no time to clean
 
   .new_row {
-    @media (min-width: 1024px) {
+    @include lg-up {
       margin: 0 !important;
     }
   }
 
   .new_col_12 {
-    @media (min-width: 1024px) {
+    @include lg-up {
       padding: 0 !important;
     }
   }
@@ -243,12 +246,12 @@ export default {
     font-size: 6.133333333vw;
     width: 75vw;
     margin: 0;
-    @media (min-width: 768px) {
+    @include md-up {
       font-size: 26px;
       width: auto;
       height: auto !important;
     }
-    @media (min-width: 1024px) {
+    @include lg-up {
       color: $abre-black !important;
       font-size: 1.317715959vw !important;
       white-space: nowrap;
@@ -257,7 +260,7 @@ export default {
 
   .authors {
     font-size: 4.533333333vw;
-    @media (min-width: 1024px) {
+    @include lg-up {
       margin: 0 !important;
       color: $abre-black !important;
       font-size: 1.02489019vw !important;
@@ -265,7 +268,7 @@ export default {
   }
 
   .price {
-    @media (min-width: 1024px) {
+    @include lg-up {
       line-height: 1.75;
       margin: 0 !important;
       color: $abre-black !important;
@@ -273,7 +276,7 @@ export default {
     }
 
     span {
-      @media (min-width: 1024px) {
+      @include lg-up {
         margin: 0 0.3vw 0 0 !important;
         color: $abre-black !important;
         font-size: 0.7320644217vw !important;
@@ -282,7 +285,7 @@ export default {
   }
 
   .title_price_block {
-    @media (min-width: 1024px) {
+    @include lg-up {
       transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
     }
   }
@@ -290,13 +293,13 @@ export default {
   .description {
     overflow: hidden;
     padding: 0 !important;
-    @media (min-width: 1024px) {
+    @include lg-up {
       height: 45px;
     }
   }
 
   .addToCartButton {
-    @media (min-width: 1024px) {
+    @include lg-up {
       position: absolute;
       left: 0;
       bottom: 0;
@@ -308,18 +311,18 @@ export default {
 
   // type product
   &.type_product {
-    @media (min-width: 1024px) {
+    @include lg-up {
       max-width: 31.62393162% !important;
       flex: 0 0 31.62393162% !important;
     }
 
     .image_wrap {
-      @media (min-width: 1024px) {
+      @include lg-up {
         padding-top: 100% !important;
       }
 
       img {
-        @media (min-width: 1024px) {
+        @include lg-up {
           width: 100% !important;
           height: 100% !important;
           object-fit: contain;
@@ -330,19 +333,19 @@ export default {
 
   // type bundle
   &.type_bundle {
-    @media (min-width: 1024px) {
+    @include lg-up {
       // height: 30.74670571vw;
       max-width: 48.71794872% !important;
       flex: 0 0 48.71794872% !important;
     }
 
     .image_wrap {
-      @media (min-width: 1024px) {
+      @include lg-up {
         padding-top: 64.9122807% !important;
       }
 
       img {
-        @media (min-width: 1024px) {
+        @include lg-up {
           width: 100% !important;
           height: 100% !important;
           object-fit: contain;
@@ -352,19 +355,19 @@ export default {
   }
 
   &:hover {
-    @media (min-width: 1024px) {
+    @include lg-up {
       background: $abre-light-grey;
     }
 
     .addToCartButton {
-      @media (min-width: 1024px) {
+      @include lg-up {
         opacity: 1;
         visibility: visible;
       }
     }
 
     .title_price_block {
-      @media (min-width: 1024px) {
+      @include lg-up {
         opacity: 0;
         visibility: hidden;
       }

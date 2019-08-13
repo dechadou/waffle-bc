@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from './views/HomePage.vue';
+import HomePage from './pages/HomePage.vue';
 
 Vue.use(Router);
 
@@ -21,22 +21,22 @@ export default new Router({
     {
       path: '/producto/:product_slug',
       name: 'DefaultProductPage',
-      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './pages/ProductPage.vue'),
     },
     {
       path: '/combo/:product_slug',
       name: 'DefaultBundlePage',
-      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "DefaultProductPage" */ './pages/ProductPage.vue'),
     },
     {
       path: '/:slug/producto/:product_slug',
       name: 'StoreProductPage',
-      component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "StoreProductPage" */ './pages/ProductPage.vue'),
     },
     {
       path: '/:slug/combo/:product_slug',
       name: 'StoreBundlePage',
-      component: () => import(/* webpackChunkName: "StoreProductPage" */ './views/ProductPage.vue'),
+      component: () => import(/* webpackChunkName: "StoreProductPage" */ './pages/ProductPage.vue'),
     },
   ],
 });

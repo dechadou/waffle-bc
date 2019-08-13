@@ -25,7 +25,7 @@ export default {
       themes: {
         marketplace: new ThemeConfig(
           'Product-Thumbnail',
-          'col-4',
+          'col-12 col-md-4',
           true,
           false,
         ),

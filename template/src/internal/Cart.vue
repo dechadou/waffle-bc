@@ -209,9 +209,10 @@ export default {
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
       changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
     }),
-    onBackButtonPressed() {
-      if (this.showCart) {
-        this.cartToggle();
+    onBackButtonPressed(event) {
+      console.log(event);
+      if (this.showCart && event.state && event.state.state == "Cart") {
+        this.cartToggle(true);
       }
     },
     itemQuantity(index, quantity) {
@@ -222,10 +223,10 @@ export default {
       this.loading = true;
       this.getCheckoutUrl();
     },
-    cartToggle() {
+    cartToggle(pressedBack = false) {
       this.showCart = !this.showCart;
 
-      if (!this.showCart) this.removeFromHistory();
+      if (!this.showCart && !pressedBack) this.removeFromHistory();
       else this.addToHistory();
 
       this.toggleScrollBar();
@@ -236,11 +237,8 @@ export default {
       else document.getElementsByTagName("body")[0].style.overflowY = "initial";
     },
     addToHistory() {
-      window.history.pushState(
-        { state: "Cart" },
-        `${this.name} Cart`,
-        `${window.location.pathname}?cart=1`
-      );
+      window.history.replaceState({state: 'Cart'}, 'Cart');
+      window.history.pushState({state: 'Cart'}, 'Cart');
     },
     removeFromHistory(backButtonPressed = false) {
       window.history.back();
@@ -259,10 +257,7 @@ export default {
     this.suscribeToEvents();
     this.bodyElement = document.getElementsByTagName("body")[0];
 
-    const scope = this;
-    window.onpopstate = function(event) {
-      scope.onBackButtonPressed();
-    };
+    window.addEventListener("popstate", this.onBackButtonPressed);
   }
 };
 </script>
