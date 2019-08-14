@@ -206,7 +206,9 @@ and the `triggering` component that will call the event.
 
 The first step is importing the event manager for both the subscribing and the triggering components:
 
-```javascript import EventManager from '@/utils'; ```
+```javascript 
+  import EventManager from '@/utils'; 
+```
 
 Then, you have to subscribe to an event inside the subscribing component, usually in one of the hook methods, 
 using the `Subscribe` method.
@@ -230,6 +232,7 @@ The trigger method only needs to be called when an event happens. For example, s
 
 `Trigger` takes one mandatory parameter: the event name that will be triggered. And then 
 infinite non-required parameters, being all the data that you want to send to the subscribing method.
+
 **Note: All the parameters (except for the event name) will be transformed to an array.
 
 ```javascript 
