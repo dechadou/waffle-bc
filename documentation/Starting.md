@@ -18,7 +18,7 @@ After cloning run ```yarn``` in the project root to get started.
 ## Naming conventions
 
 * Every component name is formatted in PascalCase
-* Every view name is appended with Page
+* Every page name is appended with Page
 * Always use the PascalCase formatting for components in templates ```<ScrollBar/>```
 
 ## Vue Cli Commands
