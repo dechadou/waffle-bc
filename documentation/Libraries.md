@@ -27,6 +27,19 @@ Waffle has support for enums, urls, variables and environments. The latter is ve
 * The environment is set based on the `GET Parameter: env`, for example https://abrecultura.com/?env=1
 * `env` values are: 0 for `production`, 1 for `staging`, 2 for `development`
 
+To get a variable, enum or url from the config file you need to import the `getVariable(), getUrl(), getEnum()` methods from the config file:
+
+Also you will need to import the `VariableNames, EnumNames, URLNames` enums, respectively.
+
+```javascript
+import { getVariable, VariableNames, getUrl, URLNames, getEnum, EnumNames  } from '@/config';
+
+// And then you can use the methods and enums you imported to get your Environment variables:
+const password = getVariable(VariableNames.Password);
+const api = getUrl(URLNames.API);
+const breakpoints = getEnum(EnumNames.Breakpoints);
+```
+
 ## Styles
 
 Waffle imports widely used css libraries inside `src/App.vue` for easier development:
