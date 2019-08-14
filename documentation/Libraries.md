@@ -51,15 +51,15 @@ The great thing about Vuex is that you can store data inside a vuex module and a
 It's a best practice to split your data modules in [vuex](https://github.com/vuejs/vuex).
 
 A module has the following properties: 
-* `state`: The state of the module. Don't use statics for the state because you can nest the 
+`state`: The state of the module. Don't use statics for the state because you can nest the 
 state. Use `mapState` to get values from the state in your component. 
-* `getters`: The getters of the module. Only use getters when you want to transform a value from 
+`getters`: The getters of the module. Only use getters when you want to transform a value from 
 the state. Use `mapGetters` to access the getters in your component. Don't create a getter for 
 every value in the state. 
-* `mutations`: The mutations of the module. In a mutation you can change the state. Don't use one 
+`mutations`: The mutations of the module. In a mutation you can change the state. Don't use one 
 god mutation (SET) that can change everything in the state. Use `mapMutations` to use your 
 mutations in a component.
-* `actions`: The actions of a module. An action is async in most cases and results in triggering a 
+`actions`: The actions of a module. An action is async in most cases and results in triggering a 
 state change when the action is completed. You should use actions to do a gateway calls instead 
 of doing the gateway call in the component. Don't use actions to just simply trigger mutations 
 use mutations directly instead. Use `mapActions` to use actions in your components. 
