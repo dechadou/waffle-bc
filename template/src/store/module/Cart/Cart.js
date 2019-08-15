@@ -13,6 +13,7 @@ const SET_REDIRECT_URL = 'set-redirect-url';
 const QUERY_STORE_ID = 'store_id';
 const QUERY_BUNDLES_ARRAY = 'combos[]';
 const QUERY_ARTICLES_ARRAY = 'products[]';
+const QUERY_TOKEN = 'mtoken';
 
 class StoreCart {
   constructor(data, date) {
@@ -47,20 +48,16 @@ export default {
     cartItems: [],
     cartQuantity: 0,
     cartSubtotal: 0,
-    cartHelper: null,
-    storeIdentifier: null,
     cartRedirect: null,
-    storeId: 0,
+    config: null,
   },
   getters: {},
   mutations: {
     [SET_REDIRECT_URL]: (state, payload) => {
       state.cartRedirect = payload;
     },
-    [SET_CART_CONFIG]: (state, { cartHelper, storeIdentifier, storeId }) => {
-      state.cartHelper = cartHelper;
-      state.storeIdentifier = storeIdentifier;
-      state.storeId = storeId;
+    [SET_CART_CONFIG]: (state, config) => {
+      state.config = config;
     },
     [ADD_ITEM]: (state, payload) => {
       state.cartItems.push(payload);
@@ -82,12 +79,12 @@ export default {
   },
   actions: {
     [FETCH_STORED_CART]: ({ state, commit }) => {
-      const savedCart = new SavedCart(localStorage.getItem(`${state.storeIdentifier}_store_cart`));
+      const savedCart = new SavedCart(localStorage.getItem(`${state.config.storeIdentifier}_store_cart`));
       if (savedCart.isValid) commit(SET_CART, savedCart);
     },
     [ADD_TO_CART]: ({ state, commit }, { id, productClass }) => {
       const index = state.cartItems.findIndex(x => x.id === id && x.class === productClass);
-      if (index === -1) commit(ADD_ITEM, state.cartHelper.getCartObjectByProductId(id, productClass));
+      if (index === -1) commit(ADD_ITEM, state.config.cartHelper.getCartObjectByProductId(id, productClass));
       commit(CHANGE_ITEM_QUANTITY, { index, quantity: 1 });
     },
     [GET_CHECKOUT_URL]: ({ state, commit }) => {
@@ -96,20 +93,21 @@ export default {
           currentValue.class === 'bundle'
             ? [QUERY_BUNDLES_ARRAY]
             : [QUERY_ARTICLES_ARRAY]
-        }`;
+          }`;
         accumulator += `=${currentValue.id},${currentValue.quantity}`;
         return accumulator;
-      }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.storeId}`);
+      }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
+        .concat(`&${[QUERY_TOKEN]}=${state.config.authToken}`);
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {
       localStorage.setItem(
-        `${state.storeIdentifier}_store_cart`,
+        `${state.config.storeIdentifier}_store_cart`,
         JSON.stringify(new StoreCart(state.cartItems, new Date())),
       );
     },
     [DELETE_CART]: ({ state }) => {
-      localStorage.removeItem(`${state.storeIdentifier}_store_cart`);
+      localStorage.removeItem(`${state.config.storeIdentifier}_store_cart`);
     },
   },
 };
