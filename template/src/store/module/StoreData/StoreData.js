@@ -23,6 +23,7 @@ export default {
     template: null,
     totalSold: null,
     storeIdentifier: null,
+    authToken: null,
     year: null,
     store_id: null,
     error: null,
@@ -66,6 +67,7 @@ export default {
       state.totalSold = data.totalSold;
       state.year = data.year;
       state.store_id = data.id_tienda;
+      state.authToken = data.token;
       if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {

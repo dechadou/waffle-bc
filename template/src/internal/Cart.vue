@@ -141,10 +141,11 @@ class ItemQuantityObject {
 }
 
 class CartConfig {
-  constructor(cartHelper, storeIdentifier, storeId) {
+  constructor(cartHelper, storeIdentifier, storeId, authToken) {
     this.cartHelper = cartHelper;
     this.storeIdentifier = storeIdentifier;
     this.storeId = storeId;
+    this.authToken = authToken;
   }
 }
 
@@ -170,7 +171,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["storeIdentifier", "store_id"]),
+    ...mapState(StoreDataNamespace, ["authToken", "storeIdentifier", "store_id"]),
     ...mapState(CartNamespace, [
       "cartItems",
       "cartQuantity",
@@ -251,7 +252,7 @@ export default {
   },
   mounted() {
     this.setCartConfig(
-      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id)
+      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id, this.authToken)
     );
     this.fetchStoredCart();
     this.suscribeToEvents();
