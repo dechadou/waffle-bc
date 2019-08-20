@@ -115,21 +115,24 @@
 	      </svg>
 	    </div>
 	</div>
+    <script src="https://browser.sentry-cdn.com/5.6.2/bundle.min.js" integrity="sha384-H4chu/XQ3ztniOYTpWo+kwec6yx3KQutpNkHiKyeY05XCZwCSap7KSwahg16pzJo" crossorigin="anonymous"></script>
+    <script type="text/javascript">Sentry.init({ dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222' });</script>
+
     <script src=<?= $folderPath ?>js/chunk-vendors.js></script>
     <script src=<?= $folderPath ?>js/app.js></script>
 
-	<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
-	<script>
-	  var firebaseConfig = {
-	    apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
-	    authDomain: "waffle-e6985.firebaseapp.com",
-	    databaseURL: "https://waffle-e6985.firebaseio.com",
-	    projectId: "waffle-e6985",
-	    storageBucket: "",
-	    messagingSenderId: "183271898269",
-	    appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
-	  };
-	  firebase.initializeApp(firebaseConfig);
-	</script>
+  	<script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
+  	<script>
+  	  var firebaseConfig = {
+  	    apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
+  	    authDomain: "waffle-e6985.firebaseapp.com",
+  	    databaseURL: "https://waffle-e6985.firebaseio.com",
+  	    projectId: "waffle-e6985",
+  	    storageBucket: "",
+  	    messagingSenderId: "183271898269",
+  	    appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
+  	  };
+  	  firebase.initializeApp(firebaseConfig);
+  	</script>
 </body>
 </html>
