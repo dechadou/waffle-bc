@@ -36,6 +36,7 @@ import {
   RelatedProducts
 } from "@/extendables/BaseComponents";
 
+// This is the main component
 export default {
   name: "App",
   components: {
@@ -77,7 +78,11 @@ export default {
     error(value) {
       if (!value) return;
 
-      // Si la tienda no existe
+      /* If an error happens loading the data it is probably because
+         the page does not exists. So if it is a main page (ie: abc.com) it will 
+         display a blank screen but if it has a slug (ie: abc.com/store) it will
+         redirect to the main page (abc.com)
+      */
       if (this.$route.params.slug) {
         window.location.href = `${window.location.protocol}//${
           window.location.host
@@ -85,12 +90,14 @@ export default {
       }
     },
     $route(to, from) {
-      /* Por alguna razón, en ciertos casos el router no carga inmediatamente y devuelve null aunque
-         haya una ruta válida, por lo tanto espero a que el router se actualice antes de fetchear la info */
-
       if (!this.isLoaded) {
+        /* I dont understand why but in some cases the router does not load immediately, resulting in
+         NULL routes even when the user has typed a valid slug. This watch variable is set so the data is
+         only fetched when the router is set */
         this.fetchData();
       } else {
+        /* Also, if the data has already been fetched but the route changes, it means that the page changed,
+         so we make a nice transition */
         this.show = false;
         window.scrollTo(0, 0);
         const scope = this;
@@ -102,7 +109,10 @@ export default {
   },
   created() {
     this.fetchData();
+    
+    // Tells the Breakpoints Store to get the size of the screen and set the breakpoint
     this.setBreakpoint();
+    
     window.addEventListener("resize", this.onResize, true);
   },
   methods: {
@@ -115,17 +125,31 @@ export default {
     ...mapActions({
       fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA
     }),
+    /**
+     * @vuese
+     * Calls to setBreakpoint on screen resize
+     */
     onResize() {
       this.setBreakpoint();
     },
+    /**
+     * @vuese
+     * Calls to fetchStoreData on StoreData vuex store if the route is defined.
+     * fetchStoreData asks for the store slug, which is taken from the slug param of the url
+     * or the defaultSlug at the config file
+     */
     fetchData() {
       if (!this.$route.name) return;
       this.fetchStoreData(
         this.$route.params.slug || getVariable(VariableNames.DefaultSlug)
       );
     },
+    /**
+     * @vuese
+     * Sets app configurations and checks validity of routes
+     */
     setApp() {
-      // Si la tienda no pertenece a este dominio redirijo
+      // If this store does not belong to this domain, it redirects to the main page
       if (!this.isValidPage()) {
         window.location.href = `${window.location.protocol}//${
           window.location.host
@@ -133,12 +157,13 @@ export default {
         return;
       }
 
-      // Usado por el carrito para guardar sus contenidos en localstorage
+      // The store identifier is used by the Cart for saving things on LocalStorage
       this.setStoreIdentifier({
         domain: this.template.tienda_url,
         storeSlug: this.$route.params.slug
       });
 
+      // Calls to VueAnalytics component if an Analytics code exists
       if (this.template.codigo_analytics) {
         Vue.use(VueAnalytics, {
           id: this.template.codigo_analytics,
@@ -146,6 +171,8 @@ export default {
         });
       }
 
+      // Creates a cartHelper object that is used by the Cart component and the RelatedProducts component
+      // The cartHelper object asks for the storeData
       this.cartHelper = new CartHelper(this.data);
 
       var loadingScreen = document.getElementById("loadingScreen");
@@ -153,6 +180,10 @@ export default {
 
       this.show = true;
     },
+    /**
+     * @vuese
+     * Checks if the current store belongs to this domain
+     */
     isValidPage() {
       if (
         process.env.NODE_ENV === "production" &&
