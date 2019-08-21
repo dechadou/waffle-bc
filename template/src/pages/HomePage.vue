@@ -54,6 +54,7 @@ import {
   GlobalWarning
 } from "@/extendables/BaseComponents";
 
+// The default page that is loaded when no other arguments are present on the URL
 export default {
   name: "HomePage",
   components: {
@@ -75,14 +76,26 @@ export default {
     ...mapState(ThemeNamespace, ["themeConfig"])
   },
   methods: {
+    /**
+     * @vuese
+     * Gets the product data of all the home_products products, 
+     * sorts them, and divides them between mainProducts and recommendedProducts
+     */
     getProducts() {
+      // Checks if there are products to process
       if (!this.home_products || this.home_products.length === 0) {
         throw new Error("There are no products nor bundles to show");
       }
+      
+      // Sorts the product identifiers by position
       const products = [...this.home_products].sort(
         (a, b) => a.position - b.position
       );
+      
+      // For each product identifier
       products.forEach(x => {
+      
+        // Gets all the products or all the bundles
         let product =
           x.type === "combo" ? this.data.bundles : this.data.products;
 
