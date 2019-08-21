@@ -5,36 +5,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import {
-  EditableTextsNamespace,
-  EditableTextsActionTypes
-} from "@/store/module/EditableTexts";
+import { Request } from '@/utils';
 
 export default {
-  name: "GlobalWarning",
+  name: 'GlobalWarning',
   data() {
     return {
-      description: null
+      description: null,
     };
   },
-  watch: {
-    response(value) {
-      if (!value) return;
-      this.description = value.value;
-    }
-  },
-  computed: {
-    ...mapState(EditableTextsNamespace, ["response"])
-  },
-  methods: {
-    ...mapActions({
-      fetchEditableText: EditableTextsActionTypes.FETCH_EDITABLE_TEXT
-    })
-  },
   mounted() {
-    this.fetchEditableText("aviso-global-tiendas");
-  }
+    Request.api
+      .get('metas/slug/aviso-global-tiendas')
+      .then((response) => { this.description = response.data; })
+      .catch(() => {});
+  },
 };
 </script>
 
