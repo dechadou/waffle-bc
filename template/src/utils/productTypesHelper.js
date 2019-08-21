@@ -1,9 +1,20 @@
+/*
+    Author: Javier Goldschmidt
+    Company: Abre Cultura
+    Date: 10/08/2019 (dd-mm-yyyy)
+    Description: Utility functions for products
+*/
+
+// Expects an array of media objects. 
+// Returns the first element marked as primary media or the first element of the array if no primary media is found
 export const getImage = (media) => {
   if (!media) throw new Error('[Waffle Error]: getImage() expects a valid parameter');
   const med = Object.values(media).sort(x => x.primary_media);
   return med.length > 0 ? med[0].url : 'http://via.placeholder.com/1367x1367';
 };
 
+// Expects an array of articles
+// Returns an array of attributes found in the articles
 export const getAttributeList = (articleList) => {
   if (!articleList) throw new Error('[Waffle Error]: getAttributeList() expects a valid parameter');
   const attributeList = [];
@@ -18,5 +29,10 @@ export const getAttributeList = (articleList) => {
   return attributeList;
 };
 
+// Expects a list of articles and the productClass that they came from
+// Returns bool
 export const isOutOfStock = (articleList, productClass) => (productClass === 'producto' ? articleList[0].stock < 1 : articleList.some(x => x.stock < 1));
+
+// Expects a product object
+// Returns its price (Number)
 export const getPrice = data => Math.floor(data.class === 'producto' ? data.articles[0].price : data.price);
