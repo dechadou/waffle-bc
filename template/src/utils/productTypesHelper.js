@@ -5,7 +5,7 @@
     Description: Utility functions for products
 */
 
-// Expects an array of media objects. 
+// Expects an array of media objects.
 // Returns the first element marked as primary media or the first element of the array if no primary media is found
 export const getImage = (media) => {
   if (!media) throw new Error('[Waffle Error]: getImage() expects a valid parameter');

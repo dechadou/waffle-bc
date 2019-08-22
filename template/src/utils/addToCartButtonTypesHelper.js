@@ -11,3 +11,5 @@ export const animateButton = (event, onFinish = () => { }) => {
     event.target.classList.remove('pulse');
   }, 1000);
 };
+
+export const button = '';

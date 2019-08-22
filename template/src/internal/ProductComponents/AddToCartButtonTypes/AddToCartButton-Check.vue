@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import { animateButton } from "@/utils/addToCartButtonTypesHelper";
-import { AddToCartButtonType } from "@/extendables/BaseComponents";
+import { animateButton } from '@/utils/addToCartButtonTypesHelper';
+import { AddToCartButtonType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "AddToCartButton-Check",
+  name: 'AddToCartButton-Check',
   extends: AddToCartButtonType,
   data() {
     return {
-      isAdding: false
+      isAdding: false,
     };
   },
   methods: {
@@ -31,7 +31,7 @@ export default {
     },
     onFinishAnimate() {
       this.isAdding = false;
-    }
-  }
+    },
+  },
 };
 </script>

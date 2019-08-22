@@ -16,19 +16,19 @@
 </template>
 
 <script>
-import { ProductDisplayerType } from "@/extendables/BaseComponents";
+import { ProductDisplayerType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "ProductDisplayer-Main",
+  name: 'ProductDisplayer-Main',
   extends: ProductDisplayerType,
   props: {
     classes: String,
     containerClasses: String,
     openModules: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 };
 </script>
 
@@ -37,4 +37,3 @@ export default {
   width: 100%;
 }
 </style>
-

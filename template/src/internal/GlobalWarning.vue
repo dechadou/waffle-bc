@@ -5,36 +5,36 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from 'vuex';
 import {
   EditableTextsNamespace,
-  EditableTextsActionTypes
-} from "@/store/module/EditableTexts";
+  EditableTextsActionTypes,
+} from '@/store/module/EditableTexts';
 
 export default {
-  name: "GlobalWarning",
+  name: 'GlobalWarning',
   data() {
     return {
-      description: null
+      description: null,
     };
   },
   watch: {
     response(value) {
       if (!value) return;
       this.description = value.value;
-    }
+    },
   },
   computed: {
-    ...mapState(EditableTextsNamespace, ["response"])
+    ...mapState(EditableTextsNamespace, ['response']),
   },
   methods: {
     ...mapActions({
-      fetchEditableText: EditableTextsActionTypes.FETCH_EDITABLE_TEXT
-    })
+      fetchEditableText: EditableTextsActionTypes.FETCH_EDITABLE_TEXT,
+    }),
   },
   mounted() {
-    this.fetchEditableText("aviso-global-tiendas");
-  }
+    this.fetchEditableText('aviso-global-tiendas');
+  },
 };
 </script>
 

@@ -11,12 +11,13 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import "swiper/dist/css/swiper.css";
-import { ProductDisplayerType } from "@/extendables/BaseComponents";
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'swiper/dist/css/swiper.css';
+import { ProductDisplayerType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "ProductDisplayer-Slider",
+  name: 'ProductDisplayer-Slider',
   extends: ProductDisplayerType,
   props: {
     sliderOptions: {
@@ -27,16 +28,16 @@ export default {
         initialSlide: 1,
         spaceBetween: -30,
         navigation: {
-          nextEl: ".slider-button-next",
-          prevEl: ".slider-button-prev"
-        }
-      })
-    }
+          nextEl: '.slider-button-next',
+          prevEl: '.slider-button-prev',
+        },
+      }),
+    },
   },
   components: {
     swiper,
-    swiperSlide
-  }
+    swiperSlide,
+  },
 };
 </script>
 

@@ -93,7 +93,7 @@ export default {
           currentValue.class === 'bundle'
             ? [QUERY_BUNDLES_ARRAY]
             : [QUERY_ARTICLES_ARRAY]
-          }`;
+        }`;
         accumulator += `=${currentValue.id},${currentValue.quantity}`;
         return accumulator;
       }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)

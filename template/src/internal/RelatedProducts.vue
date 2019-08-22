@@ -40,26 +40,26 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Icon } from "@/extendables/BaseComponents";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames } from "@/config";
-import { BreakpointsNamespace } from "@/store/module/Breakpoints";
+import { mapState } from 'vuex';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { Icon } from '@/extendables/BaseComponents';
+import { EventManager } from '@/utils';
+import { getEnum, EnumNames } from '@/config';
+import { BreakpointsNamespace } from '@/store/module/Breakpoints';
 import {
   ProductDisplayerSlider,
-  ProductDisplayerMain
-} from "@/extendables/ProductDisplayerTypes";
+  ProductDisplayerMain,
+} from '@/extendables/ProductDisplayerTypes';
 
 export default {
-  name: "RelatedProducts",
+  name: 'RelatedProducts',
   props: {
-    cartHelper: Object
+    cartHelper: Object,
   },
   components: {
     Icon,
     ProductDisplayerSlider,
-    ProductDisplayerMain
+    ProductDisplayerMain,
   },
   data() {
     return {
@@ -72,16 +72,16 @@ export default {
       addedProduct: null,
       porcentajeAlreadySet: false,
       eventNames: null,
-      breakpoints: getEnum(EnumNames.Breakpoints)
+      breakpoints: getEnum(EnumNames.Breakpoints),
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["data"]),
-    ...mapState(BreakpointsNamespace, ["breakpoint"])
+    ...mapState(StoreDataNamespace, ['data']),
+    ...mapState(BreakpointsNamespace, ['breakpoint']),
   },
   methods: {
     onBackButtonPressed(event) {
-      if (this.showRelatedProducts && event.state && event.state.state == "RelatedProducts") this.toggleRelatedProducts(true);
+      if (this.showRelatedProducts && event.state && event.state.state === 'RelatedProducts') this.toggleRelatedProducts(true);
     },
     toggleRelatedProductsDelay(parentProduct) {
       const scop = this;
@@ -96,12 +96,12 @@ export default {
       this.showRelatedProducts = !this.showRelatedProducts;
 
       if (this.showRelatedProducts) {
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-        window.history.replaceState({state: 'RelatedProducts'}, 'RelatedProducts');
-        window.history.pushState({state: 'RelatedProducts'}, 'RelatedProducts');
+        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+        window.history.replaceState({ state: 'RelatedProducts' }, 'RelatedProducts');
+        window.history.pushState({ state: 'RelatedProducts' }, 'RelatedProducts');
       } else {
         this.relatedList = [];
-        document.getElementsByTagName("body")[0].style.overflowY = "initial";
+        document.getElementsByTagName('body')[0].style.overflowY = 'initial';
         if (!pressedBack) window.history.back();
         return;
       }
@@ -110,15 +110,14 @@ export default {
 
       let plus = 0;
       if (window.innerWidth > 768) plus = 10;
-      const altMenu =
-        document
-          .getElementById("relatedProducts")
-          .getElementsByClassName("relatedProductsContainer")[0].clientHeight +
-        100;
+      const altMenu = document
+        .getElementById('relatedProducts')
+        .getElementsByClassName('relatedProductsContainer')[0].clientHeight
+        + 100;
       let porcentaje = (altMenu * 100) / window.innerHeight + plus;
       if (porcentaje > 100) porcentaje = 100;
       document.getElementById(
-        "relatedProducts"
+        'relatedProducts',
       ).style.height = `${porcentaje}%`;
       this.porcentajeAlreadySet = true;
     },
@@ -131,13 +130,13 @@ export default {
 
       // Si el producto padre es válido, y ese producto padre tiene cargados productos relacionados
       if (
-        this.addedProduct &&
-        this.addedProduct.productos_relacionados.length > 0
+        this.addedProduct
+        && this.addedProduct.productos_relacionados.length > 0
       ) {
         this.relatedList = [];
 
         // Agrego los productos relacionados a la relatedList
-        this.addedProduct.productos_relacionados.forEach(id => {
+        this.addedProduct.productos_relacionados.forEach((id) => {
           this.idToCheck = id;
           const product = this.data.products.find(this.findRelatedProduct);
           if (product) this.relatedList.push(product);
@@ -151,7 +150,7 @@ export default {
 
       // Filtro por todos los productos si el producto agregado no es válido, pero si lo es, descarto el producto agregado para que no se repita
       const productsToAdd = this.data.products.filter(
-        product => !this.addedProduct || product.id !== this.addedProduct.id
+        product => !this.addedProduct || product.id !== this.addedProduct.id,
       );
 
       // Agrego el numero de productos al azar que haga falta a relatedList
@@ -168,21 +167,21 @@ export default {
     findRelatedProduct(product) {
       if (product.id === this.idToCheck) return true;
       return false;
-    }
+    },
   },
   mounted() {
     this.eventNames = getEnum(EnumNames.EventNames);
     EventManager.Subscribe(
       this.eventNames.ON_RELATED_PRODUCTS_TOGGLE,
-      response => {
+      (response) => {
         const parentProduct = this.cartHelper.getProductArticlePairByArticleId(
-          response[0].id
+          response[0].id,
         ).product;
         this.toggleRelatedProductsDelay(parentProduct);
-      }
+      },
     );
-    window.addEventListener("popstate", this.onBackButtonPressed);
-  }
+    window.addEventListener('popstate', this.onBackButtonPressed);
+  },
 };
 </script>
 

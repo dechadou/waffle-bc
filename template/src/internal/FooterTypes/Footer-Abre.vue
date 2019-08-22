@@ -37,7 +37,7 @@
       <Social :year="year" class="social" />
     </div>
 
-    
+
   </section>
 </template>
 

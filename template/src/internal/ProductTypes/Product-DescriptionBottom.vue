@@ -47,29 +47,29 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "Product-DescriptionBottom",
+  name: 'Product-DescriptionBottom',
   extends: ProductType,
   components: {
-    LazyImage
+    LazyImage,
   },
   methods: {
     getButtonType() {
-      if (this.data.class === "product" && this.articleList.length > 1) {
-        return "Select";
+      if (this.data.class === 'product' && this.articleList.length > 1) {
+        return 'Select';
       }
 
       if (this.isOutOfStock) {
-        return "OutOfStock";
+        return 'OutOfStock';
       }
 
-      if (!this.openModules) return "Check";
+      if (!this.openModules) return 'Check';
 
-      return "Normal";
-    }
-  }
+      return 'Normal';
+    },
+  },
 };
 </script>
 

@@ -122,16 +122,18 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from 'vuex';
 import {
   CartActionTypes,
   CartMutationTypes,
-  CartNamespace
-} from "@/store/module/Cart";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames, getUrl, URLNames } from "@/config";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Icon, Loading } from "@/extendables/BaseComponents";
+  CartNamespace,
+} from '@/store/module/Cart';
+import { EventManager } from '@/utils';
+import {
+  getEnum, EnumNames,
+} from '@/config';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { Icon, Loading } from '@/extendables/BaseComponents';
 
 class ItemQuantityObject {
   constructor(index, quantity) {
@@ -150,13 +152,13 @@ class CartConfig {
 }
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     Icon,
-    Loading
+    Loading,
   },
   props: {
-    cartHelper: Object
+    cartHelper: Object,
   },
   data() {
     return {
@@ -165,24 +167,24 @@ export default {
       loading: false,
       bodyElement: null,
       cartText: {
-        empty: "Tu carrito está vacío...",
-        filled: "Te estás llevando..."
-      }
+        empty: 'Tu carrito está vacío...',
+        filled: 'Te estás llevando...',
+      },
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["authToken", "storeIdentifier", "store_id"]),
+    ...mapState(StoreDataNamespace, ['authToken', 'storeIdentifier', 'store_id']),
     ...mapState(CartNamespace, [
-      "cartItems",
-      "cartQuantity",
-      "cartSubtotal",
-      "cartRedirect"
+      'cartItems',
+      'cartQuantity',
+      'cartSubtotal',
+      'cartRedirect',
     ]),
     emptyCartText() {
       return this.cartItems.length > 0
         ? this.cartText.filled
         : this.cartText.empty;
-    }
+    },
   },
   watch: {
     cartQuantity() {
@@ -197,22 +199,22 @@ export default {
       if (!value) return;
       this.deleteCart();
       window.location.href = value;
-    }
+    },
   },
   methods: {
     ...mapActions({
       fetchStoredCart: CartActionTypes.FETCH_STORED_CART,
       deleteCart: CartActionTypes.DELETE_CART,
       getCheckoutUrl: CartActionTypes.GET_CHECKOUT_URL,
-      storeCart: CartActionTypes.STORE_CART
+      storeCart: CartActionTypes.STORE_CART,
     }),
     ...mapMutations({
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
-      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
+      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
     }),
     onBackButtonPressed(event) {
       console.log(event);
-      if (this.showCart && event.state && event.state.state == "Cart") {
+      if (this.showCart && event.state && event.state.state === 'Cart') {
         this.cartToggle(true);
       }
     },
@@ -233,33 +235,30 @@ export default {
       this.toggleScrollBar();
     },
     toggleScrollBar() {
-      if (this.showCart)
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-      else document.getElementsByTagName("body")[0].style.overflowY = "initial";
+      if (this.showCart) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+      else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
     },
     addToHistory() {
-      window.history.replaceState({state: 'Cart'}, 'Cart');
-      window.history.pushState({state: 'Cart'}, 'Cart');
+      window.history.replaceState({ state: 'Cart' }, 'Cart');
+      window.history.pushState({ state: 'Cart' }, 'Cart');
     },
-    removeFromHistory(backButtonPressed = false) {
+    removeFromHistory() {
       window.history.back();
     },
     suscribeToEvents() {
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
-        this.cartToggle()
-      );
-    }
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
+    },
   },
   mounted() {
     this.setCartConfig(
-      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id, this.authToken)
+      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id, this.authToken),
     );
     this.fetchStoredCart();
     this.suscribeToEvents();
-    this.bodyElement = document.getElementsByTagName("body")[0];
+    [this.bodyElement] = document.getElementsByTagName('body');
 
-    window.addEventListener("popstate", this.onBackButtonPressed);
-  }
+    window.addEventListener('popstate', this.onBackButtonPressed);
+  },
 };
 </script>
 
