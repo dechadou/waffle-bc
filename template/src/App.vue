@@ -6,7 +6,7 @@
     <div v-if="show">
       <HeaderSection :year="year" v-if="hasHeader"/>
       <Cart :cartHelper="cartHelper"/>
-      <router-view :class="[{'has-header': hasHeader}]"/>
+      <router-view/>
       <component :is="footer" :year="year"/>
       <RelatedProducts :cartHelper="cartHelper" v-if="themeConfig.showRelatedProducts"/>
     </div>
@@ -99,9 +99,10 @@ export default {
         /* Also, if the data has already been fetched but the route changes, it means that the page changed,
          so we make a nice transition */
         this.show = false;
-        window.scrollTo(0, 0);
+       
         const scope = this;
         setTimeout(() => {
+          window.scrollTo(0, 0);
           scope.show = true;
         }, 500);
       }
@@ -206,8 +207,5 @@ export default {
   position: fixed;
   top: 46%;
   left: 44%;
-}
-.has-header {
-  margin-top: 70px;
 }
 </style>

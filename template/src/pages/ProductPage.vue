@@ -56,7 +56,7 @@ export default {
 .go-back {
   font-size: 16px;
   position: fixed;
-  z-index: 3;
+  z-index: 30;
   left: 3%;
 
   @include lg-up {

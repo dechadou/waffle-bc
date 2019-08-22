@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-fade">
-    <div>
+    <div :class="[{'has-header': hasHeader}]">
       <GlobalWarning/>
       <Hero
         :label="template.etiqueta"
@@ -73,7 +73,10 @@ export default {
   },
   computed: {
     ...mapState(StoreDataNamespace, ["data", "template", "home_products"]),
-    ...mapState(ThemeNamespace, ["themeConfig"])
+    ...mapState(ThemeNamespace, ["themeConfig"]),
+    hasHeader() {
+      return this.store_id === 8;
+    },
   },
   methods: {
     /**
@@ -117,5 +120,8 @@ export default {
 <style scoped lang="scss">
 #shop {
   margin-top: 10px;
+}
+.has-header {
+  margin-top: 70px;
 }
 </style>

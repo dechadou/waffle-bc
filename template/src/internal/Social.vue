@@ -50,10 +50,8 @@ export default {
 
 <style lang="scss" scoped>
 .social-footer {
+  width: 100%;
   margin-bottom: 30px;
-  @include md-up {
-    padding: 0 7vw 2vw;
-  }
 }
 svg {
   width: 7vw;
