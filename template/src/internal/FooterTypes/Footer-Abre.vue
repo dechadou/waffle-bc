@@ -34,9 +34,10 @@
           </p>
         </aside>
       </div>
+      <Social :year="year" class="social" />
     </div>
 
-    <Social :year="year" class="social" />
+
   </section>
 </template>
 

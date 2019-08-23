@@ -36,7 +36,7 @@ export default {
           true,
         ),
       },
-      footerNames: ['Footer-None', 'Footer-Logo', 'Footer-Abre'],
+      footerNames: ['Footer-None', 'Footer-Abre', 'Footer-Logo'],
     },
 
   },

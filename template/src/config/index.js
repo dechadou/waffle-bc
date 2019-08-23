@@ -64,7 +64,7 @@ const config = {
   },
   variables: {
     [VariableNames.WaffleVersion]: 1,
-    [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'samurai-de-ensaladas',
+    [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'abre',
   },
   enums: {
     [EnumNames.EventNames]: {

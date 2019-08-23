@@ -35,20 +35,20 @@
 </template>
 
 <script>
-import { Social, Icon } from "@/extendables/BaseComponents";
+import { Social, Icon } from '@/extendables/BaseComponents';
 
 export default {
-  name: "HeaderSection",
+  name: 'HeaderSection',
   props: {
-    year: String
+    year: String,
   },
   components: {
     Social,
-    Icon
+    Icon,
   },
   data() {
     return {
-      isActive: false
+      isActive: false,
     };
   },
   computed: {
@@ -56,25 +56,25 @@ export default {
       return this.$route.name;
     },
     isHome() {
-      return this.currentPage === "DefaultHomePage";
+      return this.currentPage === 'DefaultHomePage';
     },
     isProductInternal() {
       return (
-        this.currentPage === "DefaultProductPage" ||
-        this.currentPage === "DefaultBundlePage"
+        this.currentPage === 'DefaultProductPage'
+        || this.currentPage === 'DefaultBundlePage'
       );
-    }
+    },
   },
   watch: {
     $route() {
       this.isActive = false;
-    }
+    },
   },
   methods: {
     toggleMenu() {
       this.isActive = !this.isActive;
-    }
-  }
+    },
+  },
 };
 </script>
 

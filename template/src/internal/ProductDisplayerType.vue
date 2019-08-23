@@ -1,21 +1,21 @@
 <script>
-import { mapState } from "vuex";
-import { ThemeNamespace } from "@/store/module/Theme";
-import * as Products from "@/extendables/ProductTypes";
+import { mapState } from 'vuex';
+import { ThemeNamespace } from '@/store/module/Theme';
+import * as Products from '@/extendables/ProductTypes';
 
 export default {
-  name: "ProductDisplayerType",
+  name: 'ProductDisplayerType',
   props: {
     products: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
-    ...Products
+    ...Products,
   },
   computed: {
-    ...mapState(ThemeNamespace, ["themeConfig"])
-  }
+    ...mapState(ThemeNamespace, ['themeConfig']),
+  },
 };
 </script>

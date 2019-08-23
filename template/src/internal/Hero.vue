@@ -21,32 +21,32 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { BreakpointsNamespace } from "@/store/module/Breakpoints";
-import { getEnum, EnumNames } from "@/config";
+import { mapState } from 'vuex';
+import { BreakpointsNamespace } from '@/store/module/Breakpoints';
+import { getEnum, EnumNames } from '@/config';
 
 export default {
-  name: "Hero",
+  name: 'Hero',
   props: {
     label: String,
     desktopImage: String,
     mobileImage: String,
-    introCopy: String
+    introCopy: String,
   },
   data() {
     return {
       bg: null,
       onBreakpointChange: () => {},
-      breakpoints: getEnum(EnumNames.Breakpoints)
+      breakpoints: getEnum(EnumNames.Breakpoints),
     };
   },
   computed: {
-    ...mapState(BreakpointsNamespace, ["breakpoint"])
+    ...mapState(BreakpointsNamespace, ['breakpoint']),
   },
   watch: {
     breakpoint() {
       this.onBreakpointChange();
-    }
+    },
   },
   created() {
     if (this.desktopImage && this.mobileImage) {
@@ -59,8 +59,8 @@ export default {
     assignBgImage() {
       if (this.breakpoint >= this.breakpoints.MD) this.bg = this.desktopImage;
       else this.bg = this.mobileImage;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { Icon } from "@/extendables/BaseComponents";
+import { Icon } from '@/extendables/BaseComponents';
 
 class PageShareButton {
   constructor(name, url, icon, prepend, append, desktopVisible) {
@@ -35,66 +35,65 @@ class PageShareButton {
   }
 
   makeUrl(pageUrl) {
-    return `${this.url}${this.prepend || ""}${pageUrl}${this.append || ""}`;
+    return `${this.url}${this.prepend || ''}${pageUrl}${this.append || ''}`;
   }
 }
 
 export default {
-  name: "PageShare",
+  name: 'PageShare',
   components: {
-    Icon
+    Icon,
   },
   props: {
     title: String,
-    shareText: String
+    shareText: String,
   },
   data() {
     return {
       pageUrl: `https://${window.location.host}${window.location.pathname}`,
       buttons: [
         new PageShareButton(
-          "Facebook",
-          "https://www.facebook.com/sharer/sharer.php?u=",
-          "fb",
-          "",
-          "",
-          true
+          'Facebook',
+          'https://www.facebook.com/sharer/sharer.php?u=',
+          'fb',
+          '',
+          '',
+          true,
         ),
         new PageShareButton(
-          "Twitter",
-          "https://twitter.com/intent/tweet?url=",
-          "tw",
-          "",
-          `&text=${this.shareText || ""}`,
-          true
+          'Twitter',
+          'https://twitter.com/intent/tweet?url=',
+          'tw',
+          '',
+          `&text=${this.shareText || ''}`,
+          true,
         ),
         new PageShareButton(
-          "Whatsapp",
-          "whatsapp://send?text=",
-          "wpp",
-          `${this.shareText || ""} `,
-          "",
-          false
-        )
-      ]
+          'Whatsapp',
+          'whatsapp://send?text=',
+          'wpp',
+          `${this.shareText || ''} `,
+          '',
+          false,
+        ),
+      ],
     };
   },
   methods: {
     openShare(button, event) {
       event.preventDefault();
-      const config =
-        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600";
-      window.open(button.makeUrl(this.pageUrl), "", config);
+      const config = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600';
+      window.open(button.makeUrl(this.pageUrl), '', config);
 
       if (this.$ga) {
         this.$ga.event({
-          eventCategory: "click",
-          eventAction: "share",
-          eventLabel: button.name
+          eventCategory: 'click',
+          eventAction: 'share',
+          eventLabel: button.name,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

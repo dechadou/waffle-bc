@@ -44,39 +44,39 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 export default {
-  name: "Product-SliderMobile",
+  name: 'Product-SliderMobile',
   extends: ProductType,
   components: {
-    LazyImage
+    LazyImage,
   },
   methods: {
     getButtonType() {
-      if (this.data.class === "product" && this.articleList.length > 1) {
-        return "Select";
+      if (this.data.class === 'product' && this.articleList.length > 1) {
+        return 'Select';
       }
 
       if (this.isOutOfStock) {
-        return "OutOfStock";
+        return 'OutOfStock';
       }
 
-      return "Check";
-    }
+      return 'Check';
+    },
   },
   filters: {
     displayAuthors(authors) {
-      let str = "";
+      let str = '';
       authors
         .filter((v, i) => authors.indexOf(v) === i)
-        .forEach(x => {
-          str += str === "" ? x.name : ` + ${x.name}`;
+        .forEach((x) => {
+          str += str === '' ? x.name : ` + ${x.name}`;
         });
 
       return str;
-    }
-  }
+    },
+  },
 };
 </script>
 

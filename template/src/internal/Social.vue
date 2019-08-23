@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { Icon } from "@/extendables/BaseComponents";
+import { Icon } from '@/extendables/BaseComponents';
 
 class SocialObject {
   constructor(name, url) {
@@ -30,30 +30,28 @@ class SocialObject {
 }
 
 export default {
-  name: "Social",
+  name: 'Social',
   props: {
-    year: String
+    year: String,
   },
   components: {
-    Icon
+    Icon,
   },
   data() {
     return {
       social: [
-        new SocialObject("ig", "https://www.instagram.com/abre_cultura/"),
-        new SocialObject("fb", "https://www.facebook.com/abreculturapuntocom/")
-      ]
+        new SocialObject('ig', 'https://www.instagram.com/abre_cultura/'),
+        new SocialObject('fb', 'https://www.facebook.com/abreculturapuntocom/'),
+      ],
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .social-footer {
+  width: 100%;
   margin-bottom: 30px;
-  @include md-up {
-    padding: 0 7vw 2vw;
-  }
 }
 svg {
   width: 7vw;
