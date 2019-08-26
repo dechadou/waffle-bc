@@ -1,4 +1,9 @@
+/* eslint-disable */
+const version = Math.round((new Date()).getTime() / 1000);
+
 module.exports = {
+  assetsDir: './version/' + version + '/',
+
   publicPath: process.env.NODE_ENV === 'production'
     ? '/'
     : '/',
@@ -9,7 +14,7 @@ module.exports = {
       test: /\.(svg)(\?.*)?$/,
       loaderOptions: {
         extract: true,
-        spriteFilename: 'img/icons.[hash:8].svg',
+        spriteFilename: 'version/' + version + '/img/icons.[hash:8].svg',
       },
       pluginOptions: {
         plainSprite: true,

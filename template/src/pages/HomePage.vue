@@ -1,14 +1,15 @@
 <template>
   <transition name="slide-fade">
-    <div :class="[{'has-header': hasHeader}]">
+    <div>
       <GlobalWarning/>
       <Hero
+        v-if="template.etiqueta || template.desktop_image || template.mobile_image || template.intro_copy"
         :label="template.etiqueta"
         :desktopImage="template.desktop_image"
         :mobileImage="template.mobile_image"
         :introCopy="template.intro_copy"
       />
-      <div class="container">
+      <div class="container" :class="[{'has-header': hasHeader}]">
         <section id="shop">
           <ProductDisplayer-Main
             :products="mainProducts"
@@ -40,43 +41,48 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { ThemeNamespace } from '@/store/module/Theme';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { ThemeNamespace } from "@/store/module/Theme";
 import {
   ProductDisplayerRecommended,
-  ProductDisplayerMain,
-} from '@/extendables/ProductDisplayerTypes';
+  ProductDisplayerMain
+} from "@/extendables/ProductDisplayerTypes";
 import {
   Hero,
   Profile,
   PageShare,
-  GlobalWarning,
-} from '@/extendables/BaseComponents';
+  GlobalWarning
+} from "@/extendables/BaseComponents";
 
 // The default page that is loaded when no other arguments are present on the URL
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   components: {
     Hero,
     Profile,
     ProductDisplayerRecommended,
     ProductDisplayerMain,
     PageShare,
-    GlobalWarning,
+    GlobalWarning
   },
   data() {
     return {
       mainProducts: [],
-      recommendedProducts: [],
+      recommendedProducts: []
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data', 'template', 'home_products']),
-    ...mapState(ThemeNamespace, ['themeConfig']),
+    ...mapState(StoreDataNamespace, [
+      "data",
+      "template",
+      "home_products",
+      "store_id"
+    ]),
+    ...mapState(ThemeNamespace, ["themeConfig"]),
     hasHeader() {
       return this.store_id === 8;
-    },
+    }
   },
   methods: {
     /**
@@ -87,18 +93,19 @@ export default {
     getProducts() {
       // Checks if there are products to process
       if (!this.home_products || this.home_products.length === 0) {
-        throw new Error('There are no products nor bundles to show');
+        throw new Error("There are no products nor bundles to show");
       }
 
       // Sorts the product identifiers by position
       const products = [...this.home_products].sort(
-        (a, b) => a.position - b.position,
+        (a, b) => a.position - b.position
       );
 
       // For each product identifier
-      products.forEach((x) => {
+      products.forEach(x => {
         // Gets all the products or all the bundles
-        let product = x.type === 'combo' ? this.data.bundles : this.data.products;
+        let product =
+          x.type === "combo" ? this.data.bundles : this.data.products;
 
         product = product.find(y => +y.id === +x.id);
 
@@ -107,11 +114,11 @@ export default {
         if (x.principal) this.mainProducts.push(product);
         else this.recommendedProducts.push(product);
       });
-    },
+    }
   },
   created() {
     this.getProducts();
-  },
+  }
 };
 </script>
 

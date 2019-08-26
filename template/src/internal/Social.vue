@@ -5,7 +5,8 @@
         <div class="col-6 col-md-10 pl-0">
           <ul>
             <li v-for="item in social" :key="item.name">
-              <a :href="item.url" target="_blank">
+              <a :href="item.url" target="_blank" rel="noopener">
+                <span class="sr-only">ABRE {{ item.name }}</span>
                 <Icon :name="item.name"/>
               </a>
             </li>
@@ -20,7 +21,7 @@
 </template>
 
 <script>
-import { Icon } from '@/extendables/BaseComponents';
+import { Icon } from "@/extendables/BaseComponents";
 
 class SocialObject {
   constructor(name, url) {
@@ -30,21 +31,21 @@ class SocialObject {
 }
 
 export default {
-  name: 'Social',
+  name: "Social",
   props: {
-    year: String,
+    year: String
   },
   components: {
-    Icon,
+    Icon
   },
   data() {
     return {
       social: [
-        new SocialObject('ig', 'https://www.instagram.com/abre_cultura/'),
-        new SocialObject('fb', 'https://www.facebook.com/abreculturapuntocom/'),
-      ],
+        new SocialObject("ig", "https://www.instagram.com/abre_cultura/"),
+        new SocialObject("fb", "https://www.facebook.com/abreculturapuntocom/")
+      ]
     };
-  },
+  }
 };
 </script>
 
@@ -75,7 +76,7 @@ ul li {
   margin: 0;
   text-align: left;
   font-size: 4vw;
-  color: $abre-description-grey;
+  color: #606060;
 
   @include landscape {
     font-size: 2vw;
