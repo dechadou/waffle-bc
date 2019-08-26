@@ -55,7 +55,8 @@ import {
   GlobalWarning
 } from "@/extendables/BaseComponents";
 
-// The default page that is loaded when no other arguments are present on the URL
+// @group PAGES
+// The main view where all the products and bundles are shown
 export default {
   name: "HomePage",
   components: {

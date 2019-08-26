@@ -16,6 +16,8 @@ import { Icon } from '@/extendables/BaseComponents';
 import { StoreDataNamespace } from '@/store/module/StoreData';
 import { ProductInternal } from '@/extendables/ProductTypes';
 
+// @group PAGES
+// This page is the extended view of a product or bundle.
 export default {
   name: 'ProductPage',
   components: {
@@ -33,11 +35,19 @@ export default {
     ...mapState(StoreDataNamespace, ['data']),
   },
   methods: {
+    /**
+     * @vuese
+     * Finds the product/bundle data by the slug indicated on the router params
+     */
     getProduct() {
       const productData = this.productClass === 'combo' ? this.data.bundles : this.data.products;
       this.product = productData.find(x => x.slug === this.productSlug);
       if (!this.product) window.location = `/${this.$route.params.slug || ''}`;
     },
+    /**
+     * @vuese
+     * Redirects to the homepage
+     */
     goBack() {
       window.location = `/${this.$route.params.slug || ''}`;
     },

@@ -62,6 +62,9 @@
 <script>
 import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
+// @group PRODUCT TYPES
+// Shows the product thumbnail on the Marketplace theme
+// @vuese
 export default {
   name: "Product-Thumbnail",
   extends: ProductType,

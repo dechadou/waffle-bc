@@ -45,6 +45,9 @@ class SocialNetworksObject {
   }
 }
 
+// @group INTERNAL COMPONENTS
+// Displays the author profile
+// @vuese
 export default {
   name: 'Profile',
   props: {
@@ -52,7 +55,9 @@ export default {
       type: String,
       default: 'Conocé al Creador',
     },
+    // The author's profile description
     text: String,
+    // The author's profile image
     image: String,
     facebook: String,
     twitter: String,
@@ -77,6 +82,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * @vuese
+     * Returns an array of SocialNetworksObject objects
+     */
     getSocialNetworks() {
       return [
         new SocialNetworksObject(

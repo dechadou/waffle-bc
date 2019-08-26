@@ -39,13 +39,18 @@ class PageShareButton {
   }
 }
 
+// @group INTERNAL COMPONENTS
+// Displays the page share buttons
+// @vuese
 export default {
   name: 'PageShare',
   components: {
     Icon,
   },
   props: {
+    // Call to action title
     title: String,
+    // Share text for twitter
     shareText: String,
   },
   data() {
@@ -80,11 +85,18 @@ export default {
     };
   },
   methods: {
+    /**
+     * @vuese
+     * Opens a share popup to the selected social network
+     * @arg button: expects a PageShareButton object
+     * @arg event: excepts the OnClick event of the anchor tag that has been pressed
+     */
     openShare(button, event) {
       event.preventDefault();
       const config = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600';
       window.open(button.makeUrl(this.pageUrl), '', config);
 
+      // Trigger Analytics Event
       if (this.$ga) {
         this.$ga.event({
           eventCategory: 'click',

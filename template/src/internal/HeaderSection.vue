@@ -38,9 +38,13 @@
 <script>
 import { Social, Icon } from "@/extendables/BaseComponents";
 
+// @group INTERNAL COMPONENTS
+// The page's header
+// @vuese
 export default {
   name: "HeaderSection",
   props: {
+    // Current year. Used for displaying inside the mobile menu
     year: String
   },
   components: {
@@ -72,6 +76,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * @vuese
+     * Shows/hides the mobile menu
+     */
     toggleMenu() {
       this.isActive = !this.isActive;
     }

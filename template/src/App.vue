@@ -38,6 +38,7 @@ import {
   RelatedProducts,
 } from '@/extendables/BaseComponents';
 
+// @group INTERNAL COMPONENTS
 // This is the main component
 export default {
   name: 'App',
@@ -192,7 +193,7 @@ export default {
         process.env.NODE_ENV === 'production'
         && this.$route.params.slug
         && this.template.tienda_url
-        && this.template.tienda_url.indexOf(window.location.host) === -1
+        && window.location.host.indexOf(this.template.tienda_url) === -1
       ) return false;
       return true;
     },

@@ -16,19 +16,25 @@
 </template>
 
 <script>
-import { ProductDisplayerType } from '@/extendables/BaseComponents';
+import { ProductDisplayerType } from "@/extendables/BaseComponents";
 
+// @group PRODUCTDISPLAYER TYPES
+// The main way of displaying products
+// @vuese
 export default {
-  name: 'ProductDisplayer-Main',
+  name: "ProductDisplayer-Main",
   extends: ProductDisplayerType,
   props: {
+    // Classes to append to the products
     classes: String,
+    // Classes to append to the container
     containerClasses: String,
+    // Whether it's products should open modules or not
     openModules: {
       type: Boolean,
-      default: true,
-    },
-  },
+      default: true
+    }
+  }
 };
 </script>
 

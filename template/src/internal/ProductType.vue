@@ -2,20 +2,21 @@
 import { getPrice, getImage, isOutOfStock } from '@/utils/productTypesHelper';
 import * as AddToCartButtons from '@/extendables/AddToCartButtonTypes';
 
+// @group PRODUCT TYPES
+// The base component for Products. Products should inherit from this component
+// @vuese
 export default {
   name: 'ProductType',
   components: {
     ...AddToCartButtons,
   },
   props: {
-    type: {
-      type: String,
-      default: 'Thumbnail',
-    },
+    // The product data
     data: {
       type: Object,
       required: true,
     },
+    // Whether it should open modules or not
     openModules: {
       type: Boolean,
       default: true,

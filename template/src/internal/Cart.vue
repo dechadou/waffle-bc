@@ -151,6 +151,9 @@ class CartConfig {
   }
 }
 
+// @group INTERNAL COMPONENTS
+// Displays all the products saved inside the cart vuex store
+// @vuese
 export default {
   name: 'Cart',
   components: {
@@ -158,6 +161,7 @@ export default {
     Loading,
   },
   props: {
+    // CartHelper object to access to all the products data
     cartHelper: Object,
   },
   data() {
@@ -165,7 +169,6 @@ export default {
       showCart: false,
       changing: false,
       loading: false,
-      bodyElement: null,
       cartText: {
         empty: 'Tu carrito está vacío...',
         filled: 'Te estás llevando...',
@@ -188,7 +191,10 @@ export default {
   },
   watch: {
     cartQuantity() {
+      // Saves the cart to localStorage when it changes
       this.storeCart();
+
+      // Adds an animation to the cart number when it changes
       const scop = this;
       this.changing = true;
       setTimeout(() => {
@@ -196,6 +202,7 @@ export default {
       }, 1000);
     },
     cartRedirect(value) {
+      // Deletes the localStorage cart and redirects to the generated url (the checkout)
       if (!value) return;
       this.deleteCart();
       window.location.href = value;
@@ -212,52 +219,93 @@ export default {
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
       changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
     }),
+    /**
+     * @vuese
+     * Called by popstate event. Closes the cart on navigator back button pressed
+     */
     onBackButtonPressed(event) {
       console.log(event);
       if (this.showCart && event.state && event.state.state === 'Cart') {
         this.cartToggle(true);
       }
     },
+    /**
+     * @vuese
+     * Calls the vuex store to add or subtract quantity of an item
+     * @arg index: the array item index
+     * @arg quantity: the quantity to add or subtract from the item.
+     */
     itemQuantity(index, quantity) {
       this.changeItemQuantity(new ItemQuantityObject(index, quantity));
     },
+    /**
+     * @vuese
+     * Calls the vuex store to generate the checkout url and sets the loading variable to true
+     */
     checkout() {
       if (this.cartItems.length < 1) return;
       this.loading = true;
       this.getCheckoutUrl();
     },
+    /**
+     * @vuese
+     * Shows/hides the cart component.
+     * @arg pressedBack: is set to false by default. If true it doesn't handle the removal of the history entry because the browser does it automatically
+     */
     cartToggle(pressedBack = false) {
       this.showCart = !this.showCart;
 
+      // If showCart is true, this function adds an entry to the browser history saying that the cart was open
+      // If showCart is false and pressedBack is true, it means that the cart is closing by the user clicking the browser's back button. No further action is needed
+      // If showCart is false and pressedBack is false, it means that the cart is closing by the user clicking the close cart button, so we have to manually remove the browser's history entry
       if (!this.showCart && !pressedBack) this.removeFromHistory();
       else this.addToHistory();
 
       this.toggleScrollBar();
     },
+    /**
+     * @vuese
+     * Shows/hides the page scrollbar.
+     */
     toggleScrollBar() {
       if (this.showCart) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
       else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
     },
+    /**
+     * @vuese
+     * Adds an entry to the browser history indicating the opening of the cart
+     */
     addToHistory() {
       window.history.replaceState({ state: 'Cart' }, 'Cart');
       window.history.pushState({ state: 'Cart' }, 'Cart');
     },
+    /**
+     * @vuese
+     * Removes the opening cart history entry
+     */
     removeFromHistory() {
       window.history.back();
     },
+    /**
+     * @vuese
+     * Subscribes to the cart_toggle, and popstate event
+     */
     suscribeToEvents() {
       EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
+      window.addEventListener('popstate', this.onBackButtonPressed);
     },
   },
   mounted() {
+    // Creates a CartConfig object and sends it to the vuex store
     this.setCartConfig(
       new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id, this.authToken),
     );
-    this.fetchStoredCart();
-    this.suscribeToEvents();
-    [this.bodyElement] = document.getElementsByTagName('body');
 
-    window.addEventListener('popstate', this.onBackButtonPressed);
+    // Fetches localStorage info
+    this.fetchStoredCart();
+
+    // Subscribes to events
+    this.suscribeToEvents();    
   },
 };
 </script>

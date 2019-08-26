@@ -7,6 +7,9 @@
 <script>
 import { Request } from "@/utils";
 
+// @group INTERNAL COMPONENTS
+// Fetches the aviso-global-tiendas meta and displays an alert with the meta content if there's any
+// @vuese
 export default {
   name: "GlobalWarning",
   data() {

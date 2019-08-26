@@ -25,12 +25,22 @@ import { mapState } from 'vuex';
 import { BreakpointsNamespace } from '@/store/module/Breakpoints';
 import { getEnum, EnumNames } from '@/config';
 
+// @group INTERNAL COMPONENTS
+// Displays an introduction to the shop and a fullwidth background behind it.
+// @vuese
 export default {
   name: 'Hero',
   props: {
-    label: String,
+    // Image that shows before the shop description
+    label: {
+      // `Image URL`
+      type: String,
+    },
+    // The desktop fullwidth background image
     desktopImage: String,
+    // The mobile fullwidth background image
     mobileImage: String,
+    // The shop's introduction/description
     introCopy: String,
   },
   data() {
@@ -50,12 +60,19 @@ export default {
   },
   created() {
     if (this.desktopImage && this.mobileImage) {
+      // If there is a desktop image and a mobile image it subscribes to changes on the breakpoint size to display the correct image
       this.onBreakpointChange = this.assignBgImage;
       this.assignBgImage();
+
+      // Else it displays the available image
     } else if (this.desktopImage) this.bg = this.desktopImage;
     else this.bg = this.mobileImage;
   },
   methods: {
+    /**
+     * @vuese
+     * Assigns the correct image url for the background depending on the breakpoint size
+     */
     assignBgImage() {
       if (this.breakpoint >= this.breakpoints.MD) this.bg = this.desktopImage;
       else this.bg = this.mobileImage;

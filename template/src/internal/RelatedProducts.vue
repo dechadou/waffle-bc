@@ -51,9 +51,13 @@ import {
   ProductDisplayerMain,
 } from '@/extendables/ProductDisplayerTypes';
 
+// @group INTERNAL COMPONENTS
+// Displays a list of related products of the product that has been added to the cart.
+// @vuese
 export default {
   name: 'RelatedProducts',
   props: {
+    // CartHelper Object used for accessing to all the products data
     cartHelper: Object,
   },
   components: {
@@ -68,7 +72,6 @@ export default {
       relatedList: [],
       random: 0,
       actualId: 0,
-      idToCheck: 0,
       addedProduct: null,
       porcentajeAlreadySet: false,
       eventNames: null,
@@ -80,9 +83,17 @@ export default {
     ...mapState(BreakpointsNamespace, ['breakpoint']),
   },
   methods: {
+     /**
+     * @vuese
+     * Called by popstate event. Closes the module on navigator back button pressed
+     */
     onBackButtonPressed(event) {
       if (this.showRelatedProducts && event.state && event.state.state === 'RelatedProducts') this.toggleRelatedProducts(true);
     },
+     /**
+     * @vuese
+     * Populates the module and calls the toggleRelatedProducts() function after 0.5s
+     */
     toggleRelatedProductsDelay(parentProduct) {
       const scop = this;
       this.changing = true;
@@ -92,22 +103,40 @@ export default {
         scop.changing = false;
       }, 500);
     },
+     /**
+     * @vuese
+     * Shows/hides the module and sets a height based on the screen size and the height of the products
+     * @arg pressedBack: is set to false by default. If true it doesn't handle the removal of the history entry because the browser does it automatically
+     */
     toggleRelatedProducts(pressedBack = false) {
       this.showRelatedProducts = !this.showRelatedProducts;
 
       if (this.showRelatedProducts) {
+        // Hides Scrollbar
         document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+
+        // Adds an entry to the browser history indicating the opening of the RelatedProducts module
         window.history.replaceState({ state: 'RelatedProducts' }, 'RelatedProducts');
         window.history.pushState({ state: 'RelatedProducts' }, 'RelatedProducts');
       } else {
+
+        // Unpopulates the relatedList
         this.relatedList = [];
+
+        // Shows the ScrollBar
         document.getElementsByTagName('body')[0].style.overflowY = 'initial';
+
+        // If pressedBack is true, it means that the RelatedProducts module is closing by the user clicking the browser's back button. No further action is needed
+        // Else it means that is closing by the user clicking another button, so we have to manually remove the browser's history entry
         if (!pressedBack) window.history.back();
         return;
       }
 
+      // Checks if height percentage has already been set.
       if (this.porcentajeAlreadySet) return;
 
+      // Sets the height
+      // It would be cool to refactor this code but the reality is that it works just fine
       let plus = 0;
       if (window.innerWidth > 768) plus = 10;
       const altMenu = document
@@ -121,10 +150,19 @@ export default {
       ).style.height = `${porcentaje}%`;
       this.porcentajeAlreadySet = true;
     },
+     /**
+     * @vuese
+     * Closes the RelatedProducts module and triggers the cart_toggle event
+     */
     openCart() {
       this.toggleRelatedProducts();
       EventManager.Trigger(this.eventNames.ON_CART_TOGGLE);
     },
+    /**
+     * @vuese
+     * Takes the id's of the related products of the added to cart product, gets the product data of each ID and adds them to the relatedList array
+     * If there aren't related products it gets three random products.
+     */
     populateRelatedProducts(parentProduct) {
       this.addedProduct = parentProduct;
 
@@ -137,8 +175,7 @@ export default {
 
         // Agrego los productos relacionados a la relatedList
         this.addedProduct.productos_relacionados.forEach((id) => {
-          this.idToCheck = id;
-          const product = this.data.products.find(this.findRelatedProduct);
+          const product = this.data.products.find(x => x.id === id);
           if (product) this.relatedList.push(product);
         });
 
@@ -161,16 +198,12 @@ export default {
         productsToAdd.splice(randomIndex, 1);
       }
     },
-    removeAddedProduct(product) {
-      return product !== this.addedProduct.id;
-    },
-    findRelatedProduct(product) {
-      if (product.id === this.idToCheck) return true;
-      return false;
-    },
   },
   mounted() {
     this.eventNames = getEnum(EnumNames.EventNames);
+
+    // Subscribes to the ON_RELATED_PRODUCTS_TOGGLE 
+    // When triggered: gets the product-article pair object by the id of the added article. Then calls to toggleRelatedProductsDelay()
     EventManager.Subscribe(
       this.eventNames.ON_RELATED_PRODUCTS_TOGGLE,
       (response) => {
@@ -180,6 +213,8 @@ export default {
         this.toggleRelatedProductsDelay(parentProduct);
       },
     );
+
+    // Subscribes to popstate event
     window.addEventListener('popstate', this.onBackButtonPressed);
   },
 };

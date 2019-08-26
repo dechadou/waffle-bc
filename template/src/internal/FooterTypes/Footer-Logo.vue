@@ -8,6 +8,9 @@
 </template>
 
 <script>
+// @group FOOTER TYPES
+// Displays a footer with the ABRE Logo
+// @vuese
 import { FooterType } from "@/extendables/BaseComponents";
 
 export default {

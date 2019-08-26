@@ -57,14 +57,22 @@
 
 <script>
 let uid = 0;
+
+// @group UTILITIES
+// Displays a loading animation. When it enters the viewport it triggers the image load. When the load is complete it switches from the loading animation to the image.
+// @vuese
 export default {
   name: 'LazyImage',
   props: {
+    // The image source
     source: {
+      // `Image URL`
       type: String,
       required: true,
     },
+    // CSS classes to append to the image
     cssClasses: String,
+    // The alt text for crawlers and screen-readers
     description: String,
   },
   data() {

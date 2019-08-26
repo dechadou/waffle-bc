@@ -12,15 +12,18 @@
 </template>
 
 <script>
-import { animateButton } from '@/utils/addToCartButtonTypesHelper';
-import { AddToCartButtonType } from '@/extendables/BaseComponents';
+import { animateButton } from "@/utils/addToCartButtonTypesHelper";
+import { AddToCartButtonType } from "@/extendables/BaseComponents";
 
+// @group ADDTOCARTBUTTON TYPES
+// Displays an 'Add to cart' button that adds the product to the cart, shows a confirmation and toggles no module
+// @vuese
 export default {
-  name: 'AddToCartButton-Check',
+  name: "AddToCartButton-Check",
   extends: AddToCartButtonType,
   data() {
     return {
-      isAdding: false,
+      isAdding: false
     };
   },
   methods: {
@@ -31,7 +34,7 @@ export default {
     },
     onFinishAnimate() {
       this.isAdding = false;
-    },
-  },
+    }
+  }
 };
 </script>

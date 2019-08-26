@@ -5,6 +5,9 @@
 <script>
 import { Icon } from '@/extendables/BaseComponents';
 
+// @group UTILITIES
+// Displays a loading spinner animation.
+// @vuese
 export default {
   name: 'Loading',
   components: {

@@ -14,19 +14,24 @@
 </template>
 
 <script>
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
+// @group UTILITIES
+// Displays an svg icon saved on assets/icons
+// @vuese
 export default {
   name: 'Icon',
   props: {
+    // The filename
     name: {
       type: String,
       required: true,
     },
+    // The svg title for crawlers and screen-readers
     title: String,
     width: String,
     height: String,
+    // css hex fill color override
     iconFill: String,
+    // css hex stroke color override
     iconStroke: String,
   },
   computed: {

@@ -39,6 +39,9 @@
 <script>
 import { FooterType, Social, Icon } from "@/extendables/BaseComponents";
 
+// @group FOOTER TYPES
+// Displays the complete ABRE Landing footer
+// @vuese
 export default {
   name: "Footer-Abre",
   extends: FooterType,

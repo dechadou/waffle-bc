@@ -11,15 +11,19 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { swiper, swiperSlide } from "vue-awesome-swiper";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import 'swiper/dist/css/swiper.css';
-import { ProductDisplayerType } from '@/extendables/BaseComponents';
+import "swiper/dist/css/swiper.css";
+import { ProductDisplayerType } from "@/extendables/BaseComponents";
 
+// @group PRODUCTDISPLAYER TYPES
+// Displays a slider of products
+// @vuese
 export default {
-  name: 'ProductDisplayer-Slider',
+  name: "ProductDisplayer-Slider",
   extends: ProductDisplayerType,
   props: {
+    // The slider options. There is a default object.
     sliderOptions: {
       type: Object,
       default: () => ({
@@ -28,16 +32,16 @@ export default {
         initialSlide: 1,
         spaceBetween: -30,
         navigation: {
-          nextEl: '.slider-button-next',
-          prevEl: '.slider-button-prev',
-        },
-      }),
-    },
+          nextEl: ".slider-button-next",
+          prevEl: ".slider-button-prev"
+        }
+      })
+    }
   },
   components: {
     swiper,
-    swiperSlide,
-  },
+    swiperSlide
+  }
 };
 </script>
 

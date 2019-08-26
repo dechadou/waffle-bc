@@ -30,9 +30,13 @@ class SocialObject {
   }
 }
 
+// @group INTERNAL COMPONENTS
+// Shows abre's social networks at footers
+// @vuese
 export default {
   name: "Social",
   props: {
+    // Current year for displaying copyright at footers
     year: String
   },
   components: {
