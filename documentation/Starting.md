@@ -20,3 +20,13 @@ After cloning run ```yarn``` in the project root to get started.
 * ```yarn run serve```: Starts the development server
 * ```yarn run build```: Creates a build.
 * ```yarn run lint```: Lints and fixes files
+
+## Extending Internal Components
+
+NEVER edit the components located inside the internal folder because they will be overriden if you ever need to
+update waffle. Instead:
+
+* Copy the component
+* Paste it inside the components folder
+* Go to the extendables folder and open BaseComponents or the corresponding file
+* Change the route of the internal component to yours. For example: ```export { default as Cart } from '@/components/Cart.vue';```
