@@ -1,9 +1,3 @@
-# Table of Contents
-1. [Prerequisite](#prerequisite)
-2. [Installation](#installation)
-3. [Naming conventions](#naming-conventions)
-4. [Vue Cli Commands](#vue-cli-commands)
-
 ## Prerequisite
 - [Node 8.9.x](https://nodejs.org/en/download/) or higher
 - [NPM 3.x.x](https://nodejs.org/en/download/) or higher
@@ -23,7 +17,6 @@ After cloning run ```yarn``` in the project root to get started.
 
 ## Vue Cli Commands
 
-* ```vue serve```: Starts the development server
-* ```vue build```: Creates a build.
-* ```vue lint```: Lints and fixes files
-* ```vue inspect```: Prints the resolved webpack config
+* ```yarn run serve```: Starts the development server
+* ```yarn run build```: Creates a build.
+* ```yarn run lint```: Lints and fixes files
