@@ -125,6 +125,7 @@
     <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/app.js></script>
 
     <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
+    <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-performance.js"></script>
     <script>
       var firebaseConfig = {
         apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
@@ -136,6 +137,9 @@
         appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
       };
       firebase.initializeApp(firebaseConfig);
+
+      // Initialize Performance Monitoring and get a reference to the service
+      var $firebasePerf = firebase.performance();
     </script>
 </body>
 </html>
