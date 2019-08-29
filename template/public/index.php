@@ -14,6 +14,13 @@
     $cssChunks = getFilesInFolder('version/'.$versionFolder.'/css', 'css', ['app.css']);
     $jsChunks =  getFilesInFolder('version/'.$versionFolder.'/js', 'js', ['js/app.js', 'js/chunk-vendors.js']);
     $json = fetchJson($envUrls, getSlug($defaultSlug, $folderPath), getEnvVar());
+
+    if($json === false)
+    {
+      header("Location: https://www.abrecultura.com/");
+      die();
+    }
+    
     $data = getData($json);
 ?>
 <!DOCTYPE html>
