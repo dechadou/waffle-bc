@@ -19,4 +19,4 @@
 ## Documentation
 * [Waffle Starting Guide](documentation/Starting.md)
 * [Waffle Libraries Documentation](documentation/Libraries.md)
-* [Waffle Components Documentation](https://abrecultura.com/waffle-documentation/#/)
+* [Waffle Components Documentation](http://test.abrecultura.com/waffle-documentation/#/)
