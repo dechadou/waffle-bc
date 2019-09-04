@@ -11,16 +11,16 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import "swiper/dist/css/swiper.css";
-import { ProductDisplayerType } from "@/extendables/BaseComponents";
+import 'swiper/dist/css/swiper.css';
+import { ProductDisplayerType } from '@/extendables/BaseComponents';
 
 // @group PRODUCTDISPLAYER TYPES
 // Displays a slider of products
 // @vuese
 export default {
-  name: "ProductDisplayer-Slider",
+  name: 'ProductDisplayer-Slider',
   extends: ProductDisplayerType,
   props: {
     // The slider options. There is a default object.
@@ -32,16 +32,16 @@ export default {
         initialSlide: 1,
         spaceBetween: -30,
         navigation: {
-          nextEl: ".slider-button-next",
-          prevEl: ".slider-button-prev"
-        }
-      })
-    }
+          nextEl: '.slider-button-next',
+          prevEl: '.slider-button-prev',
+        },
+      }),
+    },
   },
   components: {
     swiper,
-    swiperSlide
-  }
+    swiperSlide,
+  },
 };
 </script>
 
@@ -57,7 +57,7 @@ export default {
   .description {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.1s ease;
+    transition: opacity 0.3s ease;
     @media (min-width: 768px) {
       visibility: visible;
       opacity: 1;
@@ -72,7 +72,8 @@ export default {
   .description {
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s, opacity 0.5s ease;
+    transition: opacity 0.3s ease;
+    transition-delay: 0.3s
   }
 }
 .swiper-slide .product .image_wrap img {
@@ -80,8 +81,6 @@ export default {
 }
 .swiper-slide .product .image__wrapper.loaded img {
   position: relative;
-  top: 0;
-  left: 0;
   filter: blur(2px);
   opacity: 0.8;
   @include md-up {
@@ -89,13 +88,14 @@ export default {
     opacity: 1;
   }
 }
+.product .image__wrapper.loaded img {
+  transform: scale(1);
+  transition: transform 0.5s ease;
+  transform-origin: center;
+}
 .swiper-slide-active .product .image__wrapper.loaded img {
-  max-width: 120%;
-  width: 120% !important;
-  z-index: 21;
-  top: -5vw;
-  left: -10%;
-  transition: all 0.5s ease;
+  transform: scale(1.1);
+  transition: transform 0.5s ease;
   filter: none;
   opacity: 1;
   @include md-up {

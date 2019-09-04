@@ -4,8 +4,8 @@
       <div v-if="label || introCopy">
         <div class="background" :style="`background-image: url('${bg}');`" v-if="bg">
           <div class="container">
-            <div class="col-12 col-md-6 offset-md-3 label-container">
-              <img :src="label" class="label img-fluid mx-auto d-block" alt="label" v-if="label">
+            <div class="label-container">
+              <img :src="label" class="label" alt="label" v-if="label">
             </div>
             <div class="col-12 col-md-8 offset-md-2" v-if="introCopy">
               <p v-html="introCopy"/>
@@ -86,16 +86,29 @@ export default {
   background-repeat: no-repeat;
   background-position: top center;
   background-size: 100% auto;
+  z-index: 1001;
+  position: relative;
+  @include md-up{
+    position: initial;
+    z-index: 1;
+  }
 }
 
 p {
   font-weight: 300;
-  text-align: center;
   font-size: 19px;
   margin-top: 20px;
   font-weight: 300;
   background-color: #fff;
-  padding: 20px 30px !important;
+
+  @include xs-up{
+    padding: 1px 15px;
+  }
+
+  @include md-up{
+    padding: 20px 30px !important;
+    text-align: center;
+  }
 }
 
 .label-container {
@@ -105,8 +118,9 @@ p {
 .label {
   display: block;
   margin: 0 auto;
-  padding: 50px 0;
-  width: 100%;
+  padding: 20px 0;
+  max-width: 100%;
+  max-height: 476px;
 }
 
 .heroImg {

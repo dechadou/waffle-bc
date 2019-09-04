@@ -3,7 +3,7 @@
 
     $folderPath = '/';
     $defaultSlug = 'abre';
-    $versionFolder = '1566512439';
+    $versionFolder = '1566513093';
 
     $envUrls = [
         'https://abrecultura.s3.amazonaws.com/storage/prod/', 
@@ -20,7 +20,7 @@
       header("Location: https://www.abrecultura.com/");
       die();
     }
-    
+
     $data = getData($json);
 ?>
 <!DOCTYPE html>
@@ -30,13 +30,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,shrink-to-fit=no">
     <?php foreach($cssChunks as $chunk): ?>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/<?= $chunk ?> rel=prefetch>
+    <link href=<?= $folderPath ?><?= $chunk ?> rel=prefetch>
     <?php endforeach; ?>
     <?php foreach($jsChunks as $chunk): ?>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/<?= $chunk ?> rel=prefetch>
+    <link href=<?= $folderPath ?><?= $chunk ?> rel=prefetch>
     <?php endforeach; ?>
-    <link rel="preconnect" href="https://abrecultura.s3.amazonaws.com">
-    <link rel="preconnect" href="https://mate.abrecultura.com">
+    <link rel="preconnect" href="https://abrecultura.s3.amazonaws.com" crossorigin>
+    <link rel="preconnect" href="https://mate.abrecultura.com" crossorigin>
     <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/css/app.css rel=preload as=style>
     <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/js/app.js rel=preload as=script>
     <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/js/chunk-vendors.js rel=preload as=script>
@@ -125,7 +125,7 @@
         </svg>
       </div>
   </div>
-    <script src="https://browser.sentry-cdn.com/5.6.2/bundle.min.js" integrity="sha384-H4chu/XQ3ztniOYTpWo+kwec6yx3KQutpNkHiKyeY05XCZwCSap7KSwahg16pzJo" crossorigin="anonymous"></script>
+    <script src="https://browser.sentry-cdn.com/5.6.3/bundle.min.js" integrity="sha384-H4chu/XQ3ztniOYTpWo+kwec6yx3KQutpNkHiKyeY05XCZwCSap7KSwahg16pzJo" crossorigin="anonymous"></script>
     <script type="text/javascript">Sentry.init({ dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222' });</script>
 
     <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/chunk-vendors.js></script>
@@ -134,19 +134,24 @@
     <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
     <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-performance.js"></script>
     <script>
-      var firebaseConfig = {
-        apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
-        authDomain: "waffle-e6985.firebaseapp.com",
-        databaseURL: "https://waffle-e6985.firebaseio.com",
-        projectId: "waffle-e6985",
-        storageBucket: "",
-        messagingSenderId: "183271898269",
-        appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
-      };
-      firebase.initializeApp(firebaseConfig);
-
-      // Initialize Performance Monitoring and get a reference to the service
-      var $firebasePerf = firebase.performance();
+	  if(typeof firebase !== 'undefined' && firebase){
+	  	try{
+	  		var firebaseConfig = {
+	        apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
+	        authDomain: "waffle-e6985.firebaseapp.com",
+	        databaseURL: "https://waffle-e6985.firebaseio.com",
+	        projectId: "waffle-e6985",
+	        storageBucket: "",
+	        messagingSenderId: "183271898269",
+	        appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
+	      };
+	      firebase.initializeApp(firebaseConfig);
+		  firebase.performance();
+	  	}catch(err){
+	      console.log(err);
+	  	}
+	  }
+	  
     </script>
 </body>
 </html>
