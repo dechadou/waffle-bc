@@ -25,29 +25,29 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { BreakpointsNamespace } from "@/store/module/Breakpoints";
-import { ProductDisplayerType } from "@/extendables/BaseComponents";
-import { ProductDisplayerSlider } from "@/extendables/ProductDisplayerTypes";
-import { getEnum, EnumNames } from "@/config";
+import { mapState } from 'vuex';
+import { BreakpointsNamespace } from '@/store/module/Breakpoints';
+import { ProductDisplayerType } from '@/extendables/BaseComponents';
+import { ProductDisplayerSlider } from '@/extendables/ProductDisplayerTypes';
+import { getEnum, EnumNames } from '@/config';
 
 // @group PRODUCTDISPLAYER TYPES
 // Displays recommended products
 // @vuese
 export default {
-  name: "ProductDisplayer-Recommended",
+  name: 'ProductDisplayer-Recommended',
   extends: ProductDisplayerType,
   components: {
-    ProductDisplayerSlider
+    ProductDisplayerSlider,
   },
   computed: {
-    ...mapState(BreakpointsNamespace, ["breakpoint"])
+    ...mapState(BreakpointsNamespace, ['breakpoint']),
   },
   data() {
     return {
-      breakpoints: getEnum(EnumNames.Breakpoints)
+      breakpoints: getEnum(EnumNames.Breakpoints),
     };
-  }
+  },
 };
 </script>
 
@@ -55,6 +55,7 @@ export default {
 .swiper-container {
   padding: 0 10%;
   margin: 0 -15px;
+  transform: translate(-8px);
   @media (min-width: 768px) {
     padding: 0;
   }

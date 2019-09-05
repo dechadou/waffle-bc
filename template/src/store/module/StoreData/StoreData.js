@@ -85,7 +85,7 @@ export default {
         Request.s3(`${slug}.json`)
           .catch((error) => {
             commit(ADD_ERROR, error);
-            throw new Error(`[Waffle Error]: ${error}`);
+            console.error(error);
           })
           .then(response => commit(ADD_DATA, response.data));
       }

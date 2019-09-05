@@ -2,7 +2,7 @@
   <article class="product">
     <div class="row">
       <!-- IMAGE -->
-      <div class="col-12 col-md-7">
+      <div class="col-12 col-md-6">
         <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
         <LazyImage
           :source="singleImage"
@@ -47,32 +47,32 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 // @group PRODUCT TYPES
 // Shows the product with it's description on the right
 // @vuese
 export default {
-  name: "Product-Description",
+  name: 'Product-Description',
   extends: ProductType,
   components: {
-    LazyImage
+    LazyImage,
   },
   methods: {
     getButtonType() {
-      if (this.data.class === "product" && this.articleList.length > 1) {
-        return "Select";
+      if (this.data.class === 'product' && this.articleList.length > 1) {
+        return 'Select';
       }
 
       if (this.isOutOfStock) {
-        return "OutOfStock";
+        return 'OutOfStock';
       }
 
-      if (!this.openModules) return "Check";
+      if (!this.openModules) return 'Check';
 
-      return "Normal";
-    }
-  }
+      return 'Normal';
+    },
+  },
 };
 </script>
 
@@ -94,11 +94,8 @@ h1 {
 }
 
 .description {
-  @include md-up {
-    margin-top: 70px;
-  }
   @include lg-up {
-    margin-top: 140px;
+    margin-top: 10%;
   }
 }
 
@@ -111,14 +108,15 @@ h1 {
 }
 
 p {
-  font-size: 22px;
+  font-size: 19px;
+  margin-top: 10px;
 
   span {
     color: $abre-description-grey;
   }
 
   @include md-up {
-    font-size: 20px;
+    margin-top: 19px;
   }
 }
 

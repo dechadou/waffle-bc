@@ -79,7 +79,7 @@ button.btn, a.btn {
   background-color: $abre-black;
   color: #fff;
   width: 100%;
-  padding: 10px 0;
+  padding: 12.5px 0;
   border-radius: 0;
   font-size: 20px;
   font-weight: 300;
@@ -89,6 +89,10 @@ button.btn, a.btn {
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+
+  @include md-up {
+    padding: 10px 0;
+  }
 
   &.out_of_stock {
     transition: 0.3s ease all;

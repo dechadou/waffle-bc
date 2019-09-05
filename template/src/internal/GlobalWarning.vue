@@ -5,24 +5,29 @@
 </template>
 
 <script>
-import { Request } from "@/utils";
+import { Request } from '@/utils';
 
 // @group INTERNAL COMPONENTS
 // Fetches the aviso-global-tiendas meta and displays an alert with the meta content if there's any
 // @vuese
 export default {
-  name: "GlobalWarning",
+  name: 'GlobalWarning',
   data() {
     return {
-      description: null
+      description: null,
     };
   },
   mounted() {
     Request.api
-      .get(`metas/slug/aviso-global-tiendas`)
-      .then(response => (this.description = response.data.value))
-      .catch(() => {});
-  }
+      .get('metas/slug/aviso-global-tiendas')
+      .then(response => this.assignDescription(response.data.value))
+      .catch(err => console.error(err));
+  },
+  methods: {
+    assignDescription(value) {
+      this.description = value;
+    },
+  },
 };
 </script>
 
