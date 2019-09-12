@@ -5,7 +5,7 @@
         <h2 class="logo">
           <a href="https://abrecultura.com/" target="_blank" rel="noopener">
             <span class="sr-only">ABRE</span>
-            <Icon class="logoIcon" name="abre"/>
+            <Icon class="logoIcon" name="logo"/>
           </a>
         </h2>
       </aside>

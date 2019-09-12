@@ -14,62 +14,60 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueAnalytics from 'vue-analytics';
-import {
-  mapActions, mapGetters, mapState, mapMutations,
-} from 'vuex';
-import router from '@/router';
+import Vue from "vue";
+import VueAnalytics from "vue-analytics";
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
+import router from "@/router";
 import {
   StoreDataActionTypes,
   StoreDataGetterTypes,
   StoreDataMutationTypes,
-  StoreDataNamespace,
-} from '@/store/module/StoreData';
-import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
-import { BreakpointsMutationTypes } from '@/store/module/Breakpoints';
-import { getVariable, VariableNames } from '@/config';
-import * as FooterTypes from '@/extendables/FooterTypes';
-import { CartHelper } from '@/objects/CartObjects';
+  StoreDataNamespace
+} from "@/store/module/StoreData";
+import { ThemeMutationTypes, ThemeNamespace } from "@/store/module/Theme";
+import { BreakpointsMutationTypes } from "@/store/module/Breakpoints";
+import { getVariable, VariableNames } from "@/config";
+import * as FooterTypes from "@/extendables/FooterTypes";
+import { CartHelper } from "@/objects/CartObjects";
 import {
   Loading,
   Cart,
   HeaderSection,
-  RelatedProducts,
-} from '@/extendables/BaseComponents';
+  RelatedProducts
+} from "@/extendables/BaseComponents";
 
 // @group INTERNAL COMPONENTS
 // This is the main component
 export default {
-  name: 'App',
+  name: "App",
   components: {
     ...FooterTypes,
     Loading,
     Cart,
     HeaderSection,
-    RelatedProducts,
+    RelatedProducts
   },
   data() {
     return {
       show: false,
-      cartHelper: null,
+      cartHelper: null
     };
   },
   computed: {
-    ...mapState(ThemeNamespace, ['footer', 'themeConfig']),
+    ...mapState(ThemeNamespace, ["footer", "themeConfig", "theme"]),
     ...mapState(StoreDataNamespace, [
-      'data',
-      'template',
-      'error',
-      'year',
-      'store_id',
+      "data",
+      "template",
+      "error",
+      "year",
+      "store_id"
     ]),
     ...mapGetters({
-      isLoaded: StoreDataGetterTypes.IS_LOADED,
+      isLoaded: StoreDataGetterTypes.IS_LOADED
     }),
     hasHeader() {
-      return this.store_id === 8;
-    },
+      return this.theme === "marketplace";
+    }
   },
   watch: {
     isLoaded(value) {
@@ -109,7 +107,7 @@ export default {
           scope.show = true;
         }, 500);
       }
-    },
+    }
   },
   created() {
     this.fetchData();
@@ -117,17 +115,17 @@ export default {
     // Tells the Breakpoints Store to get the size of the screen and set the breakpoint
     this.setBreakpoint();
 
-    window.addEventListener('resize', this.onResize, true);
+    window.addEventListener("resize", this.onResize, true);
   },
   methods: {
     ...mapMutations({
       setTheme: ThemeMutationTypes.SET_THEME,
       setFooter: ThemeMutationTypes.SET_FOOTER,
       setStoreIdentifier: StoreDataMutationTypes.SET_STORE_IDENTIFIER,
-      setBreakpoint: BreakpointsMutationTypes.SET_BREAKPOINT,
+      setBreakpoint: BreakpointsMutationTypes.SET_BREAKPOINT
     }),
     ...mapActions({
-      fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA,
+      fetchStoreData: StoreDataActionTypes.FETCH_STORE_DATA
     }),
     /**
      * @vuese
@@ -145,7 +143,7 @@ export default {
     fetchData() {
       if (!this.$route.name) return;
       this.fetchStoreData(
-        this.$route.params.slug || getVariable(VariableNames.DefaultSlug),
+        this.$route.params.slug || getVariable(VariableNames.DefaultSlug)
       );
     },
     /**
@@ -164,14 +162,14 @@ export default {
       // The store identifier is used by the Cart for saving things on LocalStorage
       this.setStoreIdentifier({
         domain: this.template.tienda_url,
-        storeSlug: this.$route.params.slug,
+        storeSlug: this.$route.params.slug
       });
 
       // Calls to VueAnalytics component if an Analytics code exists
       if (this.template.codigo_analytics) {
         Vue.use(VueAnalytics, {
           id: this.template.codigo_analytics,
-          router,
+          router
         });
       }
 
@@ -179,7 +177,7 @@ export default {
       // The cartHelper object asks for the storeData
       this.cartHelper = new CartHelper(this.data);
 
-      const loadingScreen = document.getElementById('loadingScreen');
+      const loadingScreen = document.getElementById("loadingScreen");
       loadingScreen.parentElement.removeChild(loadingScreen);
 
       this.show = true;
@@ -190,14 +188,15 @@ export default {
      */
     isValidPage() {
       if (
-        process.env.NODE_ENV === 'production'
-        && this.$route.params.slug
-        && this.template.tienda_url
-        && window.location.host.indexOf(this.template.tienda_url) === -1
-      ) return false;
+        process.env.NODE_ENV === "production" &&
+        this.$route.params.slug &&
+        this.template.tienda_url &&
+        window.location.host.indexOf(this.template.tienda_url) === -1
+      )
+        return false;
       return true;
-    },
-  },
+    }
+  }
 };
 </script>
 

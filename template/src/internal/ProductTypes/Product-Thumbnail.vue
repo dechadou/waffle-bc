@@ -9,7 +9,7 @@
             <LazyImage
               :source="singleImage"
               cssClasses="img-fluid mx-auto d-block"
-              :description="`${data.title} image`"
+              :description="`${data.name} image`"
             />
           </router-link>
         </div>
@@ -34,7 +34,7 @@
               <!-- AUTHORS -->
               <div class="row">
                 <div class="col-12">
-                  <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+                  <p class="authors">{{ data.autor }}</p>
                 </div>
               </div>
               <!-- /AUTHORS -->
@@ -60,41 +60,41 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from '@/extendables/BaseComponents';
+import { LazyImage, ProductType } from "@/extendables/BaseComponents";
 
 // @group PRODUCT TYPES
 // Shows the product thumbnail on the Marketplace theme
 // @vuese
 export default {
-  name: 'Product-Thumbnail',
+  name: "Product-Thumbnail",
   extends: ProductType,
   components: {
-    LazyImage,
+    LazyImage
   },
   methods: {
     getButtonType() {
-      if (this.data.class === 'product' && this.articleList.length > 1) {
-        return 'Select';
+      if (this.data.class === "product" && this.articleList.length > 1) {
+        return "Select";
       }
-      if (this.isOutOfStock) return 'OutOfStock';
+      if (this.isOutOfStock) return "OutOfStock";
 
-      if (!this.openModules) return 'Check';
+      if (!this.openModules) return "Check";
 
-      return 'Normal';
-    },
+      return "Normal";
+    }
   },
   filters: {
     displayAuthors(authors) {
-      let str = '';
+      let str = "";
       authors
         .filter((v, i) => authors.indexOf(v) === i)
-        .forEach((x) => {
-          str += str === '' ? x.name : ` + ${x.name}`;
+        .forEach(x => {
+          str += str === "" ? x.name : ` + ${x.name}`;
         });
 
       return str;
-    },
-  },
+    }
+  }
 };
 </script>
 

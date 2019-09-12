@@ -2,11 +2,11 @@
   <section class="header" :class="[{ 'active': isActive }]">
     <router-link to="/">
       <h1 ref="logo" class="logo">
-        <span class="sr-only">ABRE</span>
-        <Icon class="logoIcon" name="abre"/>
+        <span class="sr-only">LOGO</span>
+        <Icon class="logoIcon" name="logo"/>
       </h1>
     </router-link>
-    <div class="icons" @click="toggleMenu" v-if="!isProductInternal">
+    <div class="icons" @click="toggleMenu" v-if="!isProductInternal && hasMenu">
       <Icon
         class="icon"
         :class="[{ 'icon-active': !isActive }]"
@@ -21,7 +21,7 @@
         iconFill="transparent"
       />
     </div>
-    <nav class="menu">
+    <nav class="menu" v-if="hasMenu">
       <ul class="nav" v-if="!isProductInternal">
         <li>
           <a href="https://abrecultura.com/nosotros/">Nosotros</a>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
 import { Social, Icon } from "@/extendables/BaseComponents";
 
 // @group INTERNAL COMPONENTS
@@ -57,6 +59,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(StoreDataNamespace, ["store_id"]),
     currentPage() {
       return this.$route.name;
     },
@@ -68,6 +71,9 @@ export default {
         this.currentPage === "DefaultProductPage" ||
         this.currentPage === "DefaultBundlePage"
       );
+    },
+    hasMenu() {
+      return this.store_id === 8;
     }
   },
   watch: {

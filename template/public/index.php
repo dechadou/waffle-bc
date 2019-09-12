@@ -127,7 +127,12 @@
       </div>
   </div>
     <script src="https://browser.sentry-cdn.com/5.6.3/bundle.min.js" integrity="sha384-H4chu/XQ3ztniOYTpWo+kwec6yx3KQutpNkHiKyeY05XCZwCSap7KSwahg16pzJo" crossorigin="anonymous"></script>
-    <script type="text/javascript">Sentry.init({ dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222' });</script>
+    <script type="text/javascript">
+    	Sentry.init({ 
+    		dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222',
+    		ignoreErrors: ['UnhandledRejection', 'strict mode'],
+    	});
+	</script>
 
     <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/chunk-vendors.js></script>
     <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/app.js></script>
