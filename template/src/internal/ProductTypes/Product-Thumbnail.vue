@@ -301,7 +301,7 @@ export default {
     overflow: hidden;
     padding: 0 !important;
     @include lg-up {
-      height: 3.2vw;
+      height: 45px;
     }
   }
 
