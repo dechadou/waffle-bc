@@ -37,60 +37,60 @@
 
 
 <script>
-import { FooterType, Social, Icon } from "@/extendables/BaseComponents";
+import { FooterType, Social, Icon } from '@/extendables/BaseComponents';
 
 // @group FOOTER TYPES
 // Displays the complete ABRE Landing footer
 // @vuese
 export default {
-  name: "Footer-Abre",
+  name: 'Footer-Abre',
   extends: FooterType,
   components: {
     Social,
-    Icon
+    Icon,
   },
   data() {
     return {
       address: {
-        street: "Teodoro García 2474",
-        city: "Ciudad de Buenos Aires",
-        country: "Argentina",
-        show: false
+        street: 'Teodoro García 2474',
+        city: 'Ciudad de Buenos Aires',
+        country: 'Argentina',
+        show: false,
       },
       CTAMail: {
-        copy: "Escribinos a:",
-        email: "hola@abrecultura.com",
-        cta: "mailto:hola@abrecultura.com",
-        show: false
+        copy: 'Escribinos a:',
+        email: 'hola@abrecultura.com',
+        cta: 'mailto:hola@abrecultura.com',
+        show: false,
       },
       menu: [
         {
-          title: "Nosotros",
-          url: "https://abrecultura.com/nosotros/",
+          title: 'Nosotres',
+          url: 'https://abrecultura.com/nosotres/',
           isRoute: false,
-          showForLandscape: true
+          showForLandscape: true,
         },
         {
-          title: "F.A.Q.",
-          url: "https://abrecultura.com/faq/",
+          title: 'F.A.Q.',
+          url: 'https://abrecultura.com/faq/',
           isRoute: false,
-          showForLandscape: true
+          showForLandscape: true,
         },
         {
-          title: "Estado de mi pedido",
-          url: "https://abrecultura.com/mi-pedido/",
+          title: 'Estado de mi pedido',
+          url: 'https://abrecultura.com/mi-pedido/',
           isRoute: false,
-          showForLandscape: true
+          showForLandscape: true,
         },
         {
-          title: "Pasar a buscar",
-          url: "https://abrecultura.com/pasar-a-buscar/",
+          title: 'Pasar a buscar',
+          url: 'https://abrecultura.com/pasar-a-buscar/',
           isRoute: false,
-          showForLandscape: true
-        }
-      ]
+          showForLandscape: true,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 
