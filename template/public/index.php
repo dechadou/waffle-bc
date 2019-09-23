@@ -1,10 +1,10 @@
 <?php
-    error_reporting( 0 );
+    //error_reporting(0);
     include 'helpers.php';
 
     $folderPath = '/';
     $defaultSlug = 'abre';
-    $versionFolder = '1566513093';
+    $frontApiUrl = 'https://www.abrecultura.com/front-api/';
 
     $envUrls = [
         'https://abrecultura.s3.amazonaws.com/storage/prod/', 
@@ -12,8 +12,9 @@
         'https://abrecultura-dev.s3.amazonaws.com/storage/dev/'
     ];
 
-    $cssChunks = getFilesInFolder('version/'.$versionFolder.'/css', 'css', ['app.css']);
-    $jsChunks =  getFilesInFolder('version/'.$versionFolder.'/js', 'js', ['js/app.js', 'js/chunk-vendors.js']);
+
+    $files = json_decode(file_get_contents($frontApiUrl), true);
+
     $json = fetchJson($envUrls, getSlug($defaultSlug, $folderPath), getEnvVar());
 
     if($json === false)
@@ -30,18 +31,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,shrink-to-fit=no">
-    <?php foreach($cssChunks as $chunk): ?>
-    <link href=<?= $folderPath ?><?= $chunk ?> rel=prefetch>
-    <?php endforeach; ?>
-    <?php foreach($jsChunks as $chunk): ?>
-    <link href=<?= $folderPath ?><?= $chunk ?> rel=prefetch>
-    <?php endforeach; ?>
     <link rel="preconnect" href="https://abrecultura.s3.amazonaws.com" crossorigin>
     <link rel="preconnect" href="https://mate.abrecultura.com" crossorigin>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/css/app.css rel=preload as=style>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/js/app.js rel=preload as=script>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/js/chunk-vendors.js rel=preload as=script>
-    <link href=<?= $folderPath ?>version/<?= $versionFolder ?>/css/app.css rel=stylesheet>
+    <link href=<?= $files['app-css'] ?> rel=preload as=style>
+    <link href=<?= $files['app-js'] ?> rel=preload as=script>
+    <link href=<?= $files['chunk-vendors-js'] ?> rel=preload as=script>
+    <link href=<?= $files['app-css'] ?> rel=stylesheet>
     <link rel="author" href="<?="https://{$_SERVER['HTTP_HOST']}"?>">
     <link rel="canonical" href="<?="https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}"?>">
     <link rel="icon" type="image/png" href="<?="https://{$_SERVER['HTTP_HOST']}"?>/favicon.png">
@@ -56,7 +51,6 @@
     <meta property="twitter:description" content="<?=$data->template->open_graph_description;?>">
     <meta property="twitter:image" content="<?=$data->template->open_graph_image;?>">
     <meta name=theme-color content=#1D1D1B>
-    <link rel=manifest href=<?= $folderPath ?>manifest.json>
 
     <title><?=$data->template->open_graph_title;?></title>
     <script>
@@ -126,38 +120,38 @@
         </svg>
       </div>
   </div>
-    <script src="https://browser.sentry-cdn.com/5.6.3/bundle.min.js" integrity="sha384-H4chu/XQ3ztniOYTpWo+kwec6yx3KQutpNkHiKyeY05XCZwCSap7KSwahg16pzJo" crossorigin="anonymous"></script>
+    <script src="https://browser.sentry-cdn.com/5.6.3/bundle.min.js" integrity="sha384-/Cqa/8kaWn7emdqIBLk3AkFMAHBk0LObErtMhO+hr52CntkaurEnihPmqYj3uJho" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    	Sentry.init({ 
-    		dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222',
-    		ignoreErrors: ['UnhandledRejection', 'strict mode'],
-    	});
-	</script>
+      Sentry.init({ 
+        dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222',
+        ignoreErrors: ['UnhandledRejection', 'strict mode'],
+      });
+  </script>
 
-    <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/chunk-vendors.js></script>
-    <script src=<?= $folderPath ?>version/<?= $versionFolder ?>/js/app.js></script>
+    <script src=<?= $files['chunk-vendors-js'] ?>></script>
+    <script src=<?= $files['app-js'] ?>></script>
 
     <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
     <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-performance.js"></script>
     <script>
-	  if(typeof firebase !== 'undefined' && firebase){
-	  	try{
-	  		var firebaseConfig = {
-	        apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
-	        authDomain: "waffle-e6985.firebaseapp.com",
-	        databaseURL: "https://waffle-e6985.firebaseio.com",
-	        projectId: "waffle-e6985",
-	        storageBucket: "",
-	        messagingSenderId: "183271898269",
-	        appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
-	      };
-	      firebase.initializeApp(firebaseConfig);
-		  firebase.performance();
-	  	}catch(err){
-	      console.log(err);
-	  	}
-	  }
-	  
+    if(typeof firebase !== 'undefined' && firebase){
+      try{
+        var firebaseConfig = {
+          apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
+          authDomain: "waffle-e6985.firebaseapp.com",
+          databaseURL: "https://waffle-e6985.firebaseio.com",
+          projectId: "waffle-e6985",
+          storageBucket: "",
+          messagingSenderId: "183271898269",
+          appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
+        };
+        firebase.initializeApp(firebaseConfig);
+      firebase.performance();
+      }catch(err){
+        console.log(err);
+      }
+    }
+    
     </script>
 </body>
 </html>

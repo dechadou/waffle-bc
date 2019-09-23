@@ -22,12 +22,6 @@ function getSlug($defaultSlug, $folderPath){
     return $slug;
 }
 
-function getFilesInFolder($folder, $extension, $ignore = []){
-    $ignoreFiles = [];
-    foreach ($ignore as $value) array_push($ignoreFiles, $folder.$value);
-    return array_diff(glob($folder.'/*.'.$extension), $ignoreFiles);
-}
-
 function getEnvVar(){
     $env = 0;
     if(
