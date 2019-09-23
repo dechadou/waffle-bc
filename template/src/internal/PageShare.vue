@@ -14,7 +14,7 @@
               >
                 <a @click="openShare(button, $event)" class="btn d-block page-share">
                   <span>Compartir en</span>
-                  <Icon :name="button.icon" class="share-icon" width="25px" height="25px"/>
+                  <component :is="button.icon" class="share-icon"/>
                 </a>
               </div>
             </div>
@@ -26,7 +26,9 @@
 </template>
 
 <script>
-import { Icon } from '@/extendables/BaseComponents';
+import FbIcon from "@/assets/icons/fb.svg";
+import TwIcon from "@/assets/icons/tw.svg";
+import WppIcon from "@/assets/icons/wpp.svg";
 
 class PageShareButton {
   constructor(name, url, icon, prepend, append, desktopVisible) {
@@ -39,7 +41,7 @@ class PageShareButton {
   }
 
   makeUrl(pageUrl) {
-    return `${this.url}${this.prepend || ''}${pageUrl}${this.append || ''}`;
+    return `${this.url}${this.prepend || ""}${pageUrl}${this.append || ""}`;
   }
 }
 
@@ -47,45 +49,47 @@ class PageShareButton {
 // Displays the page share buttons
 // @vuese
 export default {
-  name: 'PageShare',
+  name: "PageShare",
   components: {
-    Icon,
+    FbIcon,
+    TwIcon,
+    WppIcon
   },
   props: {
     // Call to action title
     title: String,
     // Share text for twitter
-    shareText: String,
+    shareText: String
   },
   data() {
     return {
       pageUrl: `https://${window.location.host}${window.location.pathname}`,
       buttons: [
         new PageShareButton(
-          'Facebook',
-          'https://www.facebook.com/sharer/sharer.php?u=',
-          'fb',
-          '',
-          '',
-          true,
+          "Facebook",
+          "https://www.facebook.com/sharer/sharer.php?u=",
+          "FbIcon",
+          "",
+          "",
+          true
         ),
         new PageShareButton(
-          'Twitter',
-          'https://twitter.com/intent/tweet?url=',
-          'tw',
-          '',
-          `&text=${this.shareText || ''}`,
-          true,
+          "Twitter",
+          "https://twitter.com/intent/tweet?url=",
+          "TwIcon",
+          "",
+          `&text=${this.shareText || ""}`,
+          true
         ),
         new PageShareButton(
-          'Whatsapp',
-          'whatsapp://send?text=',
-          'wpp',
-          `${this.shareText || ''} `,
-          '',
-          false,
-        ),
-      ],
+          "Whatsapp",
+          "whatsapp://send?text=",
+          "WppIcon",
+          `${this.shareText || ""} `,
+          "",
+          false
+        )
+      ]
     };
   },
   methods: {
@@ -97,24 +101,25 @@ export default {
      */
     openShare(button, event) {
       event.preventDefault();
-      const config = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600';
-      window.open(button.makeUrl(this.pageUrl), '', config);
+      const config =
+        "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600";
+      window.open(button.makeUrl(this.pageUrl), "", config);
 
       // Trigger Analytics Event
       if (this.$ga) {
         this.$ga.event({
-          eventCategory: 'click',
-          eventAction: 'share',
-          eventLabel: button.name,
+          eventCategory: "click",
+          eventAction: "share",
+          eventLabel: button.name
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.share-cont{
+.share-cont {
   margin: 30px 0;
 }
 
@@ -140,6 +145,8 @@ a {
   left: 7px;
   top: 3px;
   fill: #fff;
+  width: 25px;
+  height: 25px;
 }
 
 a:hover .share-icon {

@@ -2,7 +2,7 @@
   <footer>
     <a href="https://abrecultura.com/" target="_blank" rel="noopener">
       <span class="sr-only">LOGO</span>
-      <Icon name="logo" class="logo"/>
+      <LogoIcon class="logo"/>
     </a>
   </footer>
 </template>
@@ -12,10 +12,14 @@
 // Displays a footer with the ABRE Logo
 // @vuese
 import { FooterType } from "@/extendables/BaseComponents";
+import LogoIcon from "@/assets/icons/logo.svg";
 
 export default {
   name: "Footer-Logo",
-  extends: FooterType
+  extends: FooterType,
+  components: {
+    LogoIcon
+  }
 };
 </script>
 

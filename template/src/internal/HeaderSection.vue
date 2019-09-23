@@ -3,7 +3,7 @@
     <router-link to="/">
       <h1 ref="logo" class="logo">
         <span class="sr-only">LOGO</span>
-        <Icon class="logoIcon" name="logo"/>
+        <LogoIcon class="logoIcon"/>
       </h1>
     </router-link>
     <div class="icons" @click="toggleMenu" v-if="!isProductInternal && hasMenu">
@@ -36,50 +36,51 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { Social, Icon } from '@/extendables/BaseComponents';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { Social } from "@/extendables/BaseComponents";
+import LogoIcon from "@/assets/icons/logo.svg";
 
 // @group INTERNAL COMPONENTS
 // The page's header
 // @vuese
 export default {
-  name: 'HeaderSection',
+  name: "HeaderSection",
   props: {
     // Current year. Used for displaying inside the mobile menu
-    year: String,
+    year: String
   },
   components: {
     Social,
-    Icon,
+    LogoIcon
   },
   data() {
     return {
-      isActive: false,
+      isActive: false
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['store_id']),
+    ...mapState(StoreDataNamespace, ["store_id"]),
     currentPage() {
       return this.$route.name;
     },
     isHome() {
-      return this.currentPage === 'DefaultHomePage';
+      return this.currentPage === "DefaultHomePage";
     },
     isProductInternal() {
       return (
-        this.currentPage === 'DefaultProductPage'
-        || this.currentPage === 'DefaultBundlePage'
+        this.currentPage === "DefaultProductPage" ||
+        this.currentPage === "DefaultBundlePage"
       );
     },
     hasMenu() {
       return this.store_id === 8;
-    },
+    }
   },
   watch: {
     $route() {
       this.isActive = false;
-    },
+    }
   },
   methods: {
     /**
@@ -88,8 +89,8 @@ export default {
      */
     toggleMenu() {
       this.isActive = !this.isActive;
-    },
-  },
+    }
+  }
 };
 </script>
 

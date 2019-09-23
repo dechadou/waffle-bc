@@ -7,7 +7,7 @@
             <li v-for="item in social" :key="item.name">
               <a :href="item.url" target="_blank" rel="noopener">
                 <span class="sr-only">ABRE {{ item.name }}</span>
-                <Icon :name="item.name"/>
+                <component :is="item.name"/>
               </a>
             </li>
           </ul>
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { Icon } from "@/extendables/BaseComponents";
+import FbIcon from "@/assets/icons/fb.svg";
+import IgIcon from "@/assets/icons/ig.svg";
 
 class SocialObject {
   constructor(name, url) {
@@ -40,13 +41,17 @@ export default {
     year: String
   },
   components: {
-    Icon
+    FbIcon,
+    IgIcon
   },
   data() {
     return {
       social: [
-        new SocialObject("ig", "https://www.instagram.com/abre_cultura/"),
-        new SocialObject("fb", "https://www.facebook.com/abreculturapuntocom/")
+        new SocialObject("FbIcon", "https://www.instagram.com/abre_cultura/"),
+        new SocialObject(
+          "IgIcon",
+          "https://www.facebook.com/abreculturapuntocom/"
+        )
       ]
     };
   }

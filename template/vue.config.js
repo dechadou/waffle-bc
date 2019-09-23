@@ -38,9 +38,17 @@ module.exports = {
   filenameHashing: false,
 
   chainWebpack: (config) => {
-    config.module
+    /*config.module
       .rule('svg-sprite')
       .use('svgo-loader')
-      .loader('svgo-loader');
+      .loader('svgo-loader');*/
+      
+      const svgRule = config.module.rule('svg');
+
+      svgRule.uses.clear();
+
+      svgRule
+        .use('vue-svg-loader')
+        .loader('vue-svg-loader');
   },
 };

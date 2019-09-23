@@ -1,14 +1,14 @@
 <template>
   <div>
     <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
-      <Icon name="cart"/>
+      <CartIcon/>
       <span class="items-count animated" v-bind:class="{'jello': changing}">{{cartQuantity}}</span>
     </button>
     <div class="sidemenu" :class="[showCart ? 'open' : '']">
       <div class="inner_menu">
         <div class="cart_title">
           <button class="close_cart" @click="cartToggle()" aria-label="Close Cart">
-            <Icon class="closeIcon" name="close"/>
+            <CloseIcon class="closeIcon"/>
           </button>
           <div class="col-12 title_cont">
             <div class="row no-gutters">
@@ -122,18 +122,18 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from "vuex";
 import {
   CartActionTypes,
   CartMutationTypes,
-  CartNamespace,
-} from '@/store/module/Cart';
-import { EventManager } from '@/utils';
-import {
-  getEnum, EnumNames,
-} from '@/config';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { Icon, Loading } from '@/extendables/BaseComponents';
+  CartNamespace
+} from "@/store/module/Cart";
+import { EventManager } from "@/utils";
+import { getEnum, EnumNames } from "@/config";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { Loading } from "@/extendables/BaseComponents";
+import CartIcon from "@/assets/icons/cart.svg";
+import CloseIcon from "@/assets/icons/close.svg";
 
 class ItemQuantityObject {
   constructor(index, quantity) {
@@ -155,14 +155,15 @@ class CartConfig {
 // Displays all the products saved inside the cart vuex store
 // @vuese
 export default {
-  name: 'Cart',
+  name: "Cart",
   components: {
-    Icon,
-    Loading,
+    CartIcon,
+    CloseIcon,
+    Loading
   },
   props: {
     // CartHelper object to access to all the products data
-    cartHelper: Object,
+    cartHelper: Object
   },
   data() {
     return {
@@ -170,24 +171,28 @@ export default {
       changing: false,
       loading: false,
       cartText: {
-        empty: 'Tu carrito está vacío...',
-        filled: 'Te estás llevando...',
-      },
+        empty: "Tu carrito está vacío...",
+        filled: "Te estás llevando..."
+      }
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['authToken', 'storeIdentifier', 'store_id']),
+    ...mapState(StoreDataNamespace, [
+      "authToken",
+      "storeIdentifier",
+      "store_id"
+    ]),
     ...mapState(CartNamespace, [
-      'cartItems',
-      'cartQuantity',
-      'cartSubtotal',
-      'cartRedirect',
+      "cartItems",
+      "cartQuantity",
+      "cartSubtotal",
+      "cartRedirect"
     ]),
     emptyCartText() {
       return this.cartItems.length > 0
         ? this.cartText.filled
         : this.cartText.empty;
-    },
+    }
   },
   watch: {
     cartQuantity() {
@@ -206,18 +211,18 @@ export default {
       if (!value) return;
       this.deleteCart();
       window.location.href = value;
-    },
+    }
   },
   methods: {
     ...mapActions({
       fetchStoredCart: CartActionTypes.FETCH_STORED_CART,
       deleteCart: CartActionTypes.DELETE_CART,
       getCheckoutUrl: CartActionTypes.GET_CHECKOUT_URL,
-      storeCart: CartActionTypes.STORE_CART,
+      storeCart: CartActionTypes.STORE_CART
     }),
     ...mapMutations({
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
-      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
+      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
     }),
     /**
      * @vuese
@@ -225,7 +230,7 @@ export default {
      */
     onBackButtonPressed(event) {
       console.log(event);
-      if (this.showCart && event.state && event.state.state === 'Cart') {
+      if (this.showCart && event.state && event.state.state === "Cart") {
         this.cartToggle(true);
       }
     },
@@ -268,16 +273,17 @@ export default {
      * Shows/hides the page scrollbar.
      */
     toggleScrollBar() {
-      if (this.showCart) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-      else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
+      if (this.showCart)
+        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
+      else document.getElementsByTagName("body")[0].style.overflowY = "initial";
     },
     /**
      * @vuese
      * Adds an entry to the browser history indicating the opening of the cart
      */
     addToHistory() {
-      window.history.replaceState({ state: 'Cart' }, 'Cart');
-      window.history.pushState({ state: 'Cart' }, 'Cart');
+      window.history.replaceState({ state: "Cart" }, "Cart");
+      window.history.pushState({ state: "Cart" }, "Cart");
     },
     /**
      * @vuese
@@ -291,22 +297,29 @@ export default {
      * Subscribes to the cart_toggle, and popstate event
      */
     suscribeToEvents() {
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
-      window.addEventListener('popstate', this.onBackButtonPressed);
-    },
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
+        this.cartToggle()
+      );
+      window.addEventListener("popstate", this.onBackButtonPressed);
+    }
   },
   mounted() {
     // Creates a CartConfig object and sends it to the vuex store
     this.setCartConfig(
-      new CartConfig(this.cartHelper, this.storeIdentifier, this.store_id, this.authToken),
+      new CartConfig(
+        this.cartHelper,
+        this.storeIdentifier,
+        this.store_id,
+        this.authToken
+      )
     );
 
     // Fetches localStorage info
     this.fetchStoredCart();
 
     // Subscribes to events
-    this.suscribeToEvents();    
-  },
+    this.suscribeToEvents();
+  }
 };
 </script>
 

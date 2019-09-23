@@ -2,7 +2,7 @@
   <transition name="slide-fade">
     <div>
       <a class="go-back" @click="goBack()" href="#">
-        <Icon class="arrow-left-button" name="arrow-left"/>
+        <ArrowLeftIcon class="arrow-left-button"/>
         <span>Volver a Tienda</span>
       </a>
       <ProductInternal :data="product"/>
@@ -11,28 +11,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { Icon } from '@/extendables/BaseComponents';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { ProductInternal } from '@/extendables/ProductTypes';
+import { mapState } from "vuex";
+import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { ProductInternal } from "@/extendables/ProductTypes";
 
 // @group PAGES
 // This page is the extended view of a product or bundle.
 export default {
-  name: 'ProductPage',
+  name: "ProductPage",
   components: {
     ProductInternal,
-    Icon,
+    ArrowLeftIcon
   },
   data() {
     return {
       product: null,
       productClass: null,
-      productSlug: null,
+      productSlug: null
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data']),
+    ...mapState(StoreDataNamespace, ["data"])
   },
   methods: {
     /**
@@ -40,24 +40,25 @@ export default {
      * Finds the product/bundle data by the slug indicated on the router params
      */
     getProduct() {
-      const productData = this.productClass === 'combo' ? this.data.bundles : this.data.products;
+      const productData =
+        this.productClass === "combo" ? this.data.bundles : this.data.products;
       this.product = productData.find(x => x.slug === this.productSlug);
-      if (!this.product) window.location = `/${this.$route.params.slug || ''}`;
+      if (!this.product) window.location = `/${this.$route.params.slug || ""}`;
     },
     /**
      * @vuese
      * Redirects to the homepage
      */
     goBack() {
-      window.location = `/${this.$route.params.slug || ''}`;
-    },
+      window.location = `/${this.$route.params.slug || ""}`;
+    }
   },
   created() {
-    const queryUrl = document.location.href.split('/');
+    const queryUrl = document.location.href.split("/");
     this.productClass = this.$route.params.slug ? queryUrl[0] : queryUrl[1];
     this.productSlug = this.$route.params.product_slug;
     this.getProduct();
-  },
+  }
 };
 </script>
 

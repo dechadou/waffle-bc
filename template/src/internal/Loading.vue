@@ -1,33 +1,34 @@
 <template>
-  <Icon name="loading" class="spin"/>
+  <LoadingIcon class="spin"/>
 </template>
 
 <script>
-import { Icon } from '@/extendables/BaseComponents';
+import LoadingIcon from "@/assets/icons/loading.svg";
 
 // @group UTILITIES
 // Displays a loading spinner animation.
 // @vuese
 export default {
-  name: 'Loading',
+  name: "Loading",
   components: {
-    Icon,
-  },
+    LoadingIcon
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.spin{
+.spin {
   animation: fa-spin 2s infinite linear;
 }
 
 @keyframes fa-spin {
   0% {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   100% {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); }
+    transform: rotate(360deg);
+  }
 }
-
 </style>
