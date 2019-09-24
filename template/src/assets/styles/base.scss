@@ -1,5 +1,6 @@
 // GRID SYSTEM
 @import "_gird";
+@import "_variables";
 
 // FONTS
 @font-face {
@@ -28,7 +29,7 @@ html {
 }
 
 body {
-  font-family: "Founders_Grotesk_Light", sans-serif;
+  font-family: $font-light;
   margin: 0;
   overflow-x: hidden;
   &.noscroll {
@@ -75,7 +76,7 @@ ol, ul {
 }
 
 button.btn, a.btn {
-  font-family: "Founders_Grotesk_Light", sans-serif;
+  font-family: $font-light;
   background-color: $abre-black;
   color: #fff;
   width: 100%;
@@ -161,7 +162,7 @@ use #menu {
     content: "Env\EDo Gratuito";
     display: block;
     top: 24%;
-    font-family: "Founders_Grotesk_Light", sans-serif;
+    font-family: $font-light;
     font-size: 20px;
     margin: 0 auto;
     color: #fff;
