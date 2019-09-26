@@ -430,7 +430,9 @@ export default {
   .title_cont {
     margin-top: 30px;
     h1 {
-      color: #4d4d4d;
+      font-family: $titles-font;
+      color: $titles-color;
+      font-weight: $titles-font-weight;
       font-size: 38px;
       font-weight: bold;
     }
