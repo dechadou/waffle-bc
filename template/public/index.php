@@ -1,5 +1,5 @@
 <?php
-    //error_reporting(0);
+    error_reporting(0);
     include 'helpers.php';
 
     $folderPath = '/';
@@ -15,7 +15,7 @@
 
     $files = json_decode(file_get_contents($frontApiUrl), true);
 
-    $json = fetchJson($envUrls, getSlug($defaultSlug, $folderPath), getEnvVar());
+    $json = fetchJson($envUrls, getSlug($defaultSlug, $folderPath), getEnvVar($envUrls));
 
     if($json === false)
     {
@@ -122,11 +122,11 @@
   </div>
     <script src="https://browser.sentry-cdn.com/5.6.3/bundle.min.js" integrity="sha384-/Cqa/8kaWn7emdqIBLk3AkFMAHBk0LObErtMhO+hr52CntkaurEnihPmqYj3uJho" crossorigin="anonymous"></script>
     <script type="text/javascript">
-      Sentry.init({ 
-        dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222',
-        ignoreErrors: ['UnhandledRejection', 'strict mode'],
-      });
-  </script>
+    	Sentry.init({ 
+    		dsn: 'https://28289135d9014006aca44f6e12fd3f8e@sentry.io/1536222',
+    		ignoreErrors: ['UnhandledRejection', 'strict mode'],
+    	});
+	</script>
 
     <script src=<?= $files['chunk-vendors-js'] ?>></script>
     <script src=<?= $files['app-js'] ?>></script>
@@ -134,24 +134,24 @@
     <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
     <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-performance.js"></script>
     <script>
-    if(typeof firebase !== 'undefined' && firebase){
-      try{
-        var firebaseConfig = {
-          apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
-          authDomain: "waffle-e6985.firebaseapp.com",
-          databaseURL: "https://waffle-e6985.firebaseio.com",
-          projectId: "waffle-e6985",
-          storageBucket: "",
-          messagingSenderId: "183271898269",
-          appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
-        };
-        firebase.initializeApp(firebaseConfig);
-      firebase.performance();
-      }catch(err){
-        console.log(err);
-      }
-    }
-    
+	  if(typeof firebase !== 'undefined' && firebase){
+	  	try{
+	  		var firebaseConfig = {
+	        apiKey: "AIzaSyCd_RRoR3DoGYz4gCL4Pp-PtuTCvNOD2qs",
+	        authDomain: "waffle-e6985.firebaseapp.com",
+	        databaseURL: "https://waffle-e6985.firebaseio.com",
+	        projectId: "waffle-e6985",
+	        storageBucket: "",
+	        messagingSenderId: "183271898269",
+	        appId: "1:183271898269:web:4fa35bb9bd9bbe9b"
+	      };
+	      firebase.initializeApp(firebaseConfig);
+		  firebase.performance();
+	  	}catch(err){
+	      console.log(err);
+	  	}
+	  }
+	  
     </script>
 </body>
 </html>
