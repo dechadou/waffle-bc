@@ -83,10 +83,10 @@ article {
 }
 
 h1 {
-  font-family: $font-regular;
-  font-weight: 400;
+  font-family: $titles-font;
+  font-weight: $titles-font-weight;
   font-size: 26px;
-  color: $abre-dark-grey;
+  color: $titles-color;
   line-height: 1;
   @include md-up {
     font-size: 32px;
@@ -124,8 +124,9 @@ p {
   float: right;
   font-size: 18px;
   margin-top: 3px;
-  font-weight: 400;
-  font-family: $font-regular;
+  font-weight: $titles-font-weight;
+  font-family: $titles-font;
+  color: $titles-color;
 
   span {
     font-size: 14px;

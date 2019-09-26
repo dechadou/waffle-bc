@@ -173,7 +173,10 @@ export default {
       float: right;
       font-size: 18px;
       margin-top: 3px;
-      font-weight: 400;
+      font-family: $font-light;
+      font-weight: $titles-font-weight;
+      color: $titles-color;
+
       span {
         font-size: 14px;
         margin-right: 5px;
@@ -249,7 +252,9 @@ export default {
   }
 
   .title {
-    color: #000;
+    font-weight: $titles-font-weight;
+    color: $titles-color;
+    font-family: $font-light;
     font-size: 6.133333333vw;
     width: 75vw;
     margin: 0;
@@ -259,7 +264,6 @@ export default {
       height: auto !important;
     }
     @include lg-up {
-      color: $abre-black !important;
       font-size: 1.317715959vw !important;
       white-space: nowrap;
     }
@@ -278,14 +282,14 @@ export default {
     @include lg-up {
       line-height: 1.75;
       margin: 0 !important;
-      color: $abre-black !important;
+      color: $titles-color !important;
       font-size: 1.02489019vw !important;
     }
 
     span {
       @include lg-up {
         margin: 0 0.3vw 0 0 !important;
-        color: $abre-black !important;
+        color: $titles-color !important;
         font-size: 0.7320644217vw !important;
       }
     }

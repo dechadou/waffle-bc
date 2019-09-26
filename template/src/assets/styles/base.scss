@@ -77,8 +77,8 @@ ol, ul {
 
 button.btn, a.btn {
   font-family: $font-light;
-  background-color: $abre-black;
-  color: #fff;
+  background: $btn-background;
+  color: $btn-color;
   width: 100%;
   padding: 12.5px 0;
   border-radius: 0;
@@ -86,7 +86,7 @@ button.btn, a.btn {
   font-weight: 300;
   -webkit-transition: 0.3s ease all;
   transition: 0.3s ease all;
-  border: 1px solid $abre-black;
+  border: $btn-border;
   text-align: center;
   text-decoration: none;
   cursor: pointer;

@@ -7,18 +7,13 @@
       </h1>
     </router-link>
     <div class="icons" @click="toggleMenu" v-if="!isProductInternal && hasMenu">
-      <Icon
+      <MenuIcon
         class="icon"
         :class="[{ 'icon-active': !isActive }]"
-        name="menu"
-        iconFill="transparent"
-        iconStroke="#4d4d4d"
       />
-      <Icon
+      <ArrowLeftIcon
         class="icon arrow-left"
         :class="[{ 'icon-active': isActive }]"
-        name="arrow-left"
-        iconFill="transparent"
       />
     </div>
     <nav class="menu" v-if="hasMenu">
@@ -40,6 +35,8 @@ import { mapState } from "vuex";
 import { StoreDataNamespace } from "@/store/module/StoreData";
 import { Social } from "@/extendables/BaseComponents";
 import LogoIcon from "@/assets/icons/logo.svg";
+import MenuIcon from "@/assets/icons/menu.svg";
+import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
 
 // @group INTERNAL COMPONENTS
 // The page's header
@@ -52,7 +49,9 @@ export default {
   },
   components: {
     Social,
-    LogoIcon
+    LogoIcon,
+    MenuIcon,
+    ArrowLeftIcon,
   },
   data() {
     return {
@@ -382,6 +381,9 @@ export default {
     opacity: 0;
     visibility: hidden;
 
+    fill: transparent;
+    stroke: #4d4d4d;
+
     &.icon-active {
       transform: translateY(-50%) scale(1);
       opacity: 1;
@@ -393,6 +395,7 @@ export default {
 
   .arrow-left {
     margin-top: 5px;
+    stroke: transparent;
   }
 }
 </style>

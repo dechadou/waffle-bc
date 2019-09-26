@@ -344,13 +344,15 @@ select {
 }
 
 #producto {
-  background: #f3f3f3;
+  background: $product-internal-background;
   overflow: hidden;
   padding-bottom: 65px;
 
   h1 {
-    color: #14273c;
+    color: $titles-color;
     font-size: 30px;
+    font-family: $titles-font;
+    font-weight: $titles-font-weight;
   }
   .breadcrumb {
     padding: 0;
@@ -382,6 +384,9 @@ select {
     font-size: 20px;
     float: right;
     margin-top: 5px;
+    font-family: $titles-font;
+    font-weight: $titles-font-weight;
+    color: $titles-color;
 
     span {
       font-size: 16px;
@@ -422,6 +427,7 @@ select {
       font-size: 14px;
       color: #000;
       margin: 0;
+      font-weight: $titles-font-weight;
     }
 
     p {

@@ -5,6 +5,22 @@ $abre-grey: #c1c1c1;
 $abre-light-grey: #f3f3f3;
 $abre-green: #237116;
 
+$font-light: "Founders_Grotesk_Light", sans-serif;
+$font-regular: "Founders_Grotesk_Regular", sans-serif;
+
+$titles-color: $abre-dark-grey;
+$titles-font: $font-regular;
+$titles-font-weight: 400;
+
+$btn-font: $font-light;
+$btn-font-weight: 400;
+
+$btn-background: $abre-black;
+$btn-color: #fff;
+$btn-border: 1px solid $abre-black;
+
+$product-internal-background: #f3f3f3;
+
 $easeInCubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 $easeInExpo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
 $easeOutExpo: cubic-bezier(0.19, 1, 0.22, 1);
@@ -27,5 +43,4 @@ $easeOutCirc: cubic-bezier(0.075, 0.82, 0.165, 1);
   @media screen and (orientation: landscape) { @content; }
 }
 
-$font-light: "Founders_Grotesk_Light", sans-serif;
-$font-regular: "Founders_Grotesk_Regular", sans-serif;
+
