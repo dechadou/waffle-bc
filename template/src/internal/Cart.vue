@@ -467,14 +467,14 @@ export default {
     }
     h2 {
       font-size: 25px;
-      color: #4d4d4d;
+      color: $titles-color;
       margin-top: 0;
     }
   }
 }
 .subtotal_price {
   p {
-    color: #4d4d4d;
+    color: $titles-color;
     font-size: 19px;
     float: right;
     font-weight: 400;

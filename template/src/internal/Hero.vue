@@ -7,7 +7,7 @@
             <div class="label-container">
               <img :src="label" class="label" alt="label" v-if="label">
             </div>
-            <div class="col-12 col-md-8 offset-md-2" v-if="introCopy">
+            <div class="col-12 col-md-8 offset-md-2 text-container" v-if="introCopy">
               <p v-html="introCopy"/>
             </div>
           </div>
@@ -125,5 +125,10 @@ p {
 
 .heroImg {
   width: 100%;
+}
+
+.text-container{
+  background: #fff;
+  padding-top: 1px;
 }
 </style>
