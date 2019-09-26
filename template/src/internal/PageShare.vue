@@ -144,12 +144,12 @@ a {
   position: relative;
   left: 7px;
   top: 3px;
-  fill: #fff;
+  fill: $btn-color;
   width: 25px;
   height: 25px;
 }
 
 a:hover .share-icon {
-  fill: #000;
+  fill: $btn-hover-color;
 }
 </style>
