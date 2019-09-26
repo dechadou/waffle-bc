@@ -127,10 +127,10 @@ h1 {
   font-size: 24px;
   margin: 0.5rem 0.5rem 2rem;
   padding: 5px 0 20px;
-  font-family: $font-regular;
-  font-weight: 500;
+  font-family: $titles-font;
+  font-weight: $titles-font-weight;
   line-height: 1.2;
-  color: $abre_dark_grey;
+  color: $titles-color;
   text-align: center;
 }
 a {
