@@ -82,10 +82,9 @@ button.btn, a.btn {
   width: 100%;
   padding: 12.5px 0;
   border-radius: 0;
-  font-size: 20px;
-  font-weight: 300;
-  -webkit-transition: 0.3s ease all;
-  transition: 0.3s ease all;
+  font-size: $btn-font-size;
+  font-weight: $btn-font-weight;
+  transition: $btn-hover-transition;
   border: $btn-border;
   text-align: center;
   text-decoration: none;
@@ -96,7 +95,7 @@ button.btn, a.btn {
   }
 
   &.out_of_stock {
-    transition: 0.3s ease all;
+    transition: $btn-hover-transition;
     background: #fff;
     color: $abre-black;
   }
@@ -110,9 +109,9 @@ button.btn, a.btn {
     }
   }
   &:hover {
-    transition: 0.3s ease all;
-    background: transparent;
-    color: $abre-black;
+    transition: $btn-hover-transition;
+    background: $btn-hover-background;
+    color: $btn-hover-color;
   }
   &:focus {
     box-shadow: none;

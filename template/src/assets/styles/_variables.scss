@@ -14,10 +14,14 @@ $titles-font-weight: 400;
 
 $btn-font: $font-light;
 $btn-font-weight: 400;
-
+$btn-font-size: 20px;
+$btn-font-weight: 300;
 $btn-background: $abre-black;
 $btn-color: #fff;
 $btn-border: 1px solid $abre-black;
+$btn-hover-transition: 0.3s ease all;
+$btn-hover-background: transparent;
+$btn-hover-color: $abre-black;
 
 $product-internal-background: #f3f3f3;
 

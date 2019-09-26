@@ -126,8 +126,9 @@ export default {
 }
 h3 {
   font-size: 24px;
-  font-family: $font-regular;
-  color: $abre_dark_grey;
+  font-family: $titles-font;
+  font-weight: $titles-font-weight;
+  color: $titles-color;
   text-align: center;
   margin-bottom: 30px;
   @include md-up {
