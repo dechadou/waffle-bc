@@ -146,7 +146,7 @@ export default {
       font-size: 5vw;
       margin-top: 0;
       @include md-up {
-        font-size: 22px;
+        font-size: 14px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -264,7 +264,7 @@ export default {
       height: auto !important;
     }
     @include lg-up {
-      font-size: 1.317715959vw !important;
+      font-size: 18px !important;
       white-space: nowrap;
     }
   }
@@ -274,7 +274,7 @@ export default {
     @include lg-up {
       margin: 0 !important;
       color: $abre-black !important;
-      font-size: 1.02489019vw !important;
+      font-size: 14px !important;
     }
   }
 
@@ -283,14 +283,14 @@ export default {
       line-height: 1.75;
       margin: 0 !important;
       color: $titles-color !important;
-      font-size: 1.02489019vw !important;
+      font-size: 14px !important;
     }
 
     span {
       @include lg-up {
         margin: 0 0.3vw 0 0 !important;
         color: $titles-color !important;
-        font-size: 0.7320644217vw !important;
+        font-size: 10px !important;
       }
     }
   }
