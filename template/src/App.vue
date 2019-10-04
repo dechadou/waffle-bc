@@ -161,8 +161,8 @@ export default {
 
       // The store identifier is used by the Cart for saving things on LocalStorage
       this.setStoreIdentifier({
-        domain: this.template.tienda_url,
-        storeSlug: this.$route.params.slug
+        domain: 'abre',
+        storeSlug: this.store_id
       });
 
       // Calls to VueAnalytics component if an Analytics code exists
