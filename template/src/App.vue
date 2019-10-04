@@ -75,6 +75,13 @@ export default {
       this.setTheme(this.template.template_selector);
       this.setFooter(this.template.footer_type);
       this.setApp();
+
+      if (this.$ga){
+        this.$ga.event({
+          eventCategory: `waffle-${this.store_id}`,
+          eventAction: 'page-loaded'
+        });
+      }
     },
     error(value) {
       if (!value) return;

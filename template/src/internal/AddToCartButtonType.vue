@@ -2,6 +2,7 @@
 import { mapActions, mapState } from "vuex";
 import { CartActionTypes } from "@/store/module/Cart";
 import { ThemeNamespace } from "@/store/module/Theme";
+import { StoreDataNamespace } from "@/store/module/StoreData";
 import { EventManager } from "@/utils";
 import { getEnum, EnumNames } from "@/config";
 
@@ -26,7 +27,8 @@ export default {
     productClass: String
   },
   computed: {
-    ...mapState(ThemeNamespace, ["themeConfig"])
+    ...mapState(ThemeNamespace, ["themeConfig"]),
+    ...mapState(StoreDataNamespace, ["store_id"]),
   },
   methods: {
     ...mapActions({
@@ -53,9 +55,9 @@ export default {
 
       if (this.$ga) {
         this.$ga.event({
-          eventCategory: "click",
-          eventAction: "addToCart",
-          eventLabel: this.link
+          eventCategory: `waffle-${this.store_id}`,
+          eventAction: 'add-to-cart',
+          eventLabel: `${this.id}_${this.productClass}`
         });
       }
     },

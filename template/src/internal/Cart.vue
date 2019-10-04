@@ -251,6 +251,13 @@ export default {
       if (this.cartItems.length < 1) return;
       this.loading = true;
       this.getCheckoutUrl();
+
+      if (this.$ga) {
+        this.$ga.event({
+          eventCategory: `waffle-${this.store_id}`,
+          eventAction: 'checkout',
+        });
+      }
     },
     /**
      * @vuese
