@@ -82,18 +82,6 @@ export default {
 
       return "Normal";
     }
-  },
-  filters: {
-    displayAuthors(authors) {
-      let str = "";
-      authors
-        .filter((v, i) => authors.indexOf(v) === i)
-        .forEach(x => {
-          str += str === "" ? x.name : ` + ${x.name}`;
-        });
-
-      return str;
-    }
   }
 };
 </script>

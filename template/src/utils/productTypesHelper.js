@@ -9,7 +9,11 @@
 // Returns the first element marked as primary media or the first element of the array if no primary media is found
 export const getImage = (media) => {
   if (!media) throw new Error('[Waffle Error]: getImage() expects a valid parameter');
-  const med = Object.values(media).sort(x => x.primary_media);
+  const med = Object.values(media).sort((a, b) => {
+    if (a.primary_media) return -1;
+    if (b.primary_media) return 1;
+    return 0;
+  });
   return med.length > 0 ? med[0].url : 'http://via.placeholder.com/1367x1367';
 };
 

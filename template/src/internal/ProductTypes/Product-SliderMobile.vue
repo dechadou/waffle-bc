@@ -23,7 +23,7 @@
               {{ price }}
             </span>
           </h1>
-          <p class="authors">{{ data.agentes_actores | displayAuthors }}</p>
+          <p class="authors">{{ data.autor }}</p>
         </div>
         <!-- /TITLE, PRICE, DESCRIPTION -->
 
@@ -66,18 +66,6 @@ export default {
       }
 
       return "Check";
-    }
-  },
-  filters: {
-    displayAuthors(authors) {
-      let str = "";
-      authors
-        .filter((v, i) => authors.indexOf(v) === i)
-        .forEach(x => {
-          str += str === "" ? x.name : ` + ${x.name}`;
-        });
-
-      return str;
     }
   }
 };

@@ -78,7 +78,7 @@
                   :slug="data.slug"
                   :id="selectedArticle.id"
                   :productClass="productClass"
-                  :image="single-image"
+                  :image="singleImage"
                 />
               </div>
             </div>
@@ -307,11 +307,16 @@ select {
   outline: none;
 }
 
+button.btn.addToCartButton:hover {
+  background: $product-internal-background !important;
+}
+
 .addToCartButton {
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 5;
+
   @include md-up {
     position: initial;
   }
