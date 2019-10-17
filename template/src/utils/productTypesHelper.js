@@ -35,8 +35,8 @@ export const getAttributeList = (articleList) => {
 
 // Expects a list of articles and the productClass that they came from
 // Returns bool
-export const isOutOfStock = (articleList, productClass) => (productClass === 'producto' ? articleList[0].stock < 1 : articleList.some(x => x.stock < 1));
+export const isOutOfStock = (articleList, productClass) => (productClass === 'product' ? articleList[0].stock < 1 : articleList.some(x => x.stock < 1));
 
 // Expects a product object
 // Returns its price (Number)
-export const getPrice = data => Math.floor(data.class === 'producto' ? data.articles[0].price : data.price);
+export const getPrice = data => Math.floor(data.class === 'product' ? data.articles[0].price : data.price);
