@@ -226,16 +226,6 @@ export default {
     }),
     /**
      * @vuese
-     * Called by popstate event. Closes the cart on navigator back button pressed
-     */
-    onBackButtonPressed(event) {
-      console.log(event);
-      if (this.showCart && event.state && event.state.state === "Cart") {
-        this.cartToggle(true);
-      }
-    },
-    /**
-     * @vuese
      * Calls the vuex store to add or subtract quantity of an item
      * @arg index: the array item index
      * @arg quantity: the quantity to add or subtract from the item.
@@ -262,17 +252,9 @@ export default {
     /**
      * @vuese
      * Shows/hides the cart component.
-     * @arg pressedBack: is set to false by default. If true it doesn't handle the removal of the history entry because the browser does it automatically
      */
-    cartToggle(pressedBack = false) {
+    cartToggle() {
       this.showCart = !this.showCart;
-
-      // If showCart is true, this function adds an entry to the browser history saying that the cart was open
-      // If showCart is false and pressedBack is true, it means that the cart is closing by the user clicking the browser's back button. No further action is needed
-      // If showCart is false and pressedBack is false, it means that the cart is closing by the user clicking the close cart button, so we have to manually remove the browser's history entry
-      if (!this.showCart && !pressedBack) this.removeFromHistory();
-      else this.addToHistory();
-
       this.toggleScrollBar();
     },
     /**
@@ -286,28 +268,12 @@ export default {
     },
     /**
      * @vuese
-     * Adds an entry to the browser history indicating the opening of the cart
-     */
-    addToHistory() {
-      window.history.replaceState({ state: "Cart" }, "Cart");
-      window.history.pushState({ state: "Cart" }, "Cart");
-    },
-    /**
-     * @vuese
-     * Removes the opening cart history entry
-     */
-    removeFromHistory() {
-      window.history.back();
-    },
-    /**
-     * @vuese
      * Subscribes to the cart_toggle, and popstate event
      */
     suscribeToEvents() {
       EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
         this.cartToggle()
       );
-      window.addEventListener("popstate", this.onBackButtonPressed);
     }
   },
   mounted() {

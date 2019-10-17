@@ -40,32 +40,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { EventManager } from '@/utils';
-import { getEnum, EnumNames } from '@/config';
-import { BreakpointsNamespace } from '@/store/module/Breakpoints';
+import { mapState } from "vuex";
+import { StoreDataNamespace } from "@/store/module/StoreData";
+import { EventManager } from "@/utils";
+import { getEnum, EnumNames } from "@/config";
+import { BreakpointsNamespace } from "@/store/module/Breakpoints";
 import {
   ProductDisplayerSlider,
-  ProductDisplayerMain,
-} from '@/extendables/ProductDisplayerTypes';
-import CheckIcon from '@/assets/icons/check.svg';
-import ArrowRightCartIcon from '@/assets/icons/arrow-right-cart.svg';
+  ProductDisplayerMain
+} from "@/extendables/ProductDisplayerTypes";
+import CheckIcon from "@/assets/icons/check.svg";
+import ArrowRightCartIcon from "@/assets/icons/arrow-right-cart.svg";
 
 // @group INTERNAL COMPONENTS
 // Displays a list of related products of the product that has been added to the cart.
 // @vuese
 export default {
-  name: 'RelatedProducts',
+  name: "RelatedProducts",
   props: {
     // CartHelper Object used for accessing to all the products data
-    cartHelper: Object,
+    cartHelper: Object
   },
   components: {
     CheckIcon,
     ArrowRightCartIcon,
     ProductDisplayerSlider,
-    ProductDisplayerMain,
+    ProductDisplayerMain
   },
   data() {
     return {
@@ -77,25 +77,14 @@ export default {
       addedProduct: null,
       porcentajeAlreadySet: false,
       eventNames: null,
-      breakpoints: getEnum(EnumNames.Breakpoints),
+      breakpoints: getEnum(EnumNames.Breakpoints)
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ['data']),
-    ...mapState(BreakpointsNamespace, ['breakpoint']),
+    ...mapState(StoreDataNamespace, ["data"]),
+    ...mapState(BreakpointsNamespace, ["breakpoint"])
   },
   methods: {
-    /**
-     * @vuese
-     * Called by popstate event. Closes the module on navigator back button pressed
-     */
-    onBackButtonPressed(event) {
-      if (
-        this.showRelatedProducts
-        && event.state
-        && event.state.state === 'RelatedProducts'
-      ) {this.toggleRelatedProducts(true);}
-    },
     /**
      * @vuese
      * Populates the module and calls the toggleRelatedProducts() function after 0.5s
@@ -112,34 +101,19 @@ export default {
     /**
      * @vuese
      * Shows/hides the module and sets a height based on the screen size and the height of the products
-     * @arg pressedBack: is set to false by default. If true it doesn't handle the removal of the history entry because the browser does it automatically
      */
-    toggleRelatedProducts(pressedBack = false) {
+    toggleRelatedProducts() {
       this.showRelatedProducts = !this.showRelatedProducts;
 
       if (this.showRelatedProducts) {
         // Hides Scrollbar
-        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
-
-        // Adds an entry to the browser history indicating the opening of the RelatedProducts module
-        window.history.replaceState(
-          { state: 'RelatedProducts' },
-          'RelatedProducts',
-        );
-        window.history.pushState(
-          { state: 'RelatedProducts' },
-          'RelatedProducts',
-        );
+        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
       } else {
         // Unpopulates the relatedList
         this.relatedList = [];
 
         // Shows the ScrollBar
-        document.getElementsByTagName('body')[0].style.overflowY = 'initial';
-
-        // If pressedBack is true, it means that the RelatedProducts module is closing by the user clicking the browser's back button. No further action is needed
-        // Else it means that is closing by the user clicking another button, so we have to manually remove the browser's history entry
-        if (!pressedBack) window.history.back();
+        document.getElementsByTagName("body")[0].style.overflowY = "initial";
         return;
       }
 
@@ -150,14 +124,15 @@ export default {
       // It would be cool to refactor this code but the reality is that it works just fine
       let plus = 0;
       if (window.innerWidth > 768) plus = 10;
-      const altMenu =        document
-          .getElementById('relatedProducts')
-          .getElementsByClassName('relatedProductsContainer')[0].clientHeight
-        + 100;
+      const altMenu =
+        document
+          .getElementById("relatedProducts")
+          .getElementsByClassName("relatedProductsContainer")[0].clientHeight +
+        100;
       let porcentaje = (altMenu * 100) / window.innerHeight + plus;
       if (porcentaje > 100) porcentaje = 100;
       document.getElementById(
-        'relatedProducts',
+        "relatedProducts"
       ).style.height = `${porcentaje}%`;
       this.porcentajeAlreadySet = true;
     },
@@ -179,13 +154,13 @@ export default {
 
       // Si el producto padre es válido, y ese producto padre tiene cargados productos relacionados
       if (
-        this.addedProduct
-        && this.addedProduct.productos_relacionados.length > 0
+        this.addedProduct &&
+        this.addedProduct.productos_relacionados.length > 0
       ) {
         this.relatedList = [];
 
         // Agrego los productos relacionados a la relatedList
-        this.addedProduct.productos_relacionados.forEach((id) => {
+        this.addedProduct.productos_relacionados.forEach(id => {
           const product = this.data.products.find(x => x.id === id);
           if (product) this.relatedList.push(product);
         });
@@ -198,7 +173,7 @@ export default {
 
       // Filtro por todos los productos si el producto agregado no es válido, pero si lo es, descarto el producto agregado para que no se repita
       const productsToAdd = this.data.products.filter(
-        product => !this.addedProduct || product.id !== this.addedProduct.id,
+        product => !this.addedProduct || product.id !== this.addedProduct.id
       );
 
       // Agrego el numero de productos al azar que haga falta a relatedList
@@ -208,7 +183,7 @@ export default {
         this.relatedList.push(productsToAdd[randomIndex]);
         productsToAdd.splice(randomIndex, 1);
       }
-    },
+    }
   },
   mounted() {
     this.eventNames = getEnum(EnumNames.EventNames);
@@ -217,17 +192,14 @@ export default {
     // When triggered: gets the product-article pair object by the id of the added article. Then calls to toggleRelatedProductsDelay()
     EventManager.Subscribe(
       this.eventNames.ON_RELATED_PRODUCTS_TOGGLE,
-      (response) => {
+      response => {
         const parentProduct = this.cartHelper.getProductArticlePairByArticleId(
-          response[0].id,
+          response[0].id
         ).product;
         this.toggleRelatedProductsDelay(parentProduct);
-      },
+      }
     );
-
-    // Subscribes to popstate event
-    window.addEventListener('popstate', this.onBackButtonPressed);
-  },
+  }
 };
 </script>
 
