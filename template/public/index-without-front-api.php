@@ -2,18 +2,31 @@
     error_reporting(0);
     include 'helpers.php';
 
+    if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off") {
+      $location = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+      header('HTTP/1.1 301 Moved Permanently');
+      header('Location: ' . $location);
+      exit;
+	}
+
     $folderPath = '/';
-    $defaultSlug = 'abre';
-    $frontApiUrl = 'https://www.abrecultura.com/front-api/';
+    $defaultSlug = 'vidriera-de-libros';
 
     $envUrls = [
-        'https://abrecultura.s3.amazonaws.com/storage/prod/', 
-        'https://abrecultura-dev.s3.amazonaws.com/storage/staging/', 
+        'https://abrecultura.s3.amazonaws.com/storage/prod/',
+        'https://abrecultura-dev.s3.amazonaws.com/storage/staging/',
         'https://abrecultura-dev.s3.amazonaws.com/storage/dev/'
     ];
 
+    $url = 'https://vidrieradelibros.com/';
+    $folderPath = '../version/';
+    $versionFolder = '1571343480';
 
-    $files = json_decode(file_get_contents($frontApiUrl), true);
+    $files = [
+        'chunk-vendors-js' => $url.'version/'.$versionFolder.'/js/chunk-vendors.js',
+        'app-js' => $url.'version/'.$versionFolder.'/js/app.js',
+        'app-css' => $url.'version/'.$versionFolder.'/css/app.css',
+    ];
 
     $json = fetchJson($envUrls, getSlug($defaultSlug, $folderPath), getEnvVar($envUrls));
 
@@ -58,6 +71,7 @@
         var $defaultSlug = '<?=$defaultSlug?>';
         // var webpackPublicPath = '/';
     </script>
+	
     <style>
     #loadingScreen {
       width: 100%;
@@ -131,7 +145,7 @@
     <script src=<?= $files['chunk-vendors-js'] ?>></script>
     <script src=<?= $files['app-js'] ?>></script>
 
-    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-performance.js"></script>
     <script>
 	  if(typeof firebase !== 'undefined' && firebase){
