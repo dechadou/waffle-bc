@@ -1,5 +1,6 @@
 /* global $storeData */
 import { Request } from '@/utils';
+import { getVariable, VariableNames } from '@/config';
 
 export const IS_LOADED = 'is-loaded';
 export const GET_PRODUCTS_ID = 'get-products-id';
@@ -69,7 +70,7 @@ export default {
       state.year = data.year;
       state.store_id = data.id_tienda;
       state.authToken = data.token;
-      state.store_slug = data.tienda_slug;
+      state.store_slug = getVariable(VariableNames.DefaultSlug);
       if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {

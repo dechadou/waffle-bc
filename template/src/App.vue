@@ -61,7 +61,7 @@ export default {
       "error",
       "year",
       "store_id",
-      "store_slug",
+      "store_slug"
     ]),
     ...mapGetters({
       isLoaded: StoreDataGetterTypes.IS_LOADED
@@ -77,10 +77,11 @@ export default {
       this.setFooter(this.template.footer_type);
       this.setApp();
 
-      if (this.$ga){
+      if (this.$ga) {
+        console.log("page-loaded");
         this.$ga.event({
           eventCategory: `waffle-${this.store_slug}`,
-          eventAction: 'page-loaded'
+          eventAction: "page-loaded"
         });
       }
     },
@@ -169,7 +170,7 @@ export default {
 
       // The store identifier is used by the Cart for saving things on LocalStorage
       this.setStoreIdentifier({
-        domain: 'abre',
+        domain: "abre",
         storeSlug: this.store_id
       });
 
