@@ -60,7 +60,8 @@ export default {
       "template",
       "error",
       "year",
-      "store_id"
+      "store_id",
+      "store_slug",
     ]),
     ...mapGetters({
       isLoaded: StoreDataGetterTypes.IS_LOADED
@@ -78,7 +79,7 @@ export default {
 
       if (this.$ga){
         this.$ga.event({
-          eventCategory: `waffle-${this.store_id}`,
+          eventCategory: `waffle-${this.store_slug}`,
           eventAction: 'page-loaded'
         });
       }

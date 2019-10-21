@@ -26,6 +26,7 @@ export default {
     authToken: null,
     year: null,
     store_id: null,
+    store_slug: null,
     error: null,
   },
   getters: {
@@ -68,6 +69,7 @@ export default {
       state.year = data.year;
       state.store_id = data.id_tienda;
       state.authToken = data.token;
+      state.store_slug = data.tienda_slug;
       if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {

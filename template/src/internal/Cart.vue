@@ -180,7 +180,8 @@ export default {
     ...mapState(StoreDataNamespace, [
       "authToken",
       "storeIdentifier",
-      "store_id"
+      "store_id",
+      "store_slug"
     ]),
     ...mapState(CartNamespace, [
       "cartItems",
@@ -244,8 +245,8 @@ export default {
 
       if (this.$ga) {
         this.$ga.event({
-          eventCategory: `waffle-${this.store_id}`,
-          eventAction: 'checkout',
+          eventCategory: `waffle-${this.store_slug}`,
+          eventAction: "checkout"
         });
       }
     },

@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     ...mapState(ThemeNamespace, ["themeConfig"]),
-    ...mapState(StoreDataNamespace, ["store_id"]),
+    ...mapState(StoreDataNamespace, ["store_slug"])
   },
   methods: {
     ...mapActions({
@@ -55,8 +55,8 @@ export default {
 
       if (this.$ga) {
         this.$ga.event({
-          eventCategory: `waffle-${this.store_id}`,
-          eventAction: 'add-to-cart',
+          eventCategory: `waffle-${this.store_slug}`,
+          eventAction: "add-to-cart",
           eventLabel: `${this.id}_${this.productClass}`
         });
       }
