@@ -89,6 +89,7 @@
         <div class="cart_footer">
           <hr>
           <div class="col-12">
+            <!-- SUBTOTAL -->
             <div class="col-6">
               <div class="row">
                 <div class="col-6 p-0">
@@ -105,15 +106,34 @@
               </div>
             </div>
             <div class="col-6"/>
-          </div>
-          <div class="btn-box">
-            <div class="col-8 offset-2">
-              <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
-              <button class="btn" aria-label="Loading" v-else>
-                <Loading class="cart_loader"/>
-              </button>
+
+            <!-- COUPON BUTTON -->
+            <div class="row">
+              <div class="col-12 col-md-8 offset-md-2">
+                <transition name="slide-fade" mode="out-in">
+                  <button class="btn alternative" @click="showCouponInput = true" v-if="!showCouponInput">¿Tenés un código de descuento?</button>
+                  <div class="coupon-input" v-else>
+                    <div class="row no-gutters">
+                      <div class="col-6">
+                        <p>Ingresá tu código:</p>
+                      </div>
+                      <div class="col-6">
+                        <input id="couponInput" type="text" name="fname">
+                      </div>
+                    </div>
+                  </div>
+                </transition>
+              </div>
             </div>
           </div>
+            <div class="col-12 col-md-8 offset-md-2">
+              <div class="row">
+                <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
+                <button class="btn" aria-label="Loading" v-else>
+                  <Loading class="cart_loader"/>
+                </button>
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -167,6 +187,7 @@ export default {
   },
   data() {
     return {
+      showCouponInput: false,
       showCart: false,
       changing: false,
       loading: false,
@@ -212,7 +233,11 @@ export default {
       if (!value) return;
       this.deleteCart();
       window.location.href = value;
-    }
+    },
+    showCouponInput(){
+      setTimeout(() => document.getElementById("couponInput").select(), 500);
+      
+    },
   },
   methods: {
     ...mapActions({
@@ -298,6 +323,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+input {
+  width: 100%;
+}
 .close_cart {
   border: none;
   background-color: transparent;
@@ -479,6 +507,8 @@ export default {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
+    
+
     .cart_loader {
       width: 19px;
       fill: #fff;
@@ -487,6 +517,8 @@ export default {
     &:hover .cart_loader {
       fill: #000;
     }
+
+    
   }
 }
 .open-cart {
