@@ -5,7 +5,8 @@
       <div class="col-12">
         <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
         <LazyImage
-          :source="singleImage"
+          v-if="singleImage.type === 'image'"
+          :source="singleImage.url"
           cssClasses="img-fluid mx-auto d-block"
           :description="`${data.title} image`"
         />
@@ -37,7 +38,7 @@
             :slug="data.slug"
             :id="productId"
             :productClass="productClass"
-            :image="singleImage"
+            :image="singleImage.url"
           />
         </div>
       </div>

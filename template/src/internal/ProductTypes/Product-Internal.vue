@@ -15,7 +15,7 @@
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
-          <img v-else class="d-block single-image" :src="singleImage">
+          <img v-else class="d-block single-image" :src="singleImage.url">
         </div>
 
         <div class="col-md-6 description-box">
@@ -78,7 +78,7 @@
                   :slug="data.slug"
                   :id="selectedArticle.id"
                   :productClass="productClass"
-                  :image="singleImage"
+                  :image="singleImage.url"
                 />
               </div>
             </div>

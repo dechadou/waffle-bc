@@ -5,10 +5,12 @@
       <div class="col-12 col-md-6">
         <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
         <LazyImage
-          :source="singleImage"
+          v-if="singleImage.type === 'image'"
+          :source="singleImage.url"
           cssClasses="img-fluid mx-auto d-block"
           :description="`${data.title} image`"
         />
+        <iframe class="videoImage" v-else-if="singleImage.type === 'video'" width="100%" height="500" :src="getVideoLink(singleImage.url)" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
       </div>
 
       <!-- DESCRIPTION -->
@@ -37,7 +39,7 @@
             :slug="data.slug"
             :id="productId"
             :productClass="productClass"
-            :image="singleImage"
+            :image="singleImage.url"
           />
         </div>
       </div>
@@ -72,6 +74,10 @@ export default {
 
       return 'Normal';
     },
+    getVideoLink(url){
+      const splitUrl = url.split("/");
+      return `https://www.youtube.com/embed/${splitUrl[splitUrl.findIndex(x => x === 'media') + 1]}`;
+    }
   },
 };
 </script>
@@ -144,5 +150,9 @@ p {
     right: 20%;
     top: 10%;
   }
+}
+
+.videoImage{
+  padding: 50px;
 }
 </style>

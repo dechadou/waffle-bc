@@ -73,7 +73,7 @@
                     <!-- IMAGEN -->
                     <div class="col-12">
                       <img
-                        :src="item.media"
+                        :src="item.media.url"
                         class="img-fluid"
                         style="height: 150px; margin: 0px auto; display: block;"
                       >

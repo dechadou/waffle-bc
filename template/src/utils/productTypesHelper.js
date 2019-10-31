@@ -14,7 +14,8 @@ export const getImage = (media) => {
     if (b.primary_media) return 1;
     return 0;
   });
-  return med.length > 0 ? med[0].url : 'http://via.placeholder.com/1367x1367';
+
+  return med.length > 0 ? med[0] : { type: 'image', url: 'http://via.placeholder.com/1367x1367' };
 };
 
 // Expects an array of articles

@@ -7,7 +7,8 @@
           <router-link :to="internalLink">
             <span class="sr-only">{{ data.name }}</span>
             <LazyImage
-              :source="singleImage"
+              v-if="singleImage.type === 'image'"
+              :source="singleImage.url"
               cssClasses="img-fluid mx-auto d-block"
               :description="`${data.name} image`"
             />
@@ -49,7 +50,7 @@
               :link="internalLink"
               :id="productId"
               :productClass="productClass"
-              :image="singleImage"
+              :image="singleImage.url"
             />
           </div>
         </div>
