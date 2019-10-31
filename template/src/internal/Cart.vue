@@ -89,53 +89,40 @@
         <div class="cart_footer">
           <hr>
           <div class="col-12">
+            <CouponsComponent v-if="showCouponInput"/>
+
             <!-- SUBTOTAL -->
-            <div class="col-6">
+            <div class="col-12" :class="{'applied-discount': coupon}">
               <div class="row">
-                <div class="col-6 p-0">
+                <div class="col-5 p-0">
                   <div class="subtotal real_s">
                     <p>Subtotal:</p>
                   </div>
                 </div>
-                <div class="col-6 subtotal_price">
+                <div class="col-2 subtotal_price p-0">
                   <p>
                     <span>$</span>
                     {{ cartSubtotal }}
                   </p>
                 </div>
+                <div class="col-5 subtotal_price p-0">
+                  <p class="subtotal-with-discount" v-if="coupon">
+                    <span>$</span>
+                    {{ cartSubtotalWithDiscount }}
+                  </p>
+                </div>
+                <div class="col-5 p-0"/>
+                <div class="col-2 p-0"/>
+                <div class="col-5 p-0">
+                  <p class="discount-percentage" v-if="coupon">{{ coupon.discount }}% DE DESCUENTO</p>
+                </div>
               </div>
             </div>
-            <div class="col-6"/>
-
-            <!-- COUPON BUTTON -->
-            <div class="row no-gutters coupon" :class="[{ 'on-focus': couponInputFocus }]">
-              <div class="col-12 col-md-8 offset-md-2">
-                <transition name="slide-fade" mode="out-in">
-                  <button
-                    class="btn alternative"
-                    @click="showCouponInput = true"
-                    v-if="!showCouponInput"
-                  >¿Tenés un código de descuento?</button>
-                  <div class="coupon-input" v-else>
-                    <div class="row no-gutters">
-                      <div class="col-5">
-                        <p>Ingresá tu código:</p>
-                      </div>
-                      <div class="col-7">
-                        <input
-                          @focus="couponInputFocus = true"
-                          @blur="couponInputFocus = false"
-                          @keydown="couponKeyDown"
-                          id="couponInput"
-                          type="text"
-                          name="fname"
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </div>
-            </div>
+            <button
+              class="btn alternative"
+              @click="showCouponInput = true"
+              v-if="!showCouponInput"
+            >¿Tenés un código de descuento?</button>
           </div>
           <div class="col-12 col-md-8 offset-md-2">
             <div class="row">
@@ -162,7 +149,7 @@ import {
 import { EventManager } from "@/utils";
 import { getEnum, EnumNames } from "@/config";
 import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Loading } from "@/extendables/BaseComponents";
+import { Loading, CouponsComponent } from "@/extendables/BaseComponents";
 import CartIcon from "@/assets/icons/cart.svg";
 import CloseIcon from "@/assets/icons/close.svg";
 
@@ -190,7 +177,8 @@ export default {
   components: {
     CartIcon,
     CloseIcon,
-    Loading
+    Loading,
+    CouponsComponent
   },
   props: {
     // CartHelper object to access to all the products data
@@ -198,9 +186,7 @@ export default {
   },
   data() {
     return {
-      timer: null,
       showCouponInput: false,
-      couponInputFocus: false,
       showCart: false,
       changing: false,
       loading: false,
@@ -221,12 +207,18 @@ export default {
       "cartItems",
       "cartQuantity",
       "cartSubtotal",
-      "cartRedirect"
+      "cartRedirect",
+      "coupon"
     ]),
     emptyCartText() {
       return this.cartItems.length > 0
         ? this.cartText.filled
         : this.cartText.empty;
+    },
+    cartSubtotalWithDiscount() {
+      return (
+        this.cartSubtotal - (this.cartSubtotal * this.coupon.discount) / 100
+      );
     }
   },
   watch: {
@@ -248,7 +240,7 @@ export default {
       window.location.href = value;
     },
     showCouponInput() {
-      setTimeout(() => document.getElementById("couponInput").select(), 500);
+      setTimeout(() => document.getElementById("couponInput").select(), 100);
     }
   },
   methods: {
@@ -262,17 +254,6 @@ export default {
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
       changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
     }),
-    couponKeyDown() {
-      if (this.timer) {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(this.searchCode, 1000);
-      } else {
-        this.timer = setTimeout(this.searchCode, 1000);
-      }
-    },
-    searchCode() {
-      console.log("code");
-    },
     /**
      * @vuese
      * Calls the vuex store to add or subtract quantity of an item
@@ -368,7 +349,8 @@ input {
 }
 .sidemenu {
   background-color: #fff;
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 5px;
   position: fixed;
   transform: translate(100%, 0);
   right: 0;
@@ -468,6 +450,20 @@ input {
     }
   }
 }
+.applied-discount {
+  .subtotal_price p {
+    text-decoration: line-through;
+    color: $abre-grey;
+    &.subtotal-with-discount {
+      text-decoration: none;
+      color: $titles-color;
+    }
+  }
+  .discount-percentage {
+    color: green;
+    margin: 0;
+  }
+}
 .cart_body {
   flex: 2;
   overflow-x: hidden;
@@ -501,7 +497,6 @@ input {
   p {
     color: $titles-color;
     font-size: 19px;
-    float: right;
     font-weight: 400;
   }
   span {
@@ -512,7 +507,6 @@ input {
 .cart_footer {
   flex: 0 0 100px;
   p {
-    color: #c4c4c4;
     font-size: 14px;
     text-transform: uppercase;
     margin: 5px 0;
@@ -575,20 +569,6 @@ input {
     background-color: #000;
     color: #fff;
     z-index: 200;
-  }
-}
-
-.coupon {
-  p {
-    margin-top: 13px;
-  }
-  &.on-focus {
-    position: fixed;
-    bottom: 18px;
-    left: 0;
-    z-index: 100;
-    padding: 10px;
-    background: white;
   }
 }
 </style>

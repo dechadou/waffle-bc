@@ -17,7 +17,7 @@ export const get = async (url) => {
 export const post = async (url, config) => {
   const response = await window.fetch(url, { ...{ method: 'POST', headers: { 'Content-Type': 'application/json' } }, ...config });
   if (response.ok) return response.json();
-  throw new Error('Network response was not ok.');
+  throw response.json();
 };
 
 export const api = {

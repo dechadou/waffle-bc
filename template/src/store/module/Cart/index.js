@@ -6,6 +6,7 @@ import Cart, {
   GET_CHECKOUT_URL,
   STORE_CART,
   ADD_TO_CART,
+  SET_COUPON,
 } from './Cart';
 
 export const CartNamespace = 'Cart';
@@ -21,6 +22,7 @@ export const CartActionTypes = {
 export const CartMutationTypes = {
   SET_CART_CONFIG: `${CartNamespace}/${SET_CART_CONFIG}`,
   CHANGE_ITEM_QUANTITY: `${CartNamespace}/${CHANGE_ITEM_QUANTITY}`,
+  SET_COUPON: `${CartNamespace}/${SET_COUPON}`,
 };
 
 export default Cart;

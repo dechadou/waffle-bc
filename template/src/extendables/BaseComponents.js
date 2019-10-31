@@ -21,6 +21,7 @@ export { default as LazyImage } from '@/internal/LazyImage.vue';
 export { default as Profile } from '@/internal/Profile.vue';
 export { default as PageShare } from '@/internal/PageShare.vue';
 export { default as Loading } from '@/internal/Loading.vue';
+export { default as CouponsComponent } from '@/internal/CouponsComponent.vue';
 export { default as Cart } from '@/internal/Cart.vue';
 export const HeaderSection = () => import('@/internal/HeaderSection.vue');
 export const Social = () => import('@/internal/Social.vue');
