@@ -108,7 +108,7 @@
             <div class="col-6"/>
 
             <!-- COUPON BUTTON -->
-            <div class="row">
+            <div class="row no-gutters coupon" :class="[{ 'on-focus': couponInputFocus }]">
               <div class="col-12 col-md-8 offset-md-2">
                 <transition name="slide-fade" mode="out-in">
                   <button
@@ -118,12 +118,14 @@
                   >¿Tenés un código de descuento?</button>
                   <div class="coupon-input" v-else>
                     <div class="row no-gutters">
-                      <div class="col-6">
+                      <div class="col-5">
                         <p>Ingresá tu código:</p>
                       </div>
-                      <div class="col-6">
+                      <div class="col-7">
                         <input
                           @focus="couponInputFocus = true"
+                          @blur="couponInputFocus = false"
+                          @keydown="couponKeyDown"
                           id="couponInput"
                           type="text"
                           name="fname"
@@ -196,6 +198,7 @@ export default {
   },
   data() {
     return {
+      timer: null,
       showCouponInput: false,
       couponInputFocus: false,
       showCart: false,
@@ -259,6 +262,17 @@ export default {
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
       changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
     }),
+    couponKeyDown() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(this.searchCode, 1000);
+      } else {
+        this.timer = setTimeout(this.searchCode, 1000);
+      }
+    },
+    searchCode() {
+      console.log("code");
+    },
     /**
      * @vuese
      * Calls the vuex store to add or subtract quantity of an item
@@ -561,6 +575,20 @@ input {
     background-color: #000;
     color: #fff;
     z-index: 200;
+  }
+}
+
+.coupon {
+  p {
+    margin-top: 13px;
+  }
+  &.on-focus {
+    position: fixed;
+    bottom: 18px;
+    left: 0;
+    z-index: 100;
+    padding: 10px;
+    background: white;
   }
 }
 </style>
