@@ -153,6 +153,9 @@ p {
 }
 
 .videoImage{
-  padding: 50px;
+  padding: 50px 0;
+  @include md-up {
+    padding: 50px;
+  }
 }
 </style>
