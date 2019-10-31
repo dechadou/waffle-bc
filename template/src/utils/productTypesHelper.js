@@ -15,7 +15,9 @@ export const getImage = (media) => {
     return 0;
   });
 
-  return med.length > 0 ? med[0] : { type: 'image', url: 'http://via.placeholder.com/1367x1367' };
+  const singleImage = med.length > 0 ? med[0] : { type: 'image', url: 'http://via.placeholder.com/1367x1367' };
+  if (!singleImage.type) singleImage.type = 'image';
+  return singleImage;
 };
 
 // Expects an array of articles
