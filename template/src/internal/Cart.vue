@@ -111,14 +111,23 @@
             <div class="row">
               <div class="col-12 col-md-8 offset-md-2">
                 <transition name="slide-fade" mode="out-in">
-                  <button class="btn alternative" @click="showCouponInput = true" v-if="!showCouponInput">¿Tenés un código de descuento?</button>
+                  <button
+                    class="btn alternative"
+                    @click="showCouponInput = true"
+                    v-if="!showCouponInput"
+                  >¿Tenés un código de descuento?</button>
                   <div class="coupon-input" v-else>
                     <div class="row no-gutters">
                       <div class="col-6">
                         <p>Ingresá tu código:</p>
                       </div>
                       <div class="col-6">
-                        <input id="couponInput" type="text" name="fname">
+                        <input
+                          @focus="couponInputFocus = true"
+                          id="couponInput"
+                          type="text"
+                          name="fname"
+                        >
                       </div>
                     </div>
                   </div>
@@ -126,14 +135,14 @@
               </div>
             </div>
           </div>
-            <div class="col-12 col-md-8 offset-md-2">
-              <div class="row">
-                <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
-                <button class="btn" aria-label="Loading" v-else>
-                  <Loading class="cart_loader"/>
-                </button>
-              </div>
+          <div class="col-12 col-md-8 offset-md-2">
+            <div class="row">
+              <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
+              <button class="btn" aria-label="Loading" v-else>
+                <Loading class="cart_loader"/>
+              </button>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -188,6 +197,7 @@ export default {
   data() {
     return {
       showCouponInput: false,
+      couponInputFocus: false,
       showCart: false,
       changing: false,
       loading: false,
@@ -234,10 +244,9 @@ export default {
       this.deleteCart();
       window.location.href = value;
     },
-    showCouponInput(){
+    showCouponInput() {
       setTimeout(() => document.getElementById("couponInput").select(), 500);
-      
-    },
+    }
   },
   methods: {
     ...mapActions({
@@ -507,7 +516,6 @@ input {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
-    
 
     .cart_loader {
       width: 19px;
@@ -517,8 +525,6 @@ input {
     &:hover .cart_loader {
       fill: #000;
     }
-
-    
   }
 }
 .open-cart {
