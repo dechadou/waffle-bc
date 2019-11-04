@@ -102,7 +102,7 @@ export default {
         accumulator += `=${currentValue.id},${currentValue.quantity}`;
         return accumulator;
       }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
-        .concat(`&${[QUERY_COUPON]}=${state.coupon.coupon}`);
+        .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '');
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {

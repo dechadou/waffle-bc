@@ -13,7 +13,9 @@
               type="text"
               name="fname"
               :disabled="searching"
-              v-model="couponInputText"
+              @focus="couponInputFocus = true"
+              @blur="couponInputFocus = false"
+              @input='evt=>couponInputText=evt.target.value'
             >
             <div class="status-icons" v-show="couponInputText">
               <Loading v-show="!state"/>
@@ -49,6 +51,7 @@ export default {
   },
   data() {
     return {
+      couponInputFocus: false,
       timer: null,
       couponInputText: "",
       state: null,
@@ -148,5 +151,21 @@ input[type="text"] {
   padding: 5px 0;
   width: 100%;
   outline: none;
+}
+.on-focus{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+  background: #fff;
+  padding: 15px;
+
+  @include md-up{
+    padding: 0;
+    bottom: none;
+    left: none;
+    position: static;
+    display: block;
+  }
 }
 </style>

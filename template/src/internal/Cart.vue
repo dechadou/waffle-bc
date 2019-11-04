@@ -240,7 +240,7 @@ export default {
       window.location.href = value;
     },
     showCouponInput() {
-      setTimeout(() => document.getElementById("couponInput").select(), 100);
+      setTimeout(() => document.getElementById("couponInput").focus(), 100);
     }
   },
   methods: {
