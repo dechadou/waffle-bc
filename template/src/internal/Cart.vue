@@ -118,14 +118,15 @@
                 </div>
               </div>
             </div>
-            <button
-              class="btn alternative"
-              @click="showCouponInput = true"
-              v-if="!showCouponInput"
-            >¿Tenés un código de descuento?</button>
+            
           </div>
           <div class="col-12 col-md-8 offset-md-2">
             <div class="row">
+              <button
+              class="btn alternative btn-coupons"
+              @click="showCouponInput = true"
+              v-if="!showCouponInput"
+            >¿Tenés un código de descuento?</button>
               <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
               <button class="btn" aria-label="Loading" v-else>
                 <Loading class="cart_loader"/>
@@ -524,7 +525,14 @@ input {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
-
+    &.btn-coupons{
+      margin-left: 15px;
+      margin-right: 15px;
+      @include md-up{
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
     .cart_loader {
       width: 19px;
       fill: #fff;
@@ -571,4 +579,5 @@ input {
     z-index: 200;
   }
 }
+
 </style>
