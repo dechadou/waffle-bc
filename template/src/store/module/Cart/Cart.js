@@ -7,13 +7,14 @@ export const STORE_CART = 'store-cart';
 export const DELETE_CART = 'delete-cart';
 export const GET_CHECKOUT_URL = 'get-checkout-url';
 export const CHANGE_ITEM_QUANTITY = 'change-item-quantity';
+export const SET_COUPON = 'set-coupon';
 const ADD_ITEM = 'add-item';
 const SET_CART = 'set-cart';
 const SET_REDIRECT_URL = 'set-redirect-url';
 const QUERY_STORE_ID = 'store_id';
 const QUERY_BUNDLES_ARRAY = 'combos[]';
 const QUERY_ARTICLES_ARRAY = 'products[]';
-const QUERY_TOKEN = 'mtoken';
+const QUERY_COUPON = 'coupon';
 
 class StoreCart {
   constructor(data, date) {
@@ -49,10 +50,14 @@ export default {
     cartQuantity: 0,
     cartSubtotal: 0,
     cartRedirect: null,
+    coupon: null,
     config: null,
   },
   getters: {},
   mutations: {
+    [SET_COUPON]: (state, payload) => {
+      state.coupon = payload;
+    },
     [SET_REDIRECT_URL]: (state, payload) => {
       state.cartRedirect = payload;
     },
@@ -93,11 +98,11 @@ export default {
           currentValue.class === 'bundle'
             ? [QUERY_BUNDLES_ARRAY]
             : [QUERY_ARTICLES_ARRAY]
-        }`;
+          }`;
         accumulator += `=${currentValue.id},${currentValue.quantity}`;
         return accumulator;
       }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
-        .concat(`&${[QUERY_TOKEN]}=${state.config.authToken}`);
+        .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '');
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {

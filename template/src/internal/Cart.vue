@@ -89,25 +89,44 @@
         <div class="cart_footer">
           <hr>
           <div class="col-12">
-            <div class="col-6">
+            <CouponsComponent v-if="showCouponInput"/>
+
+            <!-- SUBTOTAL -->
+            <div class="col-12" :class="{'applied-discount': coupon}">
               <div class="row">
-                <div class="col-6 p-0">
+                <div class="col-5 p-0">
                   <div class="subtotal real_s">
                     <p>Subtotal:</p>
                   </div>
                 </div>
-                <div class="col-6 subtotal_price">
+                <div class="col-2 subtotal_price p-0">
                   <p>
                     <span>$</span>
                     {{ cartSubtotal }}
                   </p>
                 </div>
+                <div class="col-5 subtotal_price p-0">
+                  <p class="subtotal-with-discount" v-if="coupon">
+                    <span>$</span>
+                    {{ cartSubtotalWithDiscount }}
+                  </p>
+                </div>
+                <div class="col-5 p-0"/>
+                <div class="col-2 p-0"/>
+                <div class="col-5 p-0">
+                  <p class="discount-percentage" v-if="coupon">{{ coupon.discount }}% DE DESCUENTO</p>
+                </div>
               </div>
             </div>
-            <div class="col-6"/>
+            
           </div>
-          <div class="btn-box">
-            <div class="col-8 offset-2">
+          <div class="col-12 col-md-8 offset-md-2">
+            <div class="row">
+              <button
+              class="btn alternative btn-coupons"
+              @click="showCouponInput = true"
+              v-if="!showCouponInput"
+            >¿Tenés un código de descuento?</button>
               <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
               <button class="btn" aria-label="Loading" v-else>
                 <Loading class="cart_loader"/>
@@ -131,7 +150,7 @@ import {
 import { EventManager } from "@/utils";
 import { getEnum, EnumNames } from "@/config";
 import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Loading } from "@/extendables/BaseComponents";
+import { Loading, CouponsComponent } from "@/extendables/BaseComponents";
 import CartIcon from "@/assets/icons/cart.svg";
 import CloseIcon from "@/assets/icons/close.svg";
 
@@ -159,7 +178,8 @@ export default {
   components: {
     CartIcon,
     CloseIcon,
-    Loading
+    Loading,
+    CouponsComponent
   },
   props: {
     // CartHelper object to access to all the products data
@@ -167,6 +187,7 @@ export default {
   },
   data() {
     return {
+      showCouponInput: false,
       showCart: false,
       changing: false,
       loading: false,
@@ -187,12 +208,18 @@ export default {
       "cartItems",
       "cartQuantity",
       "cartSubtotal",
-      "cartRedirect"
+      "cartRedirect",
+      "coupon"
     ]),
     emptyCartText() {
       return this.cartItems.length > 0
         ? this.cartText.filled
         : this.cartText.empty;
+    },
+    cartSubtotalWithDiscount() {
+      return (
+        this.cartSubtotal - (this.cartSubtotal * this.coupon.discount) / 100
+      );
     }
   },
   watch: {
@@ -212,6 +239,9 @@ export default {
       if (!value) return;
       this.deleteCart();
       window.location.href = value;
+    },
+    showCouponInput() {
+      setTimeout(() => document.getElementById("couponInput").focus(), 100);
     }
   },
   methods: {
@@ -298,6 +328,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+input {
+  width: 100%;
+}
 .close_cart {
   border: none;
   background-color: transparent;
@@ -317,7 +350,8 @@ export default {
 }
 .sidemenu {
   background-color: #fff;
-  padding: 20px 0;
+  padding-top: 20px;
+  padding-bottom: 5px;
   position: fixed;
   transform: translate(100%, 0);
   right: 0;
@@ -417,6 +451,20 @@ export default {
     }
   }
 }
+.applied-discount {
+  .subtotal_price p {
+    text-decoration: line-through;
+    color: $abre-grey;
+    &.subtotal-with-discount {
+      text-decoration: none;
+      color: $titles-color;
+    }
+  }
+  .discount-percentage {
+    color: green;
+    margin: 0;
+  }
+}
 .cart_body {
   flex: 2;
   overflow-x: hidden;
@@ -450,7 +498,6 @@ export default {
   p {
     color: $titles-color;
     font-size: 19px;
-    float: right;
     font-weight: 400;
   }
   span {
@@ -461,7 +508,6 @@ export default {
 .cart_footer {
   flex: 0 0 100px;
   p {
-    color: #c4c4c4;
     font-size: 14px;
     text-transform: uppercase;
     margin: 5px 0;
@@ -479,6 +525,14 @@ export default {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
+    &.btn-coupons{
+      margin-left: 15px;
+      margin-right: 15px;
+      @include md-up{
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
     .cart_loader {
       width: 19px;
       fill: #fff;
@@ -525,4 +579,5 @@ export default {
     z-index: 200;
   }
 }
+
 </style>
