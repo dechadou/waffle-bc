@@ -102,8 +102,9 @@ export default {
      * @vuese
      * Shows/hides the module and sets a height based on the screen size and the height of the products
      */
-    toggleRelatedProducts() {
-      this.showRelatedProducts = !this.showRelatedProducts;
+    toggleRelatedProducts(show = 1) {
+      if(show === 1) this.showRelatedProducts = !this.showRelatedProducts;
+      else this.showRelatedProducts = show;
 
       if (this.showRelatedProducts) {
         // Hides Scrollbar
@@ -198,6 +199,10 @@ export default {
         ).product;
         this.toggleRelatedProductsDelay(parentProduct);
       }
+    );
+
+    EventManager.Subscribe(this.eventNames.ON_CART_OPEN, () => 
+        this.toggleRelatedProducts(false)
     );
   }
 };

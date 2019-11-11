@@ -8,6 +8,7 @@ export const DELETE_CART = 'delete-cart';
 export const GET_CHECKOUT_URL = 'get-checkout-url';
 export const CHANGE_ITEM_QUANTITY = 'change-item-quantity';
 export const SET_COUPON = 'set-coupon';
+export const SET_COUPON_CODE = 'set-coupon-code';
 const ADD_ITEM = 'add-item';
 const SET_CART = 'set-cart';
 const SET_REDIRECT_URL = 'set-redirect-url';
@@ -51,12 +52,17 @@ export default {
     cartSubtotal: 0,
     cartRedirect: null,
     coupon: null,
+    couponCode: null,
     config: null,
   },
   getters: {},
   mutations: {
     [SET_COUPON]: (state, payload) => {
       state.coupon = payload;
+    },
+    [SET_COUPON_CODE]: (state, payload) => {
+      console.log(payload);
+      state.couponCode = payload;
     },
     [SET_REDIRECT_URL]: (state, payload) => {
       state.cartRedirect = payload;

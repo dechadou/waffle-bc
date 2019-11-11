@@ -142,6 +142,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import URLParams from '@/utils/urlparams';
 import {
   CartActionTypes,
   CartMutationTypes,
@@ -188,6 +189,7 @@ export default {
   data() {
     return {
       showCouponInput: false,
+      silentCouponInput: false,
       showCart: false,
       changing: false,
       loading: false,
@@ -241,6 +243,7 @@ export default {
       window.location.href = value;
     },
     showCouponInput() {
+      if (this.silentCouponInput) return;
       setTimeout(() => document.getElementById("couponInput").focus(), 100);
     }
   },
@@ -253,7 +256,8 @@ export default {
     }),
     ...mapMutations({
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
-      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY
+      changeItemQuantity: CartMutationTypes.CHANGE_ITEM_QUANTITY,
+      setCouponCode: CartMutationTypes.SET_COUPON_CODE,
     }),
     /**
      * @vuese
@@ -286,6 +290,7 @@ export default {
      */
     cartToggle() {
       this.showCart = !this.showCart;
+      EventManager.Trigger(getEnum(EnumNames.EventNames).ON_CART_OPEN, this.showCart);
       this.toggleScrollBar();
     },
     /**
@@ -305,7 +310,12 @@ export default {
       EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
         this.cartToggle()
       );
-    }
+    },
+    setUrlCoupon(coupon){
+      this.setCouponCode(coupon);
+      this.showCouponInput = true;
+      this.silentCouponInput = true;  
+    },
   },
   mounted() {
     // Creates a CartConfig object and sends it to the vuex store
@@ -323,6 +333,10 @@ export default {
 
     // Subscribes to events
     this.suscribeToEvents();
+
+    // Searches discount coupon in url
+    const coupon = URLParams('coupon');
+    if(coupon) this.setUrlCoupon(coupon);
   }
 };
 </script>

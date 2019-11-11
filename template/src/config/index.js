@@ -70,6 +70,8 @@ const config = {
     [EnumNames.EventNames]: {
       ADD_TO_CART: 'add-to-cart',
       ON_CART_TOGGLE: 'on-cart-toggle',
+      ON_CART_OPEN: 'on-cart-open',
+      ON_URL_COUPON_SET: 'on-url-coupon-set',
       ON_CART_ITEM_QUANTITY_CHANGE: 'on-cart-item-quantity-change',
       ON_RELATED_PRODUCTS_TOGGLE: 'on-related-products-toggle',
       ON_FEEDBACK_ACTIVE: 'on-feedback-active',

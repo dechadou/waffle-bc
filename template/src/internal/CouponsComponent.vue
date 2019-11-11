@@ -12,10 +12,11 @@
               id="couponInput"
               type="text"
               name="fname"
-              :disabled="searching"
+              :disabled="searching || inputLocked"
               @focus="couponInputFocus = true"
               @blur="couponInputFocus = false"
               @input='evt=>couponInputText=evt.target.value'
+              v-model="couponInputText"
             >
             <div class="status-icons" v-show="couponInputText">
               <Loading v-show="!state"/>
@@ -32,9 +33,12 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import { EventManager } from "@/utils";
+import { getEnum, EnumNames } from "@/config";
 import { Request } from "@/utils";
 import { Loading } from "@/extendables/BaseComponents";
 import { StoreDataNamespace } from "@/store/module/StoreData";
+import { CartNamespace } from "@/store/module/Cart";
 import { CartMutationTypes } from "@/store/module/Cart";
 import CheckIcon from "@/assets/icons/greencheck.svg";
 import TimesIcon from "@/assets/icons/times.svg";
@@ -56,11 +60,13 @@ export default {
       couponInputText: "",
       state: null,
       searching: false,
-      error: null
+      error: null,
+      inputLocked: false,
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["authToken", "coupon"])
+    ...mapState(StoreDataNamespace, ["authToken", "coupon"]),
+    ...mapState(CartNamespace, ["couponCode"]),
   },
   watch: {
     couponInputText() {
@@ -75,6 +81,12 @@ export default {
       if (!this.couponInputText && value && value.discount) {
         this.couponInputText = value.discount;
       }
+    },
+  },
+  mounted(){
+    if (this.couponCode) {
+      this.couponInputText = this.couponCode;
+      this.inputLocked = true;
     }
   },
   methods: {
