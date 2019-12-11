@@ -65,7 +65,7 @@ const config = {
   },
   variables: {
     [VariableNames.WaffleVersion]: 1.5,
-    [VariableNames.DefaultCurrency]: 'usd',
+    [VariableNames.DefaultCurrency]: 'ars',
     [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'abre',
   },
   enums: {
