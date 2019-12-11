@@ -1,4 +1,5 @@
 /* global $defaultSlug */
+/* global $defaultCurrency */
 
 import URLParams from '../utils/urlparams';
 
@@ -65,7 +66,7 @@ const config = {
   },
   variables: {
     [VariableNames.WaffleVersion]: 1.5,
-    [VariableNames.DefaultCurrency]: 'ars',
+    [VariableNames.DefaultCurrency]: typeof $defaultCurrency !== 'undefined' ? $defaultCurrency : 'ars',
     [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'abre',
   },
   enums: {
