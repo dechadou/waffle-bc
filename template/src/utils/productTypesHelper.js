@@ -45,12 +45,12 @@ export const isOutOfStock = (articleList, productClass) => (productClass === 'pr
 // Returns its price (Number)
 export const getPrice = (data) => {
   let finalPrice = null;
-  const v2Prices = data.class === 'product' ? data.articles[0].v2.price : data.v2.price;
+  const v2Object = data.class === 'product' ? data.articles[0].v2 : data.v2;
 
-  // if there are v2 prices
-  if (v2Prices) {
+  // if there is a v2 object
+  if (v2Object) {
     const defaultCurrency = getVariable(VariableNames.DefaultCurrency);
-    const currencyObject = v2Prices.find(x => x.coin_unit === defaultCurrency);
+    const currencyObject = v2Object.price.find(x => x.coin_unit === defaultCurrency);
     if (currencyObject) finalPrice = currencyObject.price;
   }
 
