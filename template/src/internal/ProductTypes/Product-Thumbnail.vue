@@ -1,5 +1,5 @@
 <template>
-  <article class="product">
+  <article class="product" v-if="price !== null">
     <div class="col-12">
       <div class="row">
         <!-- IMAGE -->

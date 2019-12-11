@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article id="producto" class="product">
+    <article id="producto" class="product" v-if="price !== null">
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="badge-free-shipping" v-if="data.envio_gratuito"/>

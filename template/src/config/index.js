@@ -12,6 +12,7 @@ export const VariableNames = {
   EnvPassword: 'env-password-variable',
   DefaultSlug: 'default-slug-variable',
   WaffleVersion: 'waffle-version-variable',
+  DefaultCurrency: 'default-currency-variable',
 };
 
 export const EnumNames = {
@@ -63,7 +64,8 @@ const config = {
     },
   },
   variables: {
-    [VariableNames.WaffleVersion]: 1,
+    [VariableNames.WaffleVersion]: 1.5,
+    [VariableNames.DefaultCurrency]: 'usd',
     [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'abre',
   },
   enums: {

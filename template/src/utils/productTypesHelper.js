@@ -4,6 +4,7 @@
     Date: 10/08/2019 (dd-mm-yyyy)
     Description: Utility functions for products
 */
+import { getVariable, VariableNames } from '@/config';
 
 // Expects an array of media objects.
 // Returns the first element marked as primary media or the first element of the array if no primary media is found
@@ -42,4 +43,24 @@ export const isOutOfStock = (articleList, productClass) => (productClass === 'pr
 
 // Expects a product object
 // Returns its price (Number)
-export const getPrice = data => Math.floor(data.class === 'product' ? data.articles[0].price : data.price);
+export const getPrice = (data) => {
+  let finalPrice = null;
+  const v2Prices = data.class === 'product' ? data.articles[0].v2.price : data.v2.price;
+
+  // if there are v2 prices
+  if (v2Prices) {
+    const defaultCurrency = getVariable(VariableNames.DefaultCurrency);
+    const currencyObject = v2Prices.find(x => x.coin_unit === defaultCurrency);
+    if (currencyObject) finalPrice = currencyObject.price;
+  }
+
+  // if there aren't v2 prices or there are none with the default currency: fallback to v1 currency
+  if (!finalPrice) {
+    finalPrice = data.class === 'product' ? data.articles[0].price : data.price;
+  }
+
+  // If finalPrice is null, return null, else make sure finalPrice is a number and return it
+  // Not checking with !finalPrice because it is ok for a price to be 0.00
+  // Not doing "return +finalPrice || null" because the + sign automatically converts null to 0, which is a valid price
+  return finalPrice === null ? null : +finalPrice;
+};

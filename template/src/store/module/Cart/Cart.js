@@ -61,7 +61,6 @@ export default {
       state.coupon = payload;
     },
     [SET_COUPON_CODE]: (state, payload) => {
-      console.log(payload);
       state.couponCode = payload;
     },
     [SET_REDIRECT_URL]: (state, payload) => {
