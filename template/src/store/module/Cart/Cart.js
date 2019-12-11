@@ -1,4 +1,4 @@
-import { getUrl, URLNames } from '@/config';
+import { getUrl, URLNames, getVariable, VariableNames } from '@/config';
 
 export const FETCH_STORED_CART = 'fetch-stored-cart';
 export const ADD_TO_CART = 'add-to-cart';
@@ -16,6 +16,7 @@ const QUERY_STORE_ID = 'store_id';
 const QUERY_BUNDLES_ARRAY = 'combos[]';
 const QUERY_ARTICLES_ARRAY = 'products[]';
 const QUERY_COUPON = 'coupon';
+const QUERY_CURRENCY = 'currency';
 
 class StoreCart {
   constructor(data, date) {
@@ -107,7 +108,8 @@ export default {
         accumulator += `=${currentValue.id},${currentValue.quantity}`;
         return accumulator;
       }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
-        .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '');
+      .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '')
+      .concat(`&${[QUERY_CURRENCY]}=${getVariable(VariableNames.DefaultCurrency)}`);
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {
