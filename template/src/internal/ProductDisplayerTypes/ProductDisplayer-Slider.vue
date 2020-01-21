@@ -1,8 +1,8 @@
 <template>
   <div class="ProductDisplayer-Slider">
     <swiper :options="sliderOptions">
-      <swiper-slide v-for="product in products" :key="`${product.id}-${product.class}`">
-        <Product-SliderMobile :data="product"/>
+      <swiper-slide v-for="product in displayProducts" :key="`${product.id}-${product.class}`">
+        <Product-SliderMobile :data="product" />
       </swiper-slide>
       <div class="slider-button-prev" slot="button-prev"></div>
       <div class="slider-button-next" slot="button-next"></div>
@@ -73,7 +73,7 @@ export default {
     visibility: visible;
     opacity: 1;
     transition: opacity 0.3s ease;
-    transition-delay: 0.3s
+    transition-delay: 0.3s;
   }
 }
 .swiper-slide .product .image_wrap img {

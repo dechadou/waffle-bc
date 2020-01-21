@@ -20,6 +20,7 @@ export const EnumNames = {
   EventNames: 'event-names-enum',
   Breakpoints: 'breakpoints-enum',
   URLParams: 'url-params-enum',
+  CurrencySymbols: 'currency-symbols-enum',
 };
 
 export const URLNames = {
@@ -88,6 +89,10 @@ const config = {
       MD: 2,
       LG: 3,
       XL: 5,
+    },
+    [EnumNames.CurrencySymbols]: {
+      ars: '$',
+      usd: 'US$',
     },
   },
   urls: {},

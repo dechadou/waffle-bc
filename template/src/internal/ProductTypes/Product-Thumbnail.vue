@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-3 pl-0 price-container">
                   <span class="price">
-                    <span>$</span>
+                    <span>{{ currencySymbol }}</span>
                     {{ price }}
                   </span>
                 </div>

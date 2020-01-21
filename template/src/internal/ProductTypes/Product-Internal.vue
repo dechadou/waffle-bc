@@ -27,7 +27,7 @@
               </div>
               <div class="col-4 pl-0">
                 <span class="price float-right">
-                  <span>$</span>
+                  <span>{{ currencySymbol }}</span>
                   {{ price }}
                 </span>
               </div>
@@ -90,11 +90,11 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import "swiper/dist/css/swiper.css";
+import 'swiper/dist/css/swiper.css';
 
-import { ProductType, Loading } from "@/extendables/BaseComponents";
+import { ProductType, Loading } from '@/extendables/BaseComponents';
 
 class AttributeSelector {
   constructor(name, properties) {
@@ -115,12 +115,12 @@ class SelectorProperty {
 // Shows the product with all the details on the product page
 // @vuese
 export default {
-  name: "Product-Internal",
+  name: 'Product-Internal',
   extends: ProductType,
   components: {
     swiper,
     swiperSlide,
-    Loading
+    Loading,
   },
   data() {
     return {
@@ -133,16 +133,16 @@ export default {
         lazy: true,
         autoplay: {
           delay: 5000,
-          disableOnInteraction: false
+          disableOnInteraction: false,
         },
         slidesPerView: 1,
         initialSlide: 1,
         spaceBetween: 30,
         pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        }
-      }
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
     };
   },
   created() {
@@ -155,7 +155,7 @@ export default {
     },
     $route() {
       this.onCreated();
-    }
+    },
   },
   methods: {
     onCreated() {
@@ -163,9 +163,9 @@ export default {
       this.carouselImages = this.getCarouselImages();
     },
     getButtonType() {
-      if (this.selectedArticle.stock < 1) return "OutOfStock";
-      if (!this.openModules) return "Check";
-      return "Normal";
+      if (this.selectedArticle.stock < 1) return 'OutOfStock';
+      if (!this.openModules) return 'Check';
+      return 'Normal';
     },
     /**
      * @vuese
@@ -182,31 +182,27 @@ export default {
 
       // Si hay atributos, los mapeamos a attributeSelectors para que se generen sus respectivos selectores de cada atributo
       this.attributeSelectors = Object.keys(
-        this.data.articles[0].atributtes
+        this.data.articles[0].atributtes,
       ).map(
-        attributeName =>
-          new AttributeSelector(
-            attributeName,
-            this.data.articles
-              .map(
-                article =>
-                  new SelectorProperty(
-                    article.atributtes[attributeName],
-                    article.atributtes[attributeName],
-                    false
-                  )
-              )
-              .filter(property => property.name !== "")
-          )
+        attributeName => new AttributeSelector(
+          attributeName,
+          this.data.articles
+            .map(
+              article => new SelectorProperty(
+                article.atributtes[attributeName],
+                article.atributtes[attributeName],
+                false,
+              ),
+            )
+            .filter(property => property.name !== ''),
+        ),
       );
 
-      this.attributeSelectors.forEach(x =>
-        x.properties.push(new SelectorProperty(x.name, "default", true))
-      );
+      this.attributeSelectors.forEach(x => x.properties.push(new SelectorProperty(x.name, 'default', true)));
 
       // Por cada selector se puede seleccionar una propiedad. Por default la propiedad de cada selector debe ser '' para que
       // el selector indique al usuario que debe seleccionar una propiedad.
-      this.selectedProperties = this.attributeSelectors.map(() => "default");
+      this.selectedProperties = this.attributeSelectors.map(() => 'default');
     },
     /**
      * @vuese
@@ -214,11 +210,9 @@ export default {
      */
     getArticleBySelectedOptions() {
       // returns null if there is any property that hasn't been selected
-      if (this.selectedProperties.some(x => x === "default")) return null;
+      if (this.selectedProperties.some(x => x === 'default')) return null;
 
-      return this.articleList.find(article =>
-        this.isSelectedArticle(article.atributtes)
-      );
+      return this.articleList.find(article => this.isSelectedArticle(article.atributtes));
     },
     /**
      * @vuese
@@ -237,27 +231,27 @@ export default {
      */
     getCarouselImages() {
       const carouselImages = [];
-      Object.values(this.data.media).forEach(media => {
+      Object.values(this.data.media).forEach((media) => {
         if (media.primary_media) carouselImages.unshift(media.url);
         else carouselImages.push(media.url);
       });
       return carouselImages;
-    }
+    },
   },
   filters: {
     displayAuthors(authors) {
-      let finalString = "";
+      let finalString = '';
       if (authors === null || authors === undefined) return finalString;
 
-      authors.forEach(author => {
+      authors.forEach((author) => {
         if (finalString.search(author.name) === -1) {
-          if (finalString !== "") finalString += " + ";
+          if (finalString !== '') finalString += ' + ';
           finalString += author.name;
         }
       });
       return finalString;
-    }
-  }
+    },
+  },
 };
 </script>
 

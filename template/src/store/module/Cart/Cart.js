@@ -1,4 +1,4 @@
-import { getUrl, URLNames, getVariable, VariableNames } from '@/config';
+import { getUrl, URLNames } from '@/config';
 
 export const FETCH_STORED_CART = 'fetch-stored-cart';
 export const ADD_TO_CART = 'add-to-cart';
@@ -9,6 +9,7 @@ export const GET_CHECKOUT_URL = 'get-checkout-url';
 export const CHANGE_ITEM_QUANTITY = 'change-item-quantity';
 export const SET_COUPON = 'set-coupon';
 export const SET_COUPON_CODE = 'set-coupon-code';
+export const SET_CURRENCY = 'set-currency';
 const ADD_ITEM = 'add-item';
 const SET_CART = 'set-cart';
 const SET_REDIRECT_URL = 'set-redirect-url';
@@ -55,6 +56,7 @@ export default {
     coupon: null,
     couponCode: null,
     config: null,
+    currency: null,
   },
   getters: {},
   mutations: {
@@ -71,21 +73,57 @@ export default {
       state.config = config;
     },
     [ADD_ITEM]: (state, payload) => {
-      state.cartItems.push(payload);
-      state.cartItems = [...state.cartItems];
+      state.cartItems = [...state.cartItems, payload];
     },
     [SET_CART]: (state, savedCart) => {
       if (!savedCart.isYoung) return;
       state.cartItems = savedCart.data;
-      state.cartQuantity = state.cartItems.reduce((accumulator, current) => accumulator + current.quantity, 0);
-      state.cartSubtotal = state.cartItems.reduce((accumulator, current) => accumulator + (current.quantity * current.price), 0);
+
+      state.cartQuantity = state.cartItems.reduce(
+        (accumulator, current) => (
+          current.price.some(x => x.coin_unit === state.currency)
+            ? accumulator + current.quantity
+            : accumulator
+        ),
+        0,
+      );
+
+      state.cartSubtotal = state.cartItems.reduce(
+        (accumulator, current) => (
+          current.price.some(x => x.coin_unit === state.currency)
+            ? accumulator + (current.quantity * current.price.find(x => x.coin_unit === state.currency).price)
+            : accumulator
+        ),
+        0,
+      );
     },
     [CHANGE_ITEM_QUANTITY]: (state, { index, quantity }) => {
       if (index === -1) index = state.cartItems.length - 1;
       state.cartItems[index].quantity += quantity;
       state.cartQuantity += quantity;
-      state.cartSubtotal += (quantity * state.cartItems[index].price);
+      state.cartSubtotal += (quantity * state.cartItems[index].price.find(x => x.coin_unit === state.currency).price);
       if (state.cartItems[index].quantity < 1) state.cartItems.splice(index, 1);
+    },
+    [SET_CURRENCY]: (state, currency) => {
+      state.currency = currency;
+
+      state.cartQuantity = state.cartItems.reduce(
+        (accumulator, current) => (
+          current.price.some(x => x.coin_unit === state.currency)
+            ? accumulator + current.quantity
+            : accumulator
+        ),
+        0,
+      );
+
+      state.cartSubtotal = state.cartItems.reduce(
+        (accumulator, current) => (
+          current.price.some(x => x.coin_unit === state.currency)
+            ? accumulator + (current.quantity * current.price.find(x => x.coin_unit === state.currency).price)
+            : accumulator
+        ),
+        0,
+      );
     },
   },
   actions: {
@@ -98,18 +136,18 @@ export default {
       if (index === -1) commit(ADD_ITEM, state.config.cartHelper.getCartObjectByProductId(id, productClass));
       commit(CHANGE_ITEM_QUANTITY, { index, quantity: 1 });
     },
-    [GET_CHECKOUT_URL]: ({ state, commit }) => {
+    [GET_CHECKOUT_URL]: ({ state, commit }, currency) => {
       const url = state.cartItems.reduce((accumulator, currentValue) => {
-        accumulator += `&${
-          currentValue.class === 'bundle'
-            ? [QUERY_BUNDLES_ARRAY]
-            : [QUERY_ARTICLES_ARRAY]
-          }`;
-        accumulator += `=${currentValue.id},${currentValue.quantity}`;
+        if (currentValue.price.some(x => x.currency === state.currency)) {
+          accumulator
+            += `&${currentValue.class === 'bundle' ? [QUERY_BUNDLES_ARRAY] : [QUERY_ARTICLES_ARRAY]}`;
+          accumulator += `=${currentValue.id},${currentValue.quantity}`;
+        }
+
         return accumulator;
       }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
-      .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '')
-      .concat(`&${[QUERY_CURRENCY]}=${getVariable(VariableNames.DefaultCurrency)}`);
+        .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '')
+        .concat(`&${[QUERY_CURRENCY]}=${currency}`);
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {

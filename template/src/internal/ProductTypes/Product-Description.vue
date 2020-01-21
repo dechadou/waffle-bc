@@ -22,7 +22,7 @@
           </div>
           <div class="col-3 pl-0 price-container">
             <span class="price">
-              <span>$</span>
+              <span>{{ currencySymbol }}</span>
               {{ price }}
             </span>
           </div>
@@ -74,10 +74,10 @@ export default {
 
       return 'Normal';
     },
-    getVideoLink(url){
-      const splitUrl = url.split("/");
+    getVideoLink(url) {
+      const splitUrl = url.split('/');
       return `https://www.youtube.com/embed/${splitUrl[splitUrl.findIndex(x => x === 'media') + 1]}`;
-    }
+    },
   },
 };
 </script>

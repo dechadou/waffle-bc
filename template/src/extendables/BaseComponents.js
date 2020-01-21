@@ -26,3 +26,4 @@ export { default as Cart } from '@/internal/Cart.vue';
 export const HeaderSection = () => import('@/internal/HeaderSection.vue');
 export const Social = () => import('@/internal/Social.vue');
 export const RelatedProducts = () => import('@/internal/RelatedProducts.vue');
+export const CurrencySelector = () => import('@/internal/CurrencySelector.vue');

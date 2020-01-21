@@ -1,14 +1,14 @@
 <template>
   <div>
     <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
-      <CartIcon/>
+      <CartIcon />
       <span class="items-count animated" v-bind:class="{'jello': changing}">{{cartQuantity}}</span>
     </button>
     <div class="sidemenu" :class="[showCart ? 'open' : '']">
       <div class="inner_menu">
         <div class="cart_title">
           <button class="close_cart" @click="cartToggle()" aria-label="Close Cart">
-            <CloseIcon class="closeIcon"/>
+            <CloseIcon class="closeIcon" />
           </button>
           <div class="col-12 title_cont">
             <div class="row no-gutters">
@@ -24,7 +24,7 @@
         <div class="cart_body">
           <div v-if="cartQuantity">
             <div v-for="(item, index) in cartItems" :key="item.id" class="col-12 item">
-              <div class="row">
+              <div class="row" v-if="item.price.some(x => x.coin_unit === currency)">
                 <div class="col-6">
                   <div class="col-12">
                     <!-- TITULO -->
@@ -49,8 +49,8 @@
                       </div>
                       <div class="col-6 p-0 subtotal_price">
                         <p>
-                          <span>$</span>
-                          {{ item.price * item.quantity }}
+                          <span>{{ currencySymbol }}</span>
+                          {{ item.price.find(x => x.coin_unit === currency).price * item.quantity }}
                         </p>
                       </div>
                     </div>
@@ -76,7 +76,7 @@
                         :src="item.media.url"
                         class="img-fluid"
                         style="height: 150px; margin: 0px auto; display: block;"
-                      >
+                      />
                     </div>
                   </div>
                 </div>
@@ -87,9 +87,9 @@
 
         <!-- CART FOOTER -->
         <div class="cart_footer">
-          <hr>
+          <hr />
           <div class="col-12">
-            <CouponsComponent v-if="showCouponInput"/>
+            <CouponsComponent v-if="showCouponInput" />
 
             <!-- SUBTOTAL -->
             <div class="col-12" :class="{'applied-discount': coupon}">
@@ -101,59 +101,58 @@
                 </div>
                 <div class="col-2 subtotal_price p-0">
                   <p>
-                    <span>$</span>
+                    <span>{{ currencySymbol }}</span>
                     {{ cartSubtotal }}
                   </p>
                 </div>
                 <div class="col-5 subtotal_price p-0">
                   <p class="subtotal-with-discount" v-if="coupon">
-                    <span>$</span>
+                    <span>{{ currencySymbol }}</span>
                     {{ cartSubtotalWithDiscount }}
                   </p>
                 </div>
-                <div class="col-5 p-0"/>
-                <div class="col-2 p-0"/>
+                <div class="col-5 p-0" />
+                <div class="col-2 p-0" />
                 <div class="col-5 p-0">
                   <p class="discount-percentage" v-if="coupon">{{ coupon.discount }}% DE DESCUENTO</p>
                 </div>
               </div>
             </div>
-            
           </div>
           <div class="col-12 col-md-8 offset-md-2">
             <div class="row">
               <button
-              class="btn alternative btn-coupons"
-              @click="showCouponInput = true"
-              v-if="!showCouponInput"
-            >¿Tenés un código de descuento?</button>
+                class="btn alternative btn-coupons"
+                @click="showCouponInput = true"
+                v-if="!showCouponInput"
+              >¿Tenés un código de descuento?</button>
               <button v-if="!loading" class="btn" @click="checkout()">Seleccioná envío</button>
               <button class="btn" aria-label="Loading" v-else>
-                <Loading class="cart_loader"/>
+                <Loading class="cart_loader" />
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="cart_wrapper" :class="[showCart ? 'open' : '']" @click="cartToggle()"/>
+    <div class="cart_wrapper" :class="[showCart ? 'open' : '']" @click="cartToggle()" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from 'vuex';
 import URLParams from '@/utils/urlparams';
 import {
   CartActionTypes,
   CartMutationTypes,
-  CartNamespace
-} from "@/store/module/Cart";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames } from "@/config";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Loading, CouponsComponent } from "@/extendables/BaseComponents";
-import CartIcon from "@/assets/icons/cart.svg";
-import CloseIcon from "@/assets/icons/close.svg";
+  CartNamespace,
+} from '@/store/module/Cart';
+import { EventManager } from '@/utils';
+import { getEnum, EnumNames } from '@/config';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { Loading, CouponsComponent } from '@/extendables/BaseComponents';
+import CartIcon from '@/assets/icons/cart.svg';
+import CloseIcon from '@/assets/icons/close.svg';
 
 class ItemQuantityObject {
   constructor(index, quantity) {
@@ -175,16 +174,16 @@ class CartConfig {
 // Displays all the products saved inside the cart vuex store
 // @vuese
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     CartIcon,
     CloseIcon,
     Loading,
-    CouponsComponent
+    CouponsComponent,
   },
   props: {
     // CartHelper object to access to all the products data
-    cartHelper: Object
+    cartHelper: Object,
   },
   data() {
     return {
@@ -194,24 +193,26 @@ export default {
       changing: false,
       loading: false,
       cartText: {
-        empty: "Tu carrito está vacío...",
-        filled: "Te estás llevando..."
-      }
+        empty: 'Tu carrito está vacío...',
+        filled: 'Te estás llevando...',
+      },
+      currencySymbol: null,
     };
   },
   computed: {
     ...mapState(StoreDataNamespace, [
-      "authToken",
-      "storeIdentifier",
-      "store_id",
-      "store_slug"
+      'authToken',
+      'storeIdentifier',
+      'store_id',
+      'store_slug',
+      'currency',
     ]),
     ...mapState(CartNamespace, [
-      "cartItems",
-      "cartQuantity",
-      "cartSubtotal",
-      "cartRedirect",
-      "coupon"
+      'cartItems',
+      'cartQuantity',
+      'cartSubtotal',
+      'cartRedirect',
+      'coupon',
     ]),
     emptyCartText() {
       return this.cartItems.length > 0
@@ -222,7 +223,7 @@ export default {
       return (
         this.cartSubtotal - (this.cartSubtotal * this.coupon.discount) / 100
       );
-    }
+    },
   },
   watch: {
     cartQuantity() {
@@ -244,15 +245,18 @@ export default {
     },
     showCouponInput() {
       if (this.silentCouponInput) return;
-      setTimeout(() => document.getElementById("couponInput").focus(), 100);
-    }
+      setTimeout(() => document.getElementById('couponInput').focus(), 100);
+    },
+    currency(value) {
+      this.currencySymbol = getEnum(EnumNames.CurrencySymbols)[value];
+    },
   },
   methods: {
     ...mapActions({
       fetchStoredCart: CartActionTypes.FETCH_STORED_CART,
       deleteCart: CartActionTypes.DELETE_CART,
       getCheckoutUrl: CartActionTypes.GET_CHECKOUT_URL,
-      storeCart: CartActionTypes.STORE_CART
+      storeCart: CartActionTypes.STORE_CART,
     }),
     ...mapMutations({
       setCartConfig: CartMutationTypes.SET_CART_CONFIG,
@@ -275,12 +279,12 @@ export default {
     checkout() {
       if (this.cartItems.length < 1) return;
       this.loading = true;
-      this.getCheckoutUrl();
+      this.getCheckoutUrl(this.currency);
 
       if (this.$ga) {
         this.$ga.event({
           eventCategory: `waffle-${this.store_slug}`,
-          eventAction: "checkout"
+          eventAction: 'checkout',
         });
       }
     },
@@ -298,23 +302,19 @@ export default {
      * Shows/hides the page scrollbar.
      */
     toggleScrollBar() {
-      if (this.showCart)
-        document.getElementsByTagName("body")[0].style.overflowY = "hidden";
-      else document.getElementsByTagName("body")[0].style.overflowY = "initial";
+      if (this.showCart) { document.getElementsByTagName('body')[0].style.overflowY = 'hidden'; } else document.getElementsByTagName('body')[0].style.overflowY = 'initial';
     },
     /**
      * @vuese
      * Subscribes to the cart_toggle, and popstate event
      */
     suscribeToEvents() {
-      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () =>
-        this.cartToggle()
-      );
+      EventManager.Subscribe(getEnum(EnumNames.EventNames).ON_CART_TOGGLE, () => this.cartToggle());
     },
-    setUrlCoupon(coupon){
+    setUrlCoupon(coupon) {
       this.setCouponCode(coupon);
       this.showCouponInput = true;
-      this.silentCouponInput = true;  
+      this.silentCouponInput = true;
     },
   },
   mounted() {
@@ -324,8 +324,8 @@ export default {
         this.cartHelper,
         this.storeIdentifier,
         this.store_id,
-        this.authToken
-      )
+        this.authToken,
+      ),
     );
 
     // Fetches localStorage info
@@ -336,8 +336,11 @@ export default {
 
     // Searches discount coupon in url
     const coupon = URLParams('coupon');
-    if(coupon) this.setUrlCoupon(coupon);
-  }
+    if (coupon) this.setUrlCoupon(coupon);
+
+    // Gets currency symbol
+    this.currencySymbol = getEnum(EnumNames.CurrencySymbols)[this.currency];
+  },
 };
 </script>
 
@@ -539,10 +542,10 @@ input {
   .btn {
     margin-top: 15px;
     padding: 12px 0;
-    &.btn-coupons{
+    &.btn-coupons {
       margin-left: 15px;
       margin-right: 15px;
-      @include md-up{
+      @include md-up {
         margin-left: 0;
         margin-right: 0;
       }
@@ -593,5 +596,4 @@ input {
     z-index: 200;
   }
 }
-
 </style>

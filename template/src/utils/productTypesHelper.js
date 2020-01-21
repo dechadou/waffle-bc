@@ -43,20 +43,19 @@ export const isOutOfStock = (articleList, productClass) => (productClass === 'pr
 
 // Expects a product object
 // Returns its price (Number)
-export const getPrice = (data) => {
+export const getPrice = (data, currency) => {
   let finalPrice = null;
   const v2Object = data.class === 'product' ? data.articles[0].v2 : data.v2;
-  const defaultCurrency = getVariable(VariableNames.DefaultCurrency);
 
   // if there is a v2 object
   if (v2Object) {
-    const currencyObject = v2Object.price.find(x => x.coin_unit === defaultCurrency);
+    const currencyObject = v2Object.price.find(x => x.coin_unit === currency);
     if (currencyObject) finalPrice = currencyObject.price;
   }
 
   // if there aren't v2 prices or there are none with the default currency: fallback to v1 currency
   if (!finalPrice) {
-    if (defaultCurrency !== 'ars') return null;
+    if (currency !== 'ars') return null;
     finalPrice = data.class === 'product' ? data.articles[0].price : data.price;
   }
 
@@ -64,4 +63,11 @@ export const getPrice = (data) => {
   // Not checking with !finalPrice because it is ok for a price to be 0.00
   // Not doing "return +finalPrice || null" because the + sign automatically converts null to 0, which is a valid price
   return finalPrice === null ? null : +finalPrice;
+};
+
+// Expects a product object
+// Returns its price in all currencies available
+export const getPriceArray = (data) => {
+  const v2Object = data.class === 'product' ? data.articles[0].v2 : data.v2;
+  return v2Object ? v2Object.price : [{ PRICE: data.class === 'product' ? data.articles[0].price : data.price, COIN_UNIT: 'ARS' }];
 };

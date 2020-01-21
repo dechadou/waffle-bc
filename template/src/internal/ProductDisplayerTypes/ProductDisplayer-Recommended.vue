@@ -7,20 +7,24 @@
       <div class="col-12 col-md-3">
         <h3>
           Aprovechá
-          <br class="d-none d-md-block">el envío
-          <br class="d-block d-md-none">y agregá
-          <br class="d-none d-md-block">a tu pedido:
+          <br class="d-none d-md-block" />el envío
+          <br class="d-block d-md-none" />y agregá
+          <br class="d-none d-md-block" />a tu pedido:
         </h3>
       </div>
       <div class="col-md-9" v-if="breakpoint >= breakpoints.MD">
         <div class="row">
-          <div v-for="product in products" :key="`${product.id}-${product.class}`" class="col-4">
-            <Product-DescriptionBottom :data="product"/>
+          <div
+            v-for="product in displayProducts"
+            :key="`${product.id}-${product.class}`"
+            class="col-4"
+          >
+            <Product-DescriptionBottom :data="product" />
           </div>
         </div>
       </div>
     </div>
-    <ProductDisplayerSlider :products="products" v-if="breakpoint < breakpoints.MD"/>
+    <ProductDisplayerSlider :products="products" v-if="breakpoint < breakpoints.MD" />
   </div>
 </template>
 

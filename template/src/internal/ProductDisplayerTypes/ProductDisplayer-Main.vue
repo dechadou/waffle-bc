@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div
-      v-for="product in products"
+      v-for="product in displayProducts"
       :key="`${product.id}-${product.class}`"
       :class="containerClasses"
     >
@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import { ProductDisplayerType } from "@/extendables/BaseComponents";
+import { ProductDisplayerType } from '@/extendables/BaseComponents';
 
 // @group PRODUCTDISPLAYER TYPES
 // The main way of displaying products
 // @vuese
 export default {
-  name: "ProductDisplayer-Main",
+  name: 'ProductDisplayer-Main',
   extends: ProductDisplayerType,
   props: {
     // Classes to append to the products
@@ -32,9 +32,9 @@ export default {
     // Whether it's products should open modules or not
     openModules: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 };
 </script>
 

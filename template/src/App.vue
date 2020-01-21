@@ -4,11 +4,11 @@
 <template>
   <transition name="slide-fade">
     <div v-if="show">
-      <HeaderSection :year="year" v-if="hasHeader"/>
-      <Cart :cartHelper="cartHelper"/>
-      <router-view/>
-      <component :is="footer" :year="year"/>
-      <RelatedProducts :cartHelper="cartHelper" v-if="themeConfig.showRelatedProducts"/>
+      <HeaderSection :year="year" v-if="hasHeader" />
+      <Cart :cartHelper="cartHelper" />
+      <router-view />
+      <component :is="footer" :year="year" />
+      <RelatedProducts :cartHelper="cartHelper" v-if="themeConfig.showRelatedProducts" />
     </div>
   </transition>
 </template>
@@ -27,6 +27,7 @@ import {
   StoreDataNamespace,
 } from '@/store/module/StoreData';
 import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
+import { CartMutationTypes } from '@/store/module/Cart';
 import { BreakpointsMutationTypes } from '@/store/module/Breakpoints';
 import { getVariable, VariableNames } from '@/config';
 import * as FooterTypes from '@/extendables/FooterTypes';
@@ -54,6 +55,7 @@ export default {
     return {
       show: false,
       cartHelper: null,
+      defaultCurrency: null,
     };
   },
   computed: {
@@ -128,6 +130,8 @@ export default {
     // Tells the Breakpoints Store to get the size of the screen and set the breakpoint
     this.setBreakpoint();
 
+    this.defaultCurrency = getVariable(VariableNames.DefaultCurrency);
+
     window.addEventListener('resize', this.onResize, true);
   },
   methods: {
@@ -135,6 +139,8 @@ export default {
       setTheme: ThemeMutationTypes.SET_THEME,
       setFooter: ThemeMutationTypes.SET_FOOTER,
       setStoreIdentifier: StoreDataMutationTypes.SET_STORE_IDENTIFIER,
+      setCurrency: StoreDataMutationTypes.SET_CURRENCY,
+      setCartCurrency: CartMutationTypes.SET_CURRENCY,
       setBreakpoint: BreakpointsMutationTypes.SET_BREAKPOINT,
     }),
     ...mapActions({
@@ -146,8 +152,14 @@ export default {
      */
     async checkIpForPricing() {
       // TODO: Only make the request if tienda internacional
-      const ipinfo = await Request.get('https://ipapi.co/json');
-      console.log(ipinfo);
+      const tiendaInternacional = true;
+      if (tiendaInternacional && this.defaultCurrency === 'ars') {
+        const ipinfo = await Request.get('https://ipapi.co/json');
+        if (ipinfo.country_code === 'AR') {
+          this.setCartCurrency('usd');
+          this.setCurrency('usd');
+        }
+      }
     },
     /**
      * @vuese
@@ -198,6 +210,10 @@ export default {
       // Creates a cartHelper object that is used by the Cart component and the RelatedProducts component
       // The cartHelper object asks for the storeData
       this.cartHelper = new CartHelper(this.data);
+
+      // Sets default currency
+      this.setCurrency(this.defaultCurrency);
+      this.setCartCurrency(this.defaultCurrency);
 
       const loadingScreen = document.getElementById('loadingScreen');
       loadingScreen.parentElement.removeChild(loadingScreen);
