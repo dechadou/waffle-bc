@@ -1,12 +1,12 @@
 <template>
   <div class="row">
-    <div class="col-md-2 col-10 offset-1 offset-md-0">
+    <div class="col-12">
       <div class="row no-gutters">
         <div class="col-6">
           <button
             :class="{alternative: 'ars' === currency}"
             type="button"
-            class="btn"
+            class="btn first-button"
             @click="changeCurrency('ars')"
           >ARS</button>
         </div>
@@ -27,6 +27,7 @@
 import { mapState, mapMutations } from 'vuex';
 import { StoreDataMutationTypes, StoreDataNamespace } from '@/store/module/StoreData';
 import { CartMutationTypes } from '@/store/module/Cart';
+import { getVariable, VariableNames } from '@/config';
 
 // Currency selector
 // @vuese
@@ -44,6 +45,7 @@ export default {
       if (currencyParam === this.currency) return;
       this.setCartCurrency(currencyParam);
       this.setCurrency(currencyParam);
+      localStorage.setItem(getVariable(VariableNames.SelectedCurrency), currencyParam);
     },
   },
 };
@@ -52,5 +54,14 @@ export default {
 <style lang="scss" scoped>
 .productContainer {
   width: 100%;
+}
+
+button {
+  padding: 5px 0;
+    font-size: 18px;
+}
+
+.first-button{
+  border-right: none;
 }
 </style>

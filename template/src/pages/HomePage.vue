@@ -10,7 +10,6 @@
         :introCopy="template.intro_copy"
       />
       <div class="container" :class="[{'has-header': hasHeader}]">
-        <CurrencySelector />
         <section id="shop">
           <ProductDisplayer-Main
             :products="mainProducts"
@@ -58,7 +57,6 @@ import {
   Profile,
   PageShare,
   GlobalWarning,
-  CurrencySelector,
 } from '@/extendables/BaseComponents';
 
 // @group PAGES
@@ -72,7 +70,6 @@ export default {
     ProductDisplayerMain,
     PageShare,
     GlobalWarning,
-    CurrencySelector,
   },
   data() {
     return {

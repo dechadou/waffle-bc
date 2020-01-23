@@ -19,7 +19,6 @@ import VueAnalytics from 'vue-analytics';
 import {
   mapActions, mapGetters, mapState, mapMutations,
 } from 'vuex';
-import router from '@/router';
 import {
   StoreDataActionTypes,
   StoreDataGetterTypes,
@@ -29,6 +28,7 @@ import {
 import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
 import { CartMutationTypes } from '@/store/module/Cart';
 import { BreakpointsMutationTypes } from '@/store/module/Breakpoints';
+import router from '@/router';
 import { getVariable, VariableNames } from '@/config';
 import * as FooterTypes from '@/extendables/FooterTypes';
 import { CartHelper } from '@/objects/CartObjects';
@@ -56,6 +56,7 @@ export default {
       show: false,
       cartHelper: null,
       defaultCurrency: null,
+      savedCurrency: null,
     };
   },
   computed: {
@@ -67,6 +68,8 @@ export default {
       'year',
       'store_id',
       'store_slug',
+      'currency',
+      'multiCurrency',
     ]),
     ...mapGetters({
       isLoaded: StoreDataGetterTypes.IS_LOADED,
@@ -78,7 +81,6 @@ export default {
   watch: {
     isLoaded(value) {
       if (!value) return;
-      this.checkIpForPricing();
       this.setTheme(this.template.template_selector);
       this.setFooter(this.template.footer_type);
       this.setApp();
@@ -150,16 +152,17 @@ export default {
      * @vuese
      * Checks the user's IP and changes pricing if necesary
      */
-    async checkIpForPricing() {
-      // TODO: Only make the request if tienda internacional
-      const tiendaInternacional = true;
-      if (tiendaInternacional && this.defaultCurrency === 'ars') {
+    async setCurrencyConfig() {
+      if (this.multiCurrency && !this.savedCurrency) {
         const ipinfo = await Request.get('https://ipapi.co/json');
-        if (ipinfo.country_code === 'AR') {
+        if (ipinfo.country_code !== 'AR') {
           this.setCartCurrency('usd');
           this.setCurrency('usd');
         }
       }
+
+      const localStSelectedCurrencyName = getVariable(VariableNames.SelectedCurrency);
+      localStorage.setItem(localStSelectedCurrencyName, this.currency);
     },
     /**
      * @vuese
@@ -211,13 +214,25 @@ export default {
       // The cartHelper object asks for the storeData
       this.cartHelper = new CartHelper(this.data);
 
-      // Sets default currency
-      this.setCurrency(this.defaultCurrency);
-      this.setCartCurrency(this.defaultCurrency);
+      // Sets currency
+      const localStSelectedCurrencyName = getVariable(VariableNames.SelectedCurrency);
+      this.savedCurrency = localStorage.getItem(localStSelectedCurrencyName);
 
+      if (this.savedCurrency && this.savedCurrency !== 'null') {
+        this.setCurrency(this.savedCurrency);
+        this.setCartCurrency(this.savedCurrency);
+      } else {
+        this.setCurrency(this.defaultCurrency);
+        this.setCartCurrency(this.defaultCurrency);
+      }
+
+      this.setCurrencyConfig();
+
+      // Removes loading screen
       const loadingScreen = document.getElementById('loadingScreen');
       loadingScreen.parentElement.removeChild(loadingScreen);
 
+      // Shows content
       this.show = true;
     },
     /**

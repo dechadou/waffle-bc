@@ -14,6 +14,7 @@ export const VariableNames = {
   DefaultSlug: 'default-slug-variable',
   WaffleVersion: 'waffle-version-variable',
   DefaultCurrency: 'default-currency-variable',
+  SelectedCurrency: 'selected-currency-variable',
 };
 
 export const EnumNames = {
@@ -69,6 +70,7 @@ const config = {
     [VariableNames.WaffleVersion]: 1.5,
     [VariableNames.DefaultCurrency]: typeof $defaultCurrency !== 'undefined' ? $defaultCurrency : 'ars',
     [VariableNames.DefaultSlug]: typeof $defaultSlug !== 'undefined' ? $defaultSlug : 'abre',
+    [VariableNames.SelectedCurrency]: 'abre-selected-currency',
   },
   enums: {
     [EnumNames.EventNames]: {

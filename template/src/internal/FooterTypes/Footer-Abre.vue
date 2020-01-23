@@ -1,6 +1,12 @@
 <template>
   <section class="footer">
     <div class="content">
+      <div class="row selector d-none d-md-flex" v-if="multiCurrency">
+        <div class="col-9"></div>
+        <div class="col-2 nopadding">
+          <CurrencySelector class="currency-selector"/>
+        </div>
+      </div>
       <aside class="logoBox">
         <h2 class="logo">
           <a href="https://abrecultura.com/" target="_blank" rel="noopener">
@@ -30,6 +36,12 @@
           </p>
         </aside>
       </div>
+
+      <div class="row selector d-flex d-md-none" v-if="multiCurrency">
+        <div class="col-5 nopadding">
+          <CurrencySelector class="currency-selector"/>
+        </div>
+      </div>
       <Social :year="year" class="social"/>
     </div>
   </section>
@@ -37,7 +49,7 @@
 
 
 <script>
-import { FooterType, Social } from '@/extendables/BaseComponents';
+import { FooterType, Social, CurrencySelector } from '@/extendables/BaseComponents';
 import LogoIcon from '@/assets/icons/logo.svg';
 
 // @group FOOTER TYPES
@@ -49,6 +61,7 @@ export default {
   components: {
     Social,
     LogoIcon,
+    CurrencySelector,
   },
   data() {
     return {
@@ -245,5 +258,23 @@ export default {
     height: 100%;
     width: 100%;
   }
+}
+
+.selector{
+  width: 100%;
+  .currency-selector{
+    margin-bottom: 20px;
+    margin-left: 3px;
+    margin-top: -52px;
+    @include lg-up {
+      margin-top: 0;
+      margin-bottom: -45px;
+      margin-left: 10px;
+    }
+  }
+}
+
+.nopadding{
+  padding: 0;
 }
 </style>

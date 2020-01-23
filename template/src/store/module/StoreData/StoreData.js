@@ -31,6 +31,7 @@ export default {
     store_slug: null,
     error: null,
     currency: null,
+    multiCurrency: false,
   },
   getters: {
     [IS_LOADED]: state => state.data !== null,
@@ -73,6 +74,9 @@ export default {
       state.store_id = data.id_tienda;
       state.authToken = data.token;
       state.store_slug = getVariable(VariableNames.DefaultSlug);
+
+      // TODO: Set multi-currency with backend values
+      state.multiCurrency = false;
       if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {
