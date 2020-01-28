@@ -1,10 +1,10 @@
 <script>
-import { mapActions, mapState } from "vuex";
-import { CartActionTypes } from "@/store/module/Cart";
-import { ThemeNamespace } from "@/store/module/Theme";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames } from "@/config";
+import { mapActions, mapState } from 'vuex';
+import { CartActionTypes } from '@/store/module/Cart';
+import { ThemeNamespace } from '@/store/module/Theme';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { EventManager } from '@/utils';
+import { getEnum, EnumNames } from '@/config';
 
 class ProductID {
   constructor(id, productClass) {
@@ -17,22 +17,22 @@ class ProductID {
 // The base component for AddToCart Buttons. AddToCart Buttons should inherit from this component
 // @vuese
 export default {
-  name: "AddToCartButton",
+  name: 'AddToCartButton',
   props: {
     // The product internal link
     link: String,
     // The product id
     id: Number,
     // The product class (example: product/bundle)
-    productClass: String
+    productClass: String,
   },
   computed: {
-    ...mapState(ThemeNamespace, ["themeConfig"]),
-    ...mapState(StoreDataNamespace, ["store_slug"])
+    ...mapState(ThemeNamespace, ['themeConfig']),
+    ...mapState(StoreDataNamespace, ['store_slug']),
   },
   methods: {
     ...mapActions({
-      addToStoreCart: CartActionTypes.ADD_TO_CART
+      addToStoreCart: CartActionTypes.ADD_TO_CART,
     }),
     /**
      * @vuese
@@ -48,7 +48,7 @@ export default {
         if (this.themeConfig.showRelatedProducts) {
           EventManager.Trigger(
             eventNames.ON_RELATED_PRODUCTS_TOGGLE,
-            productID
+            productID,
           );
         } else EventManager.Trigger(eventNames.ON_CART_TOGGLE);
       }
@@ -56,8 +56,8 @@ export default {
       if (this.$ga) {
         this.$ga.event({
           eventCategory: `waffle-${this.store_slug}`,
-          eventAction: "add-to-cart",
-          eventLabel: `${this.id}_${this.productClass}`
+          eventAction: 'add-to-cart',
+          eventLabel: `${this.id}_${this.productClass}`,
         });
       }
     },
@@ -67,7 +67,7 @@ export default {
      */
     openLink() {
       this.$router.push(this.link);
-    }
-  }
+    },
+  },
 };
 </script>

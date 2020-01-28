@@ -1,4 +1,4 @@
-import { getImage, getPrice } from '@/utils/productTypesHelper';
+import { getImage, getPriceArray } from '@/utils/productTypesHelper';
 
 export class CartObject {
   constructor(id, name, price, quantity, media, productClass, attributes) {
@@ -24,7 +24,7 @@ export class CartHelper {
         return new CartObject(
           id,
           productArticlePair.product.name,
-          getPrice(productArticlePair.product),
+          getPriceArray(productArticlePair.product),
           0,
           getImage(productArticlePair.product.media),
           productClass,
@@ -37,7 +37,7 @@ export class CartHelper {
         return new CartObject(
           id,
           bundle.name,
-          getPrice(bundle),
+          getPriceArray(bundle),
           0,
           getImage(bundle.media),
           productClass,

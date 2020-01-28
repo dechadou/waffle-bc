@@ -13,6 +13,7 @@ export const FETCH_STORE_DATA = 'fetch-store-data';
 export const GET_PRODUCT_LIST_BY_BUNDLE_ID = 'get-product-list-by-bundle-id';
 export const GET_ARTICLE_LIST_BY_PRODUCT_ID = 'get-article-list-by-product-id';
 export const SET_STORE_IDENTIFIER = 'set-store-identifier';
+export const SET_CURRENCY = 'set-currency';
 const ADD_DATA = 'add-products';
 const ADD_ERROR = 'add-error';
 
@@ -29,6 +30,8 @@ export default {
     store_id: null,
     store_slug: null,
     error: null,
+    currency: null,
+    multiCurrency: false,
   },
   getters: {
     [IS_LOADED]: state => state.data !== null,
@@ -71,6 +74,9 @@ export default {
       state.store_id = data.id_tienda;
       state.authToken = data.token;
       state.store_slug = getVariable(VariableNames.DefaultSlug);
+
+      // TODO: Set multi-currency with backend values
+      state.multiCurrency = false;
       if (typeof data.template.destacados === 'object') state.home_products = Object.values(data.template.destacados);
     },
     [ADD_ERROR]: (state, error) => {
@@ -78,6 +84,9 @@ export default {
     },
     [SET_STORE_IDENTIFIER]: (state, { domain, storeSlug }) => {
       state.storeIdentifier = `${domain}-${storeSlug}`;
+    },
+    [SET_CURRENCY]: (state, currency) => {
+      state.currency = currency;
     },
   },
   actions: {

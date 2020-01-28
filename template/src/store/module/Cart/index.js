@@ -8,6 +8,7 @@ import Cart, {
   ADD_TO_CART,
   SET_COUPON,
   SET_COUPON_CODE,
+  SET_CURRENCY,
 } from './Cart';
 
 export const CartNamespace = 'Cart';
@@ -25,6 +26,7 @@ export const CartMutationTypes = {
   CHANGE_ITEM_QUANTITY: `${CartNamespace}/${CHANGE_ITEM_QUANTITY}`,
   SET_COUPON: `${CartNamespace}/${SET_COUPON}`,
   SET_COUPON_CODE: `${CartNamespace}/${SET_COUPON_CODE}`,
+  SET_CURRENCY: `${CartNamespace}/${SET_CURRENCY}`,
 };
 
 export default Cart;

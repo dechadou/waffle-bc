@@ -20,7 +20,7 @@
             {{ data.name }}
             &nbsp;•&nbsp;
             <span class="price">
-              <span>$</span>
+              <span>{{ currencySymbol }}</span>
               {{ price }}
             </span>
           </h1>
@@ -45,30 +45,30 @@
 </template>
 
 <script>
-import { LazyImage, ProductType } from "@/extendables/BaseComponents";
+import { LazyImage, ProductType } from '@/extendables/BaseComponents';
 
 // @group PRODUCT TYPES
 // Shows the product the way it was designed for the ProductSlider
 // @vuese
 export default {
-  name: "Product-SliderMobile",
+  name: 'Product-SliderMobile',
   extends: ProductType,
   components: {
-    LazyImage
+    LazyImage,
   },
   methods: {
     getButtonType() {
-      if (this.data.class === "product" && this.articleList.length > 1) {
-        return "Select";
+      if (this.data.class === 'product' && this.articleList.length > 1) {
+        return 'Select';
       }
 
       if (this.isOutOfStock) {
-        return "OutOfStock";
+        return 'OutOfStock';
       }
 
-      return "Check";
-    }
-  }
+      return 'Check';
+    },
+  },
 };
 </script>
 

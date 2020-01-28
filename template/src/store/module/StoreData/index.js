@@ -10,6 +10,7 @@ import StoreData, {
   GET_PRODUCT_LIST_BY_BUNDLE_ID,
   GET_ARTICLE_LIST_BY_PRODUCT_ID,
   SET_STORE_IDENTIFIER,
+  SET_CURRENCY,
 } from './StoreData';
 
 export const StoreDataNamespace = 'StoreData';
@@ -32,6 +33,7 @@ export const StoreDataActionTypes = {
 
 export const StoreDataMutationTypes = {
   SET_STORE_IDENTIFIER: `${StoreDataNamespace}/${SET_STORE_IDENTIFIER}`,
+  SET_CURRENCY: `${StoreDataNamespace}/${SET_CURRENCY}`,
 };
 
 export default StoreData;
