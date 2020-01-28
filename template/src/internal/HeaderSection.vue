@@ -1,12 +1,12 @@
 <template>
   <section class="header" :class="[{ 'active': isActive }]">
-    <router-link to="/">
+    <a href="https://abrecultura.com/" @click="goHome($event)">
       <h1 ref="logo" class="logo">
         <span class="sr-only">LOGO</span>
         <LogoIcon class="logoIcon"/>
       </h1>
-    </router-link>
-    <div class="icons" @click="toggleMenu" v-if="!isProductInternal && hasMenu">
+    </a>
+    <div class="icons" @click="toggleMenu" v-if="!isProductInternal && isMainSite">
       <MenuIcon
         class="icon"
         :class="[{ 'icon-active': !isActive }]"
@@ -16,7 +16,7 @@
         :class="[{ 'icon-active': isActive }]"
       />
     </div>
-    <nav class="menu" v-if="hasMenu">
+    <nav class="menu" v-if="isMainSite">
       <ul class="nav" v-if="!isProductInternal">
         <li>
           <a href="https://abrecultura.com/nosotres/">Nosotres</a>
@@ -72,7 +72,7 @@ export default {
         this.currentPage === "DefaultBundlePage"
       );
     },
-    hasMenu() {
+    isMainSite() {
       return this.store_id === 8;
     }
   },
@@ -88,6 +88,15 @@ export default {
      */
     toggleMenu() {
       this.isActive = !this.isActive;
+    },
+    goHome($event){
+      $event.preventDefault();
+      
+      if(this.isMainSite){
+        this.$router.push({ path: '/' })
+      }else{
+        window.location.href = "https://abrecultura.com/";
+      }
     }
   }
 };
