@@ -29,6 +29,7 @@ import { StoreDataMutationTypes, StoreDataNamespace } from '@/store/module/Store
 import { CartMutationTypes } from '@/store/module/Cart';
 import { getVariable, VariableNames } from '@/config';
 
+// @group INTERNAL COMPONENTS
 // Currency selector
 // @vuese
 export default {
@@ -52,10 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.productContainer {
-  width: 100%;
-}
-
 button {
   padding: 5px 0;
     font-size: 18px;

@@ -9,7 +9,7 @@
         :mobileImage="template.mobile_image"
         :introCopy="template.intro_copy"
       />
-      <div class="container" :class="[{'has-header': hasHeader}]">
+      <div class="container" :class="[{'has-header': isMarketplace}]">
         <section id="shop">
           <ProductDisplayer-Main
             :products="mainProducts"
@@ -39,6 +39,9 @@
           :shareText="template.twitter_share"
           v-if="themeConfig.showPageShare"
         />
+
+        <!-- TODO: if it is marketplace and screen >= MD don't show -->
+        <CurrencySelectorBox v-if="multiCurrency && !(isMarketplace && breakpoint >= breakpoints.MD)" />
       </div>
     </div>
   </transition>
@@ -46,6 +49,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { BreakpointsNamespace } from '@/store/module/Breakpoints';
 import { StoreDataNamespace } from '@/store/module/StoreData';
 import { ThemeNamespace } from '@/store/module/Theme';
 import {
@@ -57,6 +61,7 @@ import {
   Profile,
   PageShare,
   GlobalWarning,
+  CurrencySelectorBox,
 } from '@/extendables/BaseComponents';
 
 // @group PAGES
@@ -70,6 +75,7 @@ export default {
     ProductDisplayerMain,
     PageShare,
     GlobalWarning,
+    CurrencySelectorBox,
   },
   data() {
     return {
@@ -83,9 +89,11 @@ export default {
       'template',
       'home_products',
       'store_id',
+      'multiCurrency',
     ]),
     ...mapState(ThemeNamespace, ['themeConfig', 'theme']),
-    hasHeader() {
+    ...mapState(BreakpointsNamespace, ['breakpoint', 'breakpoints']),
+    isMarketplace() {
       return this.theme === 'marketplace';
     },
   },

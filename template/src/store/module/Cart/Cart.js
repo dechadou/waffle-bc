@@ -138,7 +138,10 @@ export default {
     },
     [GET_CHECKOUT_URL]: ({ state, commit }, currency) => {
       const url = state.cartItems.reduce((accumulator, currentValue) => {
-        if (currentValue.price.some(x => x.currency === state.currency)) {
+
+        console.log(currentValue.price);
+
+        if (currentValue.price.some(x => x.coin_unit === state.currency)) {
           accumulator
             += `&${currentValue.class === 'bundle' ? [QUERY_BUNDLES_ARRAY] : [QUERY_ARTICLES_ARRAY]}`;
           accumulator += `=${currentValue.id},${currentValue.quantity}`;

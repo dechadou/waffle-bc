@@ -22,7 +22,10 @@
           <a href="https://abrecultura.com/nosotres/">Nosotres</a>
         </li>
         <li>
-          <a href="https://abrecultura.com/nosotros/mi-pedido/">Estado de mi pedido</a>
+          <a href="https://abrecultura.com/nosotres/mi-pedido/">Estado de mi pedido</a>
+        </li>
+        <li>
+          <a href="https://abrecultura.com/nosotres/mapadelibrerias/">Mapa de librerías</a>
         </li>
       </ul>
       <Social :year="year" class="social"/>
