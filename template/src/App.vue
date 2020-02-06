@@ -218,7 +218,7 @@ export default {
       const localStSelectedCurrencyName = getVariable(VariableNames.SelectedCurrency);
       this.savedCurrency = localStorage.getItem(localStSelectedCurrencyName);
 
-      if (this.savedCurrency && this.savedCurrency !== 'null') {
+      if (this.multiCurrency && this.savedCurrency && this.savedCurrency !== 'null') {
         this.setCurrency(this.savedCurrency);
         this.setCartCurrency(this.savedCurrency);
       } else {
