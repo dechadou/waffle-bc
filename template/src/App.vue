@@ -15,7 +15,6 @@
 
 <script>
 import Vue from 'vue';
-import VueAnalytics from 'vue-analytics';
 import {
   mapActions, mapGetters, mapState, mapMutations,
 } from 'vuex';
@@ -201,14 +200,6 @@ export default {
         domain: 'abre',
         storeSlug: this.store_id,
       });
-
-      // Calls to VueAnalytics component if an Analytics code exists
-      if (this.template.codigo_analytics) {
-        Vue.use(VueAnalytics, {
-          id: this.template.codigo_analytics,
-          router,
-        });
-      }
 
       // Creates a cartHelper object that is used by the Cart component and the RelatedProducts component
       // The cartHelper object asks for the storeData
