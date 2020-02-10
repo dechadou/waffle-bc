@@ -158,10 +158,10 @@ export default {
           this.setCartCurrency('usd');
           this.setCurrency('usd');
         }
-      }
 
-      const localStSelectedCurrencyName = getVariable(VariableNames.SelectedCurrency);
-      localStorage.setItem(localStSelectedCurrencyName, this.currency);
+        const localStSelectedCurrencyName = getVariable(VariableNames.SelectedCurrency);
+        localStorage.setItem(localStSelectedCurrencyName, this.currency);
+      }
     },
     /**
      * @vuese
