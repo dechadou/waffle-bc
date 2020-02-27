@@ -21,7 +21,7 @@ EnvCheck();
 const store = getStore();
 
 Vue.use(VueGtm, {
-  id: ['GTM-NLPFLCD', $gtm], // Global and local GTM
+  id: (typeof $gtm !== 'undefined') ? ['GTM-NLPFLCD', $gtm] : 'GTM-NLPFLCD', // Global and local GTM
   vueRouter: router, // Pass the router instance to automatically sync with router (optional)
 });
 
