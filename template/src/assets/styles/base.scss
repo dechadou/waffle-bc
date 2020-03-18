@@ -157,14 +157,14 @@ use #menu {
   position: absolute;
   z-index: 1;
   &:after{
-    content: "Env\EDo Gratuito";
+    content: "Env\EDo Gratuito a Argentina";
     display: block;
-    top: 24%;
+    top: 21%;
     font-family: $font-light;
-    font-size: 20px;
+    font-size: 16px;
     margin: 0 auto;
     color: #fff;
-    width: 65px;
+    width: 85px;
     text-align: center;
     position: relative;
   }
