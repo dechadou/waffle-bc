@@ -123,8 +123,6 @@ export default {
 
         if (!product) return;
 
-        product.envio_gratuito = true;
-
         if (x.principal) this.mainProducts.push(product);
         else this.recommendedProducts.push(product);
       });
