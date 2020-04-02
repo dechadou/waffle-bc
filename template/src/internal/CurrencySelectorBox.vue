@@ -20,11 +20,11 @@ import { CurrencySelector } from '@/extendables/BaseComponents';
 // Displays the currency selector with a title
 // @vuese
 export default {
-  name: "CurrencySelectorBox",
+  name: 'CurrencySelectorBox',
   components: {
     CurrencySelector,
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

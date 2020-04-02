@@ -1,12 +1,6 @@
 <template>
   <section class="footer">
     <div class="content">
-      <div class="row selector" v-if="multiCurrency && breakpoint >= breakpoints.MD">
-        <div class="col-9"></div>
-        <div class="col-2 nopadding">
-          <CurrencySelector class="currency-selector"/>
-        </div>
-      </div>
       <aside class="logoBox">
         <h2 class="logo">
           <a href="https://abrecultura.com/" target="_blank" rel="noopener">
@@ -43,10 +37,7 @@
 
 
 <script>
-import { mapState } from 'vuex';
-import { BreakpointsNamespace } from '@/store/module/Breakpoints';
-import { StoreDataNamespace } from '@/store/module/StoreData';
-import { FooterType, Social, CurrencySelector } from '@/extendables/BaseComponents';
+import { FooterType, Social } from '@/extendables/BaseComponents';
 import LogoIcon from '@/assets/icons/logo.svg';
 
 // @group FOOTER TYPES
@@ -58,11 +49,6 @@ export default {
   components: {
     Social,
     LogoIcon,
-    CurrencySelector,
-  },
-  computed: {
-    ...mapState(BreakpointsNamespace, ['breakpoint', 'breakpoints']),
-    ...mapState(StoreDataNamespace, ['multiCurrency']),
   },
   data() {
     return {

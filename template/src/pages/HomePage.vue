@@ -50,7 +50,7 @@
         />
 
         <!-- TODO: if it is marketplace and screen >= MD don't show -->
-        <CurrencySelectorBox v-if="multiCurrency && !(isMarketplace && breakpoint >= breakpoints.MD)" />
+        <!--<CurrencySelectorBox v-if="multiCurrency && !(isMarketplace && breakpoint >= breakpoints.MD)" />-->
       </div>
     </div>
   </transition>
@@ -71,7 +71,7 @@ import {
   Profile,
   PageShare,
   GlobalWarning,
-  CurrencySelectorBox,
+  // CurrencySelectorBox,
 } from '@/extendables/BaseComponents';
 
 // @group PAGES
@@ -85,7 +85,7 @@ export default {
     ProductDisplayerMain,
     PageShare,
     GlobalWarning,
-    CurrencySelectorBox,
+    // CurrencySelectorBox,
   },
   data() {
     return {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <CurrencySelector class="currency-selector" :class="{ 'with-logo': isMarketplace }" v-if="multiCurrency"/>
     <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
       <CartIcon />
       <span class="items-count animated" v-bind:class="{'jello': changing}">{{cartQuantity}}</span>
@@ -147,10 +148,11 @@ import {
   CartMutationTypes,
   CartNamespace,
 } from '@/store/module/Cart';
+import { ThemeNamespace } from '@/store/module/Theme';
 import { EventManager } from '@/utils';
 import { getEnum, EnumNames } from '@/config';
 import { StoreDataNamespace } from '@/store/module/StoreData';
-import { Loading, CouponsComponent } from '@/extendables/BaseComponents';
+import { Loading, CouponsComponent, CurrencySelector } from '@/extendables/BaseComponents';
 import CartIcon from '@/assets/icons/cart.svg';
 import CloseIcon from '@/assets/icons/close.svg';
 
@@ -180,6 +182,7 @@ export default {
     CloseIcon,
     Loading,
     CouponsComponent,
+    CurrencySelector,
   },
   props: {
     // CartHelper object to access to all the products data
@@ -206,6 +209,7 @@ export default {
       'store_id',
       'store_slug',
       'currency',
+      'multiCurrency',
     ]),
     ...mapState(CartNamespace, [
       'cartItems',
@@ -214,6 +218,7 @@ export default {
       'cartRedirect',
       'coupon',
     ]),
+    ...mapState(ThemeNamespace, ['theme']),
     emptyCartText() {
       return this.cartItems.length > 0
         ? this.cartText.filled
@@ -223,6 +228,9 @@ export default {
       return (
         this.cartSubtotal - (this.cartSubtotal * this.coupon.discount) / 100
       );
+    },
+    isMarketplace() {
+      return this.theme === 'marketplace';
     },
   },
   watch: {
@@ -557,6 +565,26 @@ input {
     }
     &:hover .cart_loader {
       fill: #000;
+    }
+  }
+}
+.currency-selector{
+  position: fixed;
+  z-index: 1000;
+  right: 19%;
+  top: 20px;
+
+  @include md-up {
+    right: 11%;
+    top: 22px;
+  }
+
+  &.with-logo{
+    right: 5%;
+    top: 55px;
+    @include md-up {
+      right: 11%;
+      top: 22px;
     }
   }
 }

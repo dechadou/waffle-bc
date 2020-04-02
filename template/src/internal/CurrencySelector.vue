@@ -2,21 +2,22 @@
   <div class="row">
     <div class="col-12">
       <div class="row no-gutters">
-        <div class="col-6">
+        <div class="col-6 button-cont">
           <button
             :class="{alternative: 'ars' === currency}"
             type="button"
-            class="btn first-button"
+            class="btn"
             @click="changeCurrency('ars')"
-          >ARS</button>
+          >AR$</button>
+          <div class="divider"/>
         </div>
-        <div class="col-6">
+        <div class="col-6 button-cont">
           <button
             :class="{alternative: 'usd' === currency}"
             type="button"
             class="btn"
             @click="changeCurrency('usd')"
-          >USD</button>
+          >US$</button>
         </div>
       </div>
     </div>
@@ -53,12 +54,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-button {
-  padding: 5px 0;
-    font-size: 18px;
-}
+button.btn {
+  padding: 0;
+  font-size: 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: #000;
+  outline: none;
+  font-family: "Founders_Grotesk_Regular", sans-serif;
 
-.first-button{
-  border-right: none;
+  &.alternative{
+    background: transparent;
+    border-bottom: 1px solid #000;
+    color: #000;
+  }
+}
+.button-cont{
+  padding: 0 7px !important;
+}
+.divider{
+  width: 1px;
+  height: 12px;
+  background: #000;
+  position: absolute;
+  right: -1px;
+  top: 6px;
 }
 </style>
