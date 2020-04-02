@@ -29,6 +29,15 @@
             :instagram="template.creador_social_ig"
             :website="template.creador_social_web"
           />
+          <div class="moca-container" v-if="moca">
+            <moca-module
+              :moca_creator="moca.moca_creator"
+              :moca_title="moca.moca_title"
+              :moca_description="moca.moca_description"
+              :moca_bg="moca.moca_bg"
+            >
+            </moca-module>
+          </div>
           <ProductDisplayer-Recommended
             :products="recommendedProducts"
             v-if="recommendedProducts.length > 0 && template.productos_relacionados"
@@ -48,6 +57,7 @@
 </template>
 
 <script>
+/* global $moca */
 import { mapState } from 'vuex';
 import { BreakpointsNamespace } from '@/store/module/Breakpoints';
 import { StoreDataNamespace } from '@/store/module/StoreData';
@@ -81,6 +91,7 @@ export default {
     return {
       mainProducts: [],
       recommendedProducts: [],
+      moca: null,
     };
   },
   computed: {
@@ -127,9 +138,20 @@ export default {
         else this.recommendedProducts.push(product);
       });
     },
+    includeMoca() {
+      const fileref = document.createElement('script');
+      fileref.setAttribute('type', 'text/javascript');
+      fileref.setAttribute('src', 'https://abrecultura.s3.amazonaws.com/data/moca/v1/moca-module.min.js');
+      document.getElementsByTagName('head')[0].appendChild(fileref);
+    },
   },
   created() {
     this.getProducts();
+
+    if (typeof $moca !== 'undefined') {
+      this.moca = $moca;
+      this.includeMoca();
+    }
   },
 };
 </script>

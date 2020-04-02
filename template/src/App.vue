@@ -14,6 +14,7 @@
 </template>
 
 <script>
+/* global $moca */
 import Vue from 'vue';
 import {
   mapActions, mapGetters, mapState, mapMutations,
@@ -27,7 +28,6 @@ import {
 import { ThemeMutationTypes, ThemeNamespace } from '@/store/module/Theme';
 import { CartMutationTypes } from '@/store/module/Cart';
 import { BreakpointsMutationTypes } from '@/store/module/Breakpoints';
-import router from '@/router';
 import { getVariable, VariableNames } from '@/config';
 import * as FooterTypes from '@/extendables/FooterTypes';
 import { CartHelper } from '@/objects/CartObjects';
@@ -126,6 +126,10 @@ export default {
     },
   },
   created() {
+    if (typeof $moca !== 'undefined') {
+      window.Vue = Vue;
+    }
+
     this.fetchData();
 
     // Tells the Breakpoints Store to get the size of the screen and set the breakpoint

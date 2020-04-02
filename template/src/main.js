@@ -11,6 +11,10 @@ import App from './App.vue';
 import router from './router';
 // import './registerServiceWorker'; Uncomment for service worker
 
+Vue.config.ignoredElements = [
+  'moca-module',
+];
+
 // Logs waffle version on console
 console.log(`Waffle Release v${getVariable(VariableNames.WaffleVersion)}`);
 
