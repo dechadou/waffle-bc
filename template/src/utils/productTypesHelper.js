@@ -50,7 +50,7 @@ export const getPrice = (data, currency) => {
   // if there is a v2 object
   if (v2Object) {
     const currencyObject = v2Object.price.find(x => x.coin_unit === currency);
-    if (currencyObject) finalPrice = currencyObject.price;
+    if (currencyObject && currencyObject.price) finalPrice = currencyObject.price;
   }
 
   // if there aren't v2 prices or there are none with the default currency: fallback to v1 currency
@@ -62,6 +62,22 @@ export const getPrice = (data, currency) => {
   // If finalPrice is null, return null, else make sure finalPrice is a number and return it
   // Not checking with !finalPrice because it is ok for a price to be 0.00
   // Not doing "return +finalPrice || null" because the + sign automatically converts null to 0, which is a valid price
+  return finalPrice === null ? null : +finalPrice;
+};
+
+// Expects a product object
+// Returns its fake price (Number)
+export const getFakePrice = (data, currency) => {
+  let finalPrice = null;
+  const v2Object = data.class === 'product' ? data.articles[0].v2 : data.v2;
+
+  // if there is a v2 object
+  if (v2Object) {
+    const currencyObject = v2Object.price.find(x => x.coin_unit === currency);
+    console.log(currencyObject);
+    if (currencyObject && currencyObject.fake_price) finalPrice = currencyObject.fake_price;
+  }
+
   return finalPrice === null ? null : +finalPrice;
 };
 

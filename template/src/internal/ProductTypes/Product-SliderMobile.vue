@@ -19,6 +19,10 @@
           <h1 class="title">
             {{ data.name }}
             &nbsp;•&nbsp;
+            <span class="price old-price" v-if="fakePrice">
+              <span>{{ currencySymbol }}</span>
+              {{ fakePrice }}
+            </span>
             <span class="price">
               <span>{{ currencySymbol }}</span>
               {{ price }}
@@ -112,8 +116,16 @@ p {
   }
 }
 
-.price span {
-  font-size: 12px;
+.price{
+  span {
+    font-size: 12px;
+  }
+
+  &.old-price{
+    margin: 0 5px;
+    color: #c1c1c1;
+    text-decoration: line-through;
+  }
 }
 
 .description {

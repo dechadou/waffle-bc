@@ -2,7 +2,9 @@
 import { mapState } from 'vuex';
 import { getEnum, EnumNames } from '@/config';
 import { StoreDataNamespace } from '@/store/module/StoreData';
-import { getPrice, getImage, isOutOfStock } from '@/utils/productTypesHelper';
+import {
+  getPrice, getFakePrice, getImage, isOutOfStock,
+} from '@/utils/productTypesHelper';
 import * as AddToCartButtons from '@/extendables/AddToCartButtonTypes';
 
 // @group PRODUCT TYPES
@@ -30,6 +32,7 @@ export default {
       articleList: null,
       singleImage: null,
       price: null,
+      fakePrice: null,
       isOutOfStock: null,
       productId: null,
       productClass: null,
@@ -52,6 +55,7 @@ export default {
       : this.data.articles;
     this.singleImage = getImage(this.data.media);
     this.price = getPrice(this.data, this.currency);
+    this.fakePrice = getFakePrice(this.data, this.currency);
     this.currencySymbol = getEnum(EnumNames.CurrencySymbols)[this.currency];
     this.isOutOfStock = isOutOfStock(this.articleList, this.data.class);
     this.productId = this.data.class === 'product' ? this.articleList[0].id : this.data.id;

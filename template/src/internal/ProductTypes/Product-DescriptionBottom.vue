@@ -16,14 +16,19 @@
       <div class="col-12 description">
         <!-- TITLE, PRICE, DESCRIPTION -->
         <div class="title_price_block row">
-          <div class="col-9">
+          <div :class="{'col-9': !fakePrice, 'col-8': fakePrice}">
             <h1 class="title">{{ data.name }}</h1>
           </div>
-          <div class="col-3 pl-0 price-container">
+          <div class="col-3 pl-0 price-container" :class="{'col-3': !fakePrice, 'col-4': fakePrice}">
             <span class="price">
               <span>{{ currencySymbol }}</span>
               {{ price }}
             </span>
+            <span class="price old-price" v-if="fakePrice">
+              <span>{{ currencySymbol }}</span>
+              {{ fakePrice }}
+            </span>
+
           </div>
           <div class="col-12 col-md-11">
             <p v-html="data.description"></p>
@@ -117,6 +122,8 @@ p {
   font-weight: $titles-font-weight;
   font-family: $titles-font;
   color: $titles-color;
+  width: 100%;
+  text-align: right;
 
   span {
     font-size: 12px;
@@ -125,6 +132,23 @@ p {
 
   @include md-up {
     font-size: 16px;
+  }
+
+  &.old-price{
+    margin-left: 5px !important;
+    color: #c1c1c1 !important;
+    text-decoration: line-through;
+
+    span {
+      font-size: 18px !important;
+      margin-right: 0 !important;
+      color: #c1c1c1 !important;
+      text-decoration: line-through;
+
+      @include lg-up {
+        font-size: 14px !important;
+      }
+    }
   }
 }
 

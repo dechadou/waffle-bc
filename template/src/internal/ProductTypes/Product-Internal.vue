@@ -30,6 +30,10 @@
                   <span>{{ currencySymbol }}</span>
                   {{ price }}
                 </span>
+                <span class="price old-price" v-if="fakePrice">
+                  <span>{{ currencySymbol }}</span>
+                  {{ fakePrice }}
+                </span>
               </div>
             </div>
             <!-- Product Description -->
@@ -386,9 +390,24 @@ button.btn.addToCartButton:hover {
     font-family: $titles-font;
     font-weight: $titles-font-weight;
     color: $titles-color;
+    width: 100%;
+    text-align: right;
 
     span {
       font-size: 16px;
+    }
+
+    &.old-price{
+      margin-top: 0;
+      color: #c1c1c1 !important;
+      text-decoration: line-through;
+
+      span {
+        font-size: 18px !important;
+        margin-right: 0 !important;
+        color: #c1c1c1 !important;
+        text-decoration: line-through;
+      }
     }
   }
 

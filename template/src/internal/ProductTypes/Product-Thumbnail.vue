@@ -21,13 +21,17 @@
             <!-- TITLE AND PRICE -->
             <div class="title_price_block">
               <div class="row">
-                <div class="col-9">
+                <div :class="{'col-9': !fakePrice, 'col-7 col-lg-8': fakePrice}">
                   <h3 class="title">{{ data.name }}</h3>
                 </div>
-                <div class="col-3 pl-0 price-container">
+                <div class="pl-0 price-container" :class="{'col-3': !fakePrice, 'col-5 col-lg-4': fakePrice}">
                   <span class="price">
                     <span>{{ currencySymbol }}</span>
                     {{ price }}
+                  </span>
+                  <span class="price old-price" v-if="fakePrice">
+                    <span>{{ currencySymbol }}</span>
+                    {{ fakePrice }}
                   </span>
                 </div>
               </div>
@@ -146,7 +150,7 @@ export default {
     background: linear-gradient(
       90deg,
       rgba(2, 0, 36, 0) 0%,
-      rgba(255, 255, 255, 1) 22%,
+      rgba(255, 255, 255, 1) 17%,
       rgba(255, 255, 255, 1) 100%
     );
   }
@@ -165,6 +169,7 @@ export default {
       font-family: $font-light;
       font-weight: $titles-font-weight;
       color: $titles-color;
+      margin-left: 5px;
 
       span {
         font-size: 14px;
@@ -172,6 +177,22 @@ export default {
       }
       @include md-up {
         margin-top: 10px;
+      }
+
+      &.old-price{
+        color: #c1c1c1 !important;
+        text-decoration: line-through;
+
+        span {
+          font-size: 18px !important;
+          margin-right: 0 !important;
+          color: #c1c1c1 !important;
+          text-decoration: line-through;
+
+          @include lg-up {
+            font-size: 14px !important;
+          }
+        }
       }
     }
   }
@@ -271,6 +292,7 @@ export default {
     @include lg-up {
       line-height: 1.75;
       margin: 0 !important;
+      margin-left: 5px !important;
       color: $titles-color !important;
       font-size: 14px !important;
     }

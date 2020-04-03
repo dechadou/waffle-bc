@@ -25,6 +25,10 @@
               <span>{{ currencySymbol }}</span>
               {{ price }}
             </span>
+            <span class="price old-price" v-if="fakePrice">
+              <span>{{ currencySymbol }}</span>
+              {{ fakePrice }}
+            </span>
           </div>
           <div class="col-12 col-md-11">
             <p v-html="data.description"></p>
@@ -127,12 +131,14 @@ p {
 }
 
 .price {
-  float: right;
   font-size: 18px;
   margin-top: 3px;
   font-weight: $titles-font-weight;
   font-family: $titles-font;
   color: $titles-color;
+  display: block;
+  width: 100%;
+  text-align: right;
 
   span {
     font-size: 14px;
@@ -141,6 +147,19 @@ p {
 
   @include md-up {
     margin-top: 10px;
+  }
+
+  &.old-price{
+    margin-top: 0;
+    color: #c1c1c1 !important;
+    text-decoration: line-through;
+
+    span {
+      font-size: 18px !important;
+      margin-right: 0 !important;
+      color: #c1c1c1 !important;
+      text-decoration: line-through;
+    }
   }
 }
 
