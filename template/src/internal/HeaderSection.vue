@@ -27,6 +27,9 @@
         <li>
           <a href="https://abrecultura.com/nosotres/mapadelibrerias/">Mapa de librerías</a>
         </li>
+        <li>
+          <a href="https://abrecultura.com/ebooks/">Tienda Ebooks</a>
+        </li>
       </ul>
       <Social :year="year" class="social"/>
     </nav>
@@ -34,21 +37,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { Social } from "@/extendables/BaseComponents";
-import LogoIcon from "@/assets/icons/logo.svg";
-import MenuIcon from "@/assets/icons/menu.svg";
-import ArrowLeftIcon from "@/assets/icons/arrow-left.svg";
+import { mapState } from 'vuex';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { Social } from '@/extendables/BaseComponents';
+import LogoIcon from '@/assets/icons/logo.svg';
+import MenuIcon from '@/assets/icons/menu.svg';
+import ArrowLeftIcon from '@/assets/icons/arrow-left.svg';
 
 // @group INTERNAL COMPONENTS
 // The page's header
 // @vuese
 export default {
-  name: "HeaderSection",
+  name: 'HeaderSection',
   props: {
     // Current year. Used for displaying inside the mobile menu
-    year: String
+    year: String,
   },
   components: {
     Social,
@@ -58,31 +61,31 @@ export default {
   },
   data() {
     return {
-      isActive: false
+      isActive: false,
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["store_id"]),
+    ...mapState(StoreDataNamespace, ['store_id']),
     currentPage() {
       return this.$route.name;
     },
     isHome() {
-      return this.currentPage === "DefaultHomePage";
+      return this.currentPage === 'DefaultHomePage';
     },
     isProductInternal() {
       return (
-        this.currentPage === "DefaultProductPage" ||
-        this.currentPage === "DefaultBundlePage"
+        this.currentPage === 'DefaultProductPage'
+        || this.currentPage === 'DefaultBundlePage'
       );
     },
     isMainSite() {
       return this.store_id === 8;
-    }
+    },
   },
   watch: {
     $route() {
       this.isActive = false;
-    }
+    },
   },
   methods: {
     /**
@@ -92,16 +95,16 @@ export default {
     toggleMenu() {
       this.isActive = !this.isActive;
     },
-    goHome($event){
+    goHome($event) {
       $event.preventDefault();
-      
-      if(this.isMainSite){
-        this.$router.push({ path: '/' })
-      }else{
-        window.location.href = "https://abrecultura.com/";
+
+      if (this.isMainSite) {
+        this.$router.push({ path: '/' });
+      } else {
+        window.location.href = 'https://abrecultura.com/';
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -243,7 +246,7 @@ export default {
       padding-top: 23px;
       display: flex;
       justify-content: left;
-      left: 36.5%;
+      left: 27.5%;
       position: absolute;
       letter-spacing: 0;
     }
