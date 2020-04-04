@@ -66,8 +66,8 @@ export const getPrice = (data, currency) => {
 };
 
 // Expects a product object
-// Returns its fake price (Number)
-export const getFakePrice = (data, currency) => {
+// Returns its strikethrough price (Number)
+export const getStPrice = (data, currency) => {
   let finalPrice = null;
   const v2Object = data.class === 'product' ? data.articles[0].v2 : data.v2;
 

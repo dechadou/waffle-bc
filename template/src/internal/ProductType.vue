@@ -3,7 +3,7 @@ import { mapState } from 'vuex';
 import { getEnum, EnumNames } from '@/config';
 import { StoreDataNamespace } from '@/store/module/StoreData';
 import {
-  getPrice, getFakePrice, getImage, isOutOfStock,
+  getPrice, getStPrice, getImage, isOutOfStock,
 } from '@/utils/productTypesHelper';
 import * as AddToCartButtons from '@/extendables/AddToCartButtonTypes';
 
@@ -43,6 +43,7 @@ export default {
   watch: {
     currency(value) {
       this.price = getPrice(this.data, value);
+      this.fakePrice = getStPrice(this.data, this.currency);
       this.currencySymbol = getEnum(EnumNames.CurrencySymbols)[value];
     },
   },
@@ -55,7 +56,7 @@ export default {
       : this.data.articles;
     this.singleImage = getImage(this.data.media);
     this.price = getPrice(this.data, this.currency);
-    this.fakePrice = getFakePrice(this.data, this.currency);
+    this.fakePrice = getStPrice(this.data, this.currency);
     this.currencySymbol = getEnum(EnumNames.CurrencySymbols)[this.currency];
     this.isOutOfStock = isOutOfStock(this.articleList, this.data.class);
     this.productId = this.data.class === 'product' ? this.articleList[0].id : this.data.id;
