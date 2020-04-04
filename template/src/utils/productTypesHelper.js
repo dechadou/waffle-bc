@@ -74,8 +74,7 @@ export const getFakePrice = (data, currency) => {
   // if there is a v2 object
   if (v2Object) {
     const currencyObject = v2Object.price.find(x => x.coin_unit === currency);
-    console.log(currencyObject);
-    if (currencyObject && currencyObject.fake_price) finalPrice = currencyObject.fake_price;
+    if (currencyObject && currencyObject.st_price) finalPrice = currencyObject.st_price;
   }
 
   return finalPrice === null ? null : +finalPrice;
