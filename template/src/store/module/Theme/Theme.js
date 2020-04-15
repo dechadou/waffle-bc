@@ -49,7 +49,6 @@ export default {
   getters: {},
   mutations: {
     [SET_THEME]: (state, theme) => {
-      theme = 'landing_marketing';
       state.theme = theme;
       state.themeConfig = state.configurations.themes[theme];
     },
