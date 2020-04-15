@@ -79,6 +79,7 @@
               <div class="col-12 col-md-10 col-lg-7">
                 <component
                   class="addToCartButton"
+                  :class="{'not-fixed': isMarketingLanding}"
                   :is="getButtonType()"
                   :slug="data.slug"
                   :id="selectedArticle.id"
@@ -323,6 +324,10 @@ button.btn.addToCartButton:hover {
   bottom: 0;
   left: 0;
   z-index: 5;
+
+  &.not-fixed{
+    position: initial;
+  }
 
   @include md-up {
     position: initial;
