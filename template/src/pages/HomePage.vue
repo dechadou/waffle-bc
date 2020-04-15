@@ -9,39 +9,41 @@
         :mobileImage="template.mobile_image"
         :introCopy="template.intro_copy"
       />
-      <div class="container" :class="[{'has-header': isMarketplace}]">
-        <section id="shop">
+      <div :class="[{'has-header': isMarketplace, container: !isMarketingLanding}]">
+        <section :id="{shop: !isMarketingLanding}">
           <ProductDisplayer-Main
             :products="mainProducts"
             v-if="mainProducts.length > 0"
             :containerClasses="themeConfig.homeProductClasses"
           />
-          <ProductDisplayer-Recommended
-            :products="recommendedProducts"
-            v-if="recommendedProducts.length > 0 && !template.productos_relacionados"
-          />
-          <Profile
-            :title="template.creador_titulo"
-            :text="template.creador_bio"
-            :image="template.creador_image"
-            :facebook="template.creador_social_fb"
-            :twitter="template.creador_social_tw"
-            :instagram="template.creador_social_ig"
-            :website="template.creador_social_web"
-          />
-          <div class="moca-container" v-if="moca">
-            <moca-module
-              :moca_creator="moca.moca_creator"
-              :moca_title="moca.moca_title"
-              :moca_description="moca.moca_description"
-              :moca_bg="moca.moca_bg"
-            >
-            </moca-module>
+          <div :class="[{container: isMarketingLanding}]">
+            <ProductDisplayer-Recommended
+              :products="recommendedProducts"
+              v-if="recommendedProducts.length > 0 && !template.productos_relacionados"
+            />
+            <Profile
+              :title="template.creador_titulo"
+              :text="template.creador_bio"
+              :image="template.creador_image"
+              :facebook="template.creador_social_fb"
+              :twitter="template.creador_social_tw"
+              :instagram="template.creador_social_ig"
+              :website="template.creador_social_web"
+            />
+            <div class="moca-container" v-if="moca">
+              <moca-module
+                :moca_creator="moca.moca_creator"
+                :moca_title="moca.moca_title"
+                :moca_description="moca.moca_description"
+                :moca_bg="moca.moca_bg"
+              >
+              </moca-module>
+            </div>
+            <ProductDisplayer-Recommended
+              :products="recommendedProducts"
+              v-if="recommendedProducts.length > 0 && template.productos_relacionados"
+            />
           </div>
-          <ProductDisplayer-Recommended
-            :products="recommendedProducts"
-            v-if="recommendedProducts.length > 0 && template.productos_relacionados"
-          />
         </section>
         <PageShare
           :title="template.call_to_action_title"
@@ -106,6 +108,9 @@ export default {
     ...mapState(BreakpointsNamespace, ['breakpoint', 'breakpoints']),
     isMarketplace() {
       return this.theme === 'marketplace';
+    },
+    isMarketingLanding() {
+      return this.theme === 'landing_marketing';
     },
   },
   methods: {

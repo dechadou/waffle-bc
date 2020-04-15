@@ -108,6 +108,7 @@ p {
   @include md-up{
     padding: 20px 30px !important;
     text-align: center;
+    margin-bottom: 0;
   }
 }
 

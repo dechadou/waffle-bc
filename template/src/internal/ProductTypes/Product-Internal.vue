@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article id="producto" class="product" v-if="price !== null">
+    <article id="producto" :class="{'mkt-landing':isMarketingLanding}" v-if="price !== null">
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
@@ -37,7 +37,8 @@
               </div>
             </div>
             <!-- Product Description -->
-            <p v-html="data.description"></p>
+            <p v-html="data.description" v-if="!isMarketingLanding" />
+            <p v-html="data.descriptionLarga" v-else />
 
             <ul class="additional-info" v-if="data.informacion_adicional.length > 0">
               <div class="row">
@@ -94,10 +95,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'swiper/dist/css/swiper.css';
 
+import { ThemeNamespace } from '@/store/module/Theme';
 import { ProductType, Loading } from '@/extendables/BaseComponents';
 
 class AttributeSelector {
@@ -151,6 +154,12 @@ export default {
   },
   created() {
     this.onCreated();
+  },
+  computed: {
+    ...mapState(ThemeNamespace, ['themeConfig', 'theme']),
+    isMarketingLanding() {
+      return this.theme === 'landing_marketing';
+    },
   },
   watch: {
     selectedProperties() {
@@ -350,6 +359,10 @@ button.btn.addToCartButton:hover {
   background: $product-internal-background;
   overflow: hidden;
   padding-bottom: 65px;
+
+  &.mkt-landing{
+    padding-bottom: 30px;
+  }
 
   h1 {
     color: $titles-color;

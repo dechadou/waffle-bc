@@ -35,6 +35,12 @@ export default {
           false,
           true,
         ),
+        landing_marketing: new ThemeConfig(
+          'Product-Internal',
+          'col-12',
+          false,
+          true,
+        ),
       },
       footerNames: ['Footer-None', 'Footer-Abre', 'Footer-Logo'],
     },
@@ -43,6 +49,7 @@ export default {
   getters: {},
   mutations: {
     [SET_THEME]: (state, theme) => {
+      theme = 'landing_marketing';
       state.theme = theme;
       state.themeConfig = state.configurations.themes[theme];
     },
