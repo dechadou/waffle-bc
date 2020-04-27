@@ -252,6 +252,13 @@ export default {
 };
 </script>
 
+<style>
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+</style>
+
 <style lang="scss">
 @import "assets/styles/base.scss";
 .app-load {
