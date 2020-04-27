@@ -55,7 +55,10 @@ export const getPrice = (data, currency) => {
 
   // if there aren't v2 prices or there are none with the default currency: fallback to v1 currency
   if (!finalPrice) {
-    if (currency !== 'ars') return null;
+    if (currency !== 'ars') {
+      console.error(`El ${data.class} con ID: ${data.id} no está disponible en la moneda ${currency}`);
+      return null;
+    }
     finalPrice = data.class === 'product' ? data.articles[0].price : data.price;
   }
 

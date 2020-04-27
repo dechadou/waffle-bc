@@ -45,7 +45,7 @@ export default {
       this.addToStoreCart(productID);
 
       if (toggleOtherModules) {
-        if (this.themeConfig.showRelatedProducts) {
+        if (this.productClass === 'article' && this.themeConfig.showRelatedProducts) {
           EventManager.Trigger(
             eventNames.ON_RELATED_PRODUCTS_TOGGLE,
             productID,

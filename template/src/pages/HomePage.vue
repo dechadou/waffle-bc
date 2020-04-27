@@ -30,14 +30,13 @@
               :instagram="template.creador_social_ig"
               :website="template.creador_social_web"
             />
-            <div class="moca-container" v-if="moca">
+            <div ref="bancar" class="moca-container" v-if="moca">
               <moca-module
                 :moca_creator="moca.moca_creator"
                 :moca_title="moca.moca_title"
                 :moca_description="moca.moca_description"
                 :moca_bg="moca.moca_bg"
-              >
-              </moca-module>
+              ></moca-module>
             </div>
             <ProductDisplayer-Recommended
               :products="recommendedProducts"
@@ -156,6 +155,15 @@ export default {
     if (typeof $moca !== 'undefined') {
       this.moca = $moca;
       this.includeMoca();
+    }
+  },
+  mounted() {
+    // If the url has a # it tries to go to that part after processing all the data
+    if (window.location.hash) {
+      const reference = this.$refs[window.location.hash.substring(1)];
+      if (reference) {
+        setTimeout(() => reference.scrollIntoView(), 500);
+      }
     }
   },
 };

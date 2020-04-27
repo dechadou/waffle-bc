@@ -65,10 +65,11 @@ export default {
       : this.data.class;
 
     const internalLinkClass = this.productClass === 'article' ? 'producto' : 'combo';
+
     this.internalLink = this.$route.params.slug
       ? `/${this.$route.params.slug}/${internalLinkClass}/${this.data.slug
-          || ''}`
-      : `/${internalLinkClass}/${this.data.slug || ''}`;
+          || this.data.id}`
+      : `/${internalLinkClass}/${this.data.slug || this.data.id}`;
   },
 };
 </script>

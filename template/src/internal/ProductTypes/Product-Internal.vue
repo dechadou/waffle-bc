@@ -3,19 +3,19 @@
     <article id="producto" :class="{'mkt-landing':isMarketingLanding}" v-if="price !== null">
       <div class="row">
         <div class="col-12 col-md-6">
-          <div class="badge-free-shipping" v-if="data.envio_gratuito"/>
+          <div class="badge-free-shipping" v-if="data.envio_gratuito" />
           <swiper
             :options="swiperOption"
-            v-if="carouselImages.length > 1"
+            v-if="carouselImages && carouselImages.length > 1"
             class="swiper product-carousel"
           >
             <swiper-slide v-for="(img, index) in carouselImages" :key="index">
-              <img class="d-block swiper swiper-lazy" :data-src="img">
-              <Loading class="swiper-loader"/>
+              <img class="d-block swiper swiper-lazy" :data-src="img" />
+              <Loading class="swiper-loader" />
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
-          <img v-else class="d-block single-image" :src="singleImage.url">
+          <img v-else class="d-block single-image" :src="singleImage.url" />
         </div>
 
         <div class="col-md-6 description-box">
@@ -40,7 +40,10 @@
             <p v-html="data.description" v-if="!isMarketingLanding" />
             <p v-html="data.descriptionLarga" v-else />
 
-            <ul class="additional-info" v-if="data.informacion_adicional.length > 0">
+            <ul
+              class="additional-info"
+              v-if="data.informacion_adicional && data.informacion_adicional.length > 0"
+            >
               <div class="row">
                 <li
                   v-for="info in data.informacion_adicional"
@@ -49,10 +52,10 @@
                 >
                   <div class="row">
                     <div class="col-12">
-                      <h3 v-html="info.meta"/>
+                      <h3 v-html="info.meta" />
                     </div>
                     <div class="col-12">
-                      <p v-html="info.value"/>
+                      <p v-html="info.value" />
                     </div>
                   </div>
                 </li>
@@ -144,7 +147,7 @@ export default {
           disableOnInteraction: false,
         },
         slidesPerView: 1,
-        initialSlide: 1,
+        initialSlide: this.isMarketingLanding ? 0 : 1,
         spaceBetween: 30,
         pagination: {
           el: '.swiper-pagination',
@@ -189,6 +192,11 @@ export default {
     getSelectedArticleOrSelector() {
       // Si no hay atributos significa que no hay forma de seleccionar un elemento distinto,
       // por lo tanto no importa si el producto tiene mas de un articulo, seleccionamos el primer articulo.
+      if (this.data.class === 'bundle') {
+        this.selectedArticle = this.data;
+        return;
+      }
+
       if (this.data.articles[0].atributtes.length === 0) {
         [this.selectedArticle] = this.data.articles;
         return;
@@ -325,7 +333,7 @@ button.btn.addToCartButton:hover {
   left: 0;
   z-index: 5;
 
-  &.not-fixed{
+  &.not-fixed {
     position: initial;
   }
 
@@ -365,7 +373,7 @@ button.btn.addToCartButton:hover {
   overflow: hidden;
   padding-bottom: 65px;
 
-  &.mkt-landing{
+  &.mkt-landing {
     padding-bottom: 30px;
   }
 
@@ -415,7 +423,7 @@ button.btn.addToCartButton:hover {
       font-size: 16px;
     }
 
-    &.old-price{
+    &.old-price {
       margin-top: 0;
       color: #c1c1c1 !important;
       text-decoration: line-through;
