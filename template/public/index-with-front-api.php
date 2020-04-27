@@ -71,6 +71,9 @@
       position: fixed;
       top: 0;
       left: 0;
+      opacity: 1;
+      transition: 0.5s opacity ease;
+      z-index: 2000;
     }
 
     #loadingScreen svg {
@@ -97,6 +100,12 @@
 
     #loadingScreen .spin {
       animation: fa-spin 2s infinite linear;
+    }
+
+    #loadingScreen.close {
+      pointer-events: none;
+      opacity: 0;
+      transition: 0.5s opacity ease;
     }
 
     @keyframes fa-spin {
