@@ -223,12 +223,17 @@ export default {
 
       this.setCurrencyConfig();
 
-      // Removes loading screen
-      const loadingScreen = document.getElementById('loadingScreen');
-      loadingScreen.parentElement.removeChild(loadingScreen);
-
       // Shows content
       this.show = true;
+
+      // Removes loading screen
+      const loadingScreen = document.getElementById('loadingScreen');
+      setTimeout(() => {
+        loadingScreen.classList.add('close');
+      }, 700);
+      setTimeout(() => {
+        loadingScreen.parentElement.removeChild(loadingScreen);
+      }, 1200);
     },
     /**
      * @vuese
