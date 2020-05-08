@@ -19,13 +19,10 @@
     <nav class="menu" v-if="isMainSite">
       <ul class="nav" v-if="!isProductInternal">
         <li>
-          <a href="https://abrecultura.com/nosotres/">Nosotres</a>
-        </li>
-        <li>
           <a href="https://abrecultura.com/nosotres/mi-pedido/">Estado de mi pedido</a>
         </li>
         <li>
-          <a href="https://abrecultura.com/nosotres/mapadelibrerias/">Mapa de librerías</a>
+          <a href="https://abrecultura.com/culturaenmovimiento/">Cultura en Movimiento</a>
         </li>
         <li>
           <a href="https://abrecultura.com/ebooks/">Tienda Ebooks</a>

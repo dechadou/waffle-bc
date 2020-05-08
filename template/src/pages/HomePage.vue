@@ -49,9 +49,6 @@
           :shareText="template.twitter_share"
           v-if="themeConfig.showPageShare"
         />
-
-        <!-- TODO: if it is marketplace and screen >= MD don't show -->
-        <!--<CurrencySelectorBox v-if="multiCurrency && !(isMarketplace && breakpoint >= breakpoints.MD)" />-->
       </div>
     </div>
   </transition>
