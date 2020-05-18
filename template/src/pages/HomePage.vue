@@ -31,12 +31,7 @@
               :website="template.creador_social_web"
             />
             <div ref="bancar" class="moca-container" v-if="moca">
-              <moca-module
-                :moca_creator="moca.moca_creator"
-                :moca_title="moca.moca_title"
-                :moca_description="moca.moca_description"
-                :moca_bg="moca.moca_bg"
-              ></moca-module>
+              <moca-module :moca_creator="moca.moca_creator" :moca_id="moca.moca_id"></moca-module>
             </div>
             <ProductDisplayer-Recommended
               :products="recommendedProducts"

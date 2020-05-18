@@ -136,11 +136,8 @@ export default {
       if (index === -1) commit(ADD_ITEM, state.config.cartHelper.getCartObjectByProductId(id, productClass));
       commit(CHANGE_ITEM_QUANTITY, { index, quantity: 1 });
     },
-    [GET_CHECKOUT_URL]: ({ state, commit }, currency) => {
-      const url = state.cartItems.reduce((accumulator, currentValue) => {
-
-        console.log(currentValue.price);
-
+    [GET_CHECKOUT_URL]: ({ state, commit }, { currency, queryParams }) => {
+      let url = state.cartItems.reduce((accumulator, currentValue) => {
         if (currentValue.price.some(x => x.coin_unit === state.currency)) {
           accumulator
             += `&${currentValue.class === 'bundle' ? [QUERY_BUNDLES_ARRAY] : [QUERY_ARTICLES_ARRAY]}`;
@@ -148,9 +145,18 @@ export default {
         }
 
         return accumulator;
-      }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`)
-        .concat(state.coupon ? `&${[QUERY_COUPON]}=${state.coupon.coupon}` : '')
-        .concat(`&${[QUERY_CURRENCY]}=${currency}`);
+      }, `${getUrl(URLNames.CHECKOUT)}?${[QUERY_STORE_ID]}=${state.config.storeId}`);
+
+
+      if (state.coupon) url = url.concat(`&${[QUERY_COUPON]}=${state.coupon.coupon}`);
+
+      url = url.concat(`&${[QUERY_CURRENCY]}=${currency}`);
+
+      Object.keys(queryParams).forEach((key) => {
+        const value = queryParams[key];
+        if (value) url = url.concat(`&${key}=${value}`);
+      });
+
       commit(SET_REDIRECT_URL, url);
     },
     [STORE_CART]: ({ state }) => {

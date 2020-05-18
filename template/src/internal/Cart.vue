@@ -1,6 +1,10 @@
 <template>
   <div>
-    <CurrencySelector class="currency-selector" :class="{ 'with-logo': isMarketplace }" v-if="multiCurrency"/>
+    <CurrencySelector
+      class="currency-selector"
+      :class="{ 'with-logo': isMarketplace }"
+      v-if="multiCurrency"
+    />
     <button class="open-cart" @click="cartToggle()" aria-label="Open Cart">
       <CartIcon />
       <span class="items-count animated" v-bind:class="{'jello': changing}">{{cartQuantity}}</span>
@@ -287,7 +291,15 @@ export default {
     checkout() {
       if (this.cartItems.length < 1) return;
       this.loading = true;
-      this.getCheckoutUrl(this.currency);
+
+      this.getCheckoutUrl({
+        currency: this.currency,
+        queryParams: {
+          source: URLParams('source'),
+          medium: URLParams('medium'),
+          campaign: URLParams('campaign'),
+        },
+      });
 
       if (this.$ga) {
         this.$ga.event({
@@ -568,7 +580,7 @@ input {
     }
   }
 }
-.currency-selector{
+.currency-selector {
   position: fixed;
   z-index: 1000;
   right: 19%;
@@ -579,7 +591,7 @@ input {
     top: 22px;
   }
 
-  &.with-logo{
+  &.with-logo {
     right: 5%;
     top: 55px;
     @include md-up {
