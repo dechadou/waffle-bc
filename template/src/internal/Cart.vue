@@ -298,6 +298,13 @@ export default {
           source: URLParams('source'),
           medium: URLParams('medium'),
           campaign: URLParams('campaign'),
+          term: URLParams('term'),
+          content: URLParams('content'),
+          utm_source: URLParams('utm_source'),
+          utm_medium: URLParams('utm_medium'),
+          utm_campaign: URLParams('utm_campaign'),
+          utm_term: URLParams('utm_term'),
+          utm_content: URLParams('utm_content'),
         },
       });
 
