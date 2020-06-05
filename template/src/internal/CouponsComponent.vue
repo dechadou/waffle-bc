@@ -32,32 +32,32 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { EventManager } from "@/utils";
-import { getEnum, EnumNames } from "@/config";
-import { Request } from "@/utils";
-import { Loading } from "@/extendables/BaseComponents";
-import { StoreDataNamespace } from "@/store/module/StoreData";
-import { CartNamespace } from "@/store/module/Cart";
-import { CartMutationTypes } from "@/store/module/Cart";
-import CheckIcon from "@/assets/icons/greencheck.svg";
-import TimesIcon from "@/assets/icons/times.svg";
+import { mapState, mapMutations } from 'vuex';
+import { EventManager, Request } from '@/utils';
+import { getEnum, EnumNames } from '@/config';
+
+import { Loading } from '@/extendables/BaseComponents';
+import { StoreDataNamespace } from '@/store/module/StoreData';
+import { CartNamespace, CartMutationTypes } from '@/store/module/Cart';
+
+import CheckIcon from '@/assets/icons/greencheck.svg';
+import TimesIcon from '@/assets/icons/times.svg';
 
 // @group INTERNAL COMPONENTS
 // Takes the coupon input from the user and fetches the coupon data from the API
 // @vuese
 export default {
-  name: "CouponsComponent",
+  name: 'CouponsComponent',
   components: {
     Loading,
     CheckIcon,
-    TimesIcon
+    TimesIcon,
   },
   data() {
     return {
       couponInputFocus: false,
       timer: null,
-      couponInputText: "",
+      couponInputText: '',
       state: null,
       searching: false,
       error: null,
@@ -65,8 +65,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(StoreDataNamespace, ["authToken", "coupon"]),
-    ...mapState(CartNamespace, ["couponCode"]),
+    ...mapState(StoreDataNamespace, ['authToken', 'coupon']),
+    ...mapState(CartNamespace, ['couponCode']),
   },
   watch: {
     couponInputText() {
@@ -83,7 +83,7 @@ export default {
       }
     },
   },
-  mounted(){
+  mounted() {
     if (this.couponCode) {
       this.couponInputText = this.couponCode;
       this.inputLocked = true;
@@ -91,19 +91,19 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCoupon: CartMutationTypes.SET_COUPON
+      setCoupon: CartMutationTypes.SET_COUPON,
     }),
     searchCode() {
       if (this.searching || !this.couponInputText) return;
       this.searching = true;
-      const coupon = this.couponInputText;
+      const coupon = this.couponInputText.trim();
       Request.api
-        .post("coupon/availability", {
+        .post('coupon/availability', {
           body: JSON.stringify({ coupon }),
           headers: {
-            "Content-Type": "application/json",
-            Token: this.authToken
-          }
+            'Content-Type': 'application/json',
+            Token: this.authToken,
+          },
         })
         .then(response => this.addCoupon(coupon, response.data))
         .catch(error => error.then(x => this.addError(x.error.message)));
@@ -111,16 +111,16 @@ export default {
     addCoupon(coupon, { discount }) {
       if (!this.couponInputText) return;
       this.searching = false;
-      this.state = "valid";
+      this.state = 'valid';
       this.setCoupon({ coupon, discount });
     },
     addError(error) {
       if (!this.couponInputText) return;
       this.searching = false;
       this.error = error;
-      this.state = "invalid";
-    }
-  }
+      this.state = 'invalid';
+    },
+  },
 };
 </script>
 
